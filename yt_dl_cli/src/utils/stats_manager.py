@@ -40,7 +40,8 @@ class StatsManager:
         Calculate and return a summary of all statistics.
 
         Returns:
-            Dict[str, int]: Dictionary containing success, failed, skipped, and total counts
+            Dict[str, int]: Dictionary containing success, failed, skipped, and
+            total counts
         """
         total = self.success + self.failed + self.skipped
         return {

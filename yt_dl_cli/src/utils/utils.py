@@ -41,7 +41,8 @@ class FilenameSanitizer:
 
         Args:
             name (str): Original string to sanitize
-            max_length (int, optional): Maximum length of resulting filename. Defaults to 100.
+            max_length (int, optional): Maximum length of resulting filename.
+            Defaults to 100.
 
         Returns:
             str: Sanitized filename safe for file system use
