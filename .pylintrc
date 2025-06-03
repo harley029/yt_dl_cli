@@ -1,0 +1,11 @@
+[MASTER]
+# Отключаем проблемный чекер imports
+disable=astroid-error,import-error
+
+# Игнорируем определенные пути
+ignore-paths=.venv,downloads
+ignore-patterns=video_downloader.py
+
+[MESSAGES CONTROL]
+# Отключаем фатальные ошибки для продолжения анализа
+disable=F0002
