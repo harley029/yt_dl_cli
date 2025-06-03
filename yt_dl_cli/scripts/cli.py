@@ -23,7 +23,7 @@ Author: Oleksandr Kharhenko
 License: MIT
 """
 
-from ..main import VideoDownloader
+from ..main import VideoDownloader  # type: ignore[import-untyped]
 
 
 def main():

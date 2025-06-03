@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [project.scripts]
-yt-dl = "yt_dl_cli.scripts.cli:main"
+yt-dl-cli = "yt_dl_cli.scripts.cli:main"
 
 [tool.setuptools]
 packages = ["yt_dl_cli"]

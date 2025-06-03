@@ -1,7 +1,7 @@
 # -------------------- Video Information Extractor --------------------
 from typing import Any, Dict
 
-import yt_dlp
+import yt_dlp  # type: ignore[import-not-found]
 
 from src.i18n.messages import Messages
 from src.interfaces.interfaces import IFileChecker, ILogger, IStatsCollector
@@ -141,7 +141,7 @@ class DownloaderCore:
         self.file_checker = file_checker
         self.info_extractor = info_extractor
         self.download_executor = download_executor
-        self._resources = []
+        self._resources: list[Any] = []
 
     def __enter__(self):
         """

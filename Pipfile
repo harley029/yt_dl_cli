@@ -7,6 +7,7 @@ name = "pypi"
 flake8 = "*"
 astroid = ">=2.15.0"
 pylint = ">=2.17.0"
+mypy = "*"
 
 [dev-packages]
 
