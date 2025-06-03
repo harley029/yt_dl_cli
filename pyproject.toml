@@ -1,0 +1,31 @@
+[project]
+name = "yt_dl_cli"
+version = "0.1.0"
+description = "YouTube downloader CLI tool powered by yt-dlp"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Oleksandr Kharchenko", email = "kharchenko.oleksandr@icloud.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "yt-dlp>=2024.0.0",
+    "click>=8.0.0",
+    "rich>=13.0.0"
+]
+
+[project.scripts]
+yt-dl = "yt_dl_cli.scripts.cli:main"
+
+[tool.setuptools]
+packages = ["yt_dl_cli"]
+include-package-data = true
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"

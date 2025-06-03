@@ -1,0 +1,12 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+*$py.class
+.vscode/
+.idea/
+.venv/
+*.crt
+readme.txt
+.mypy_cache/
+.pytest_cache/
+video_downloader.py
