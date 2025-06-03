@@ -4,12 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flake8 = "*"
-astroid = ">=2.15.0"
-pylint = ">=2.17.0"
-mypy = "*"
+yt-dlp = "2025.5.22"
+flake8 = "7.2.0"
+pylint = "3.3.7"
+mypy = "1.16.0"
 
 [dev-packages]
 
 [requires]
-python_version = "3.12"
+python_version = "3.13"
