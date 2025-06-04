@@ -23,7 +23,7 @@ Author: Oleksandr Kharhenko
 License: MIT
 """
 
-from ..main import VideoDownloader  # type: ignore[import-untyped]
+from yt_dl_cli.main import VideoDownloader  # type: ignore[import-untyped]
 
 
 def main():

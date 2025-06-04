@@ -3,11 +3,11 @@ from typing import Any, Dict
 
 import yt_dlp  # type: ignore[import-not-found]
 
-from src.i18n.messages import Messages
-from src.interfaces.interfaces import IFileChecker, ILogger, IStatsCollector
-from src.interfaces.strategies import IFormatStrategy
-from src.utils.utils import FilenameSanitizer
-from src.config.config import Config
+from yt_dl_cli.i18n.messages import Messages
+from yt_dl_cli.interfaces.interfaces import IFileChecker, ILogger, IStatsCollector
+from yt_dl_cli.interfaces.strategies import IFormatStrategy
+from yt_dl_cli.utils.utils import FilenameSanitizer
+from yt_dl_cli.config.config import Config
 
 
 class VideoInfoExtractor:
@@ -50,10 +50,10 @@ class VideoInfoExtractor:
             with yt_dlp.YoutubeDL(opts) as ydl:
                 info = ydl.extract_info(url, download=False)
                 if info is None:
-                    raise yt_dlp.DownloadError(Messages.Extractor.ERROR_NO_INFO)
+                    raise yt_dlp.DownloadError(Messages.Extractor.ERROR_NO_INFO())
                 return info
         except Exception as e:
-            self.logger.error(Messages.Extractor.ERROR_EXTRACT.format(url=url, error=e))
+            self.logger.error(Messages.Extractor.ERROR_EXTRACT(url=url, error=e))
             return None
 
 
@@ -97,7 +97,7 @@ class DownloadExecutor:
                 ydl.download([url])
                 return True
         except Exception as e:
-            self.logger.error(Messages.Executor.ERROR_DOWNLOAD.format(url=url, error=e))
+            self.logger.error(Messages.Executor.ERROR_DOWNLOAD(url=url, error=e))
             return False
 
 
@@ -169,7 +169,7 @@ class DownloaderCore:
                 if hasattr(resource, "close"):
                     resource.close()
             except Exception as e:
-                self.logger.warning(Messages.Core.ERROR_RESOURCE_CLOSE.format(error=e))
+                self.logger.warning(Messages.Core.ERROR_RESOURCE_CLOSE(error=e))
 
     def register_resource(self, resource):
         """
@@ -211,16 +211,16 @@ class DownloaderCore:
         filepath = self.config.save_dir / f"{sanitized}.{ext}"
 
         if self.file_checker.exists(filepath):
-            self.logger.info(Messages.Core.SKIP_EXISTS.format(title=title))
+            self.logger.info(Messages.Core.SKIP_EXISTS(title=title))
             self.stats.record_skip()
             return
 
         opts = base_opts.copy()
         opts["outtmpl"] = str(self.config.save_dir / f"{sanitized}.%(ext)s")
 
-        self.logger.info(Messages.Core.START_DOWNLOAD.format(title=title))
+        self.logger.info(Messages.Core.START_DOWNLOAD(title=title))
         if self.download_executor.execute_download(url, opts):
             self.stats.record_success()
-            self.logger.info(Messages.Core.DONE_DOWNLOAD.format(title=title))
+            self.logger.info(Messages.Core.DONE_DOWNLOAD(title=title))
         else:
             self.stats.record_failure()

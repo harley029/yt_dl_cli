@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "yt_dl_cli"
 version = "0.1.0"
@@ -14,18 +18,14 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = [
-    "yt-dlp>=2024.0.0",
-    "click>=8.0.0",
-    "rich>=13.0.0"
+    "yt-dlp>=2024.0.0"
 ]
 
 [project.scripts]
 yt-dl-cli = "yt_dl_cli.scripts.cli:main"
 
-[tool.setuptools]
-packages = ["yt_dl_cli"]
-include-package-data = true
+[tool.setuptools.packages.find]
+where = ["src"]
 
-[build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+[tool.setuptools.package-data]
+yt_dl_cli = ["locales/*/LC_MESSAGES/*"]

@@ -43,16 +43,15 @@ import asyncio
 import logging
 from typing import Optional
 
-from src.config.config import Config
-from src.utils.logger import LoggerFactory
-from src.core.orchestration import AsyncOrchestrator, DIContainer
-from src.utils.parser import parse_arguments
+from yt_dl_cli.config.config import Config
+from yt_dl_cli.utils.logger import LoggerFactory
+from yt_dl_cli.core.orchestration import AsyncOrchestrator, DIContainer
+from yt_dl_cli.utils.parser import parse_arguments
 
 # -------------------- Internationalization --------------------
-from src.i18n.init import setup_i18n
-
+from yt_dl_cli.i18n.init import setup_i18n
 setup_i18n()  # noqa: E402
-from src.i18n.messages import Messages  # noqa: E402
+from yt_dl_cli.i18n.messages import Messages
 
 
 class VideoDownloader:
@@ -114,7 +113,10 @@ class VideoDownloader:
     """
 
     def __init__(
-        self, config: Optional[Config] = None, logger: Optional[logging.Logger] = None
+        self,
+        config: Optional[Config] = None,
+        logger: Optional[logging.Logger] = None,
+        language: Optional[str] = None,
     ):
         """
         Initialize the VideoDownloader with configuration and logging setup.
@@ -125,8 +127,9 @@ class VideoDownloader:
 
         The initialization process:
         1. Resolves configuration from provided config or command-line arguments
-        2. Sets up logging infrastructure with appropriate handlers
-        3. Prepares the instance for download operations
+        2. Sets up internationalization with the specified or detected language
+        3. Sets up logging infrastructure with appropriate handlers
+        4. Prepares the instance for download operations
 
         Args:
             config (Optional[Config], optional): Pre-configured Config object
@@ -137,6 +140,9 @@ class VideoDownloader:
                 instance for application logging. If None, a new logger will
                 be created using LoggerFactory with the save directory from
                 config. Defaults to None.
+            language (Optional[str], optional): Language code for internationalization
+                (e.g., 'ru', 'en', 'de'). If None, uses system default locale.
+                Defaults to None.
 
         Raises:
             ConfigurationError: If the provided config is invalid or if
@@ -161,12 +167,16 @@ class VideoDownloader:
             >>> config = Config(save_dir="/downloads", quality="720p")
             >>> downloader = VideoDownloader(config=config)
 
-            Full customization:
+            Full customization with language:
 
             >>> config = Config(save_dir="/downloads")
             >>> logger = logging.getLogger("my_app")
-            >>> downloader = VideoDownloader(config=config, logger=logger)
+            >>> downloader = VideoDownloader(config=config, logger=logger, language="ru")
         """
+        # Настраиваем интернационализацию ПЕРЕД парсингом конфигурации
+        setup_i18n(language=language)
+
+        # Парсим конфигурацию и настраиваем логгер
         self.config = config or parse_arguments()
         self.logger = logger or LoggerFactory.get_logger(self.config.save_dir)
 
@@ -257,11 +267,12 @@ class VideoDownloader:
             with core:
                 asyncio.run(orchestrator.run())
         except KeyboardInterrupt:
-            core.logger.warning(Messages.CLI.USER_INTERRUPT)
+            core.logger.warning(Messages.CLI.USER_INTERRUPT())
         except Exception as e:
-            core.logger.critical(Messages.CLI.CRITICAL_ERROR.format(error=e))
+            core.logger.critical(Messages.CLI.CRITICAL_ERROR(error=e))
 
 
 if __name__ == "__main__":
     downloader = VideoDownloader()
     downloader.download()
+

@@ -3,8 +3,8 @@ from pathlib import Path
 import sys
 from typing import List
 
-from src.config.config import Config
-from src.i18n.messages import Messages
+from yt_dl_cli.config.config import Config
+from yt_dl_cli.i18n.messages import Messages
 
 
 def parse_arguments() -> Config:
@@ -57,10 +57,10 @@ def parse_arguments() -> Config:
             content = Path(args.file).read_text(encoding="utf-8")
             urls = content.splitlines()
         except FileNotFoundError:
-            print(Messages.CLI.FILE_NOT_FOUND.format(file=args.file), file=sys.stderr)
+            print(Messages.CLI.FILE_NOT_FOUND(file=args.file), file=sys.stderr)
         except Exception as e:
             print(
-                Messages.CLI.FILE_READ_ERROR.format(file=args.file, error=e),
+                Messages.CLI.FILE_READ_ERROR(file=args.file, error=e),
                 file=sys.stderr,
             )
 

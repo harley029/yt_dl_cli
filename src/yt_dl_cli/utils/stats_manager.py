@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Dict
 
-from src.interfaces.interfaces import ILogger
-from src.i18n.messages import Messages
+from yt_dl_cli.interfaces.interfaces import ILogger
+from yt_dl_cli.i18n.messages import Messages
 
 
 @dataclass
@@ -64,10 +64,10 @@ class StatsManager:
         """
         summary = self.get_summary()
         logger.info(Messages.Stats.HEADER)
-        logger.info(Messages.Stats.TITLE)
-        logger.info(Messages.Stats.PROCESSED.format(**summary))
-        logger.info(Messages.Stats.SUCCESSFUL.format(**summary))
-        logger.info(Messages.Stats.SKIPPED.format(**summary))
-        logger.info(Messages.Stats.FAILED.format(**summary))
-        logger.info(Messages.Stats.ELAPSED.format(elapsed=elapsed))
+        logger.info(Messages.Stats.TITLE())
+        logger.info(Messages.Stats.PROCESSED(**summary))
+        logger.info(Messages.Stats.SUCCESSFUL(**summary))
+        logger.info(Messages.Stats.SKIPPED(**summary))
+        logger.info(Messages.Stats.FAILED(**summary))
+        logger.info(Messages.Stats.ELAPSED(elapsed=elapsed))
         logger.info(Messages.Stats.FOOTER)

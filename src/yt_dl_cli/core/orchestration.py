@@ -5,13 +5,13 @@ import logging
 import time
 from typing import Optional
 
-from src.config.config import Config
-from src.core.core import DownloadExecutor, DownloaderCore, VideoInfoExtractor
-from src.i18n.messages import Messages
-from src.utils.logger import LoggerFactory
-from src.utils.stats_manager import StatsManager
-from src.interfaces.strategies import get_strategy
-from src.utils.utils import FileSystemChecker
+from yt_dl_cli.config.config import Config
+from yt_dl_cli.core.core import DownloadExecutor, DownloaderCore, VideoInfoExtractor
+from yt_dl_cli.i18n.messages import Messages
+from yt_dl_cli.utils.logger import LoggerFactory
+from yt_dl_cli.utils.stats_manager import StatsManager
+from yt_dl_cli.interfaces.strategies import get_strategy
+from yt_dl_cli.utils.utils import FileSystemChecker
 
 
 class AsyncOrchestrator:
@@ -53,11 +53,11 @@ class AsyncOrchestrator:
             since yt-dlp operations are CPU and I/O intensive.
         """
         if not self.config.urls:
-            self.core.logger.warning(Messages.Orchestrator.NO_URLS)
+            self.core.logger.warning(Messages.Orchestrator.NO_URLS())
             return
 
         self.core.logger.info(
-            Messages.Orchestrator.STARTING.format(
+            Messages.Orchestrator.STARTING(
                 count=len(self.config.urls), workers=self.config.max_workers
             )
         )

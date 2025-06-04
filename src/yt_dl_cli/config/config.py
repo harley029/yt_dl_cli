@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List
 
-from src.i18n.messages import Messages
+from yt_dl_cli.i18n.messages import Messages
 
 
 @dataclass
@@ -37,13 +37,13 @@ class Config:
         """
         if self.max_workers < 1:
             raise ValueError(
-                Messages.Config.INVALID_WORKERS.format(workers=self.max_workers)
+                Messages.Config.INVALID_WORKERS(workers=self.max_workers)
             )
 
         valid_qualities = ["best", "worst", "720", "480", "360"]
         if self.quality not in valid_qualities:
             raise ValueError(
-                Messages.Config.INVALID_QUALITY.format(
+                Messages.Config.INVALID_QUALITY(
                     valid=f"{', '.join(valid_qualities)}", quality=self.quality
                 )
             )

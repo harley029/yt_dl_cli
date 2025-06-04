@@ -1,8 +1,21 @@
 import locale
 import gettext
+from pathlib import Path
+from typing import Optional
+
+# Автоматически ищем директорию locales рядом с этим файлом (или в родителе пакета)
+_this_dir = Path(__file__).resolve().parent
+_locales_dirs = [
+    _this_dir.parent / "locales",  # yt_dl_cli/locales
+    _this_dir.parent.parent / "locales",  # если пакет положен глубже
+]
 
 
-def setup_i18n(domain: str = "messages", localedir: str = "locales") -> None:
+def setup_i18n(
+    domain: str = "messages",
+    localedir: Optional[str] = None,
+    language: Optional[str] = None,
+) -> None:
     """Set up internationalization (i18n) for the application.
 
     This function configures the GNU gettext internationalization system by:
@@ -41,13 +54,18 @@ def setup_i18n(domain: str = "messages", localedir: str = "locales") -> None:
         language code (e.g., "en_US" becomes "en") for compatibility with most
         translation file naming conventions.
     """
-    lang_tuple = locale.getdefaultlocale()
-    lang = lang_tuple[0][:2] if lang_tuple and lang_tuple[0] else "en"
+    # Определить язык: переданный или системный
+    lang = (language or locale.getdefaultlocale()[0] or "en")[:2]
 
-    try:
-        trans = gettext.translation(
-            domain=domain, localedir=localedir, languages=[lang]
-        )
-        trans.install()
-    except FileNotFoundError:
-        gettext.install(domain)
+    # Список директорий для поиска переводов
+    search_dirs = [Path(localedir)] if localedir else _locales_dirs
+
+    # Поиск первого каталога с нужным .mo-файлом
+    for dir_ in search_dirs:
+        mo_file = dir_ / lang / "LC_MESSAGES" / f"{domain}.mo"
+        if mo_file.exists():
+            gettext.translation(domain, localedir=str(dir_), languages=[lang]).install()
+            return
+
+    # Если перевод не найден — fallback на английский (или оригинал)
+    gettext.install(domain)
