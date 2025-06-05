@@ -1,12 +1,9 @@
 import sys
 from yt_dl_cli.config.config import Config
+from yt_dl_cli.utils.parser import parse_arguments
 
 
-def test_config_parsing_from_args():
-    """
-    Проверяет, что аргументы командной строки корректно парсятся в объект Config.
-    """
-    # Имитируем аргументы командной строки
+def test_config_parsing_from_args(monkeypatch):
     test_args = [
         "yt-dl-cli",
         "--urls",
@@ -19,36 +16,30 @@ def test_config_parsing_from_args():
         "5",
         "--audio-only",
     ]
-
-    # Подменяем sys.argv, чтобы Config их использовал
     original_argv = sys.argv
     sys.argv = test_args
 
-    config = Config()
+    from yt_dl_cli.utils.parser import parse_arguments
+    config = parse_arguments()
 
-    # Восстанавливаем оригинальные аргументы
     sys.argv = original_argv
 
     assert config.urls == ["https://www.youtube.com/watch?v=dQw4w9WgXcQ"]
-    assert config.save_dir == "test_videos"
+    assert str(config.save_dir) == "test_videos"
     assert config.quality == "720"
     assert config.max_workers == 5
     assert config.audio_only is True
 
 
-def test_config_default_values():
-    """
-    Проверяет, что значения по умолчанию устанавливаются правильно, если аргументы не переданы.
-    """
+def test_config_default_values(monkeypatch):
+    # monkeypatch Path.read_text, чтобы возвращать пустую строку
+    monkeypatch.setattr("pathlib.Path.read_text", lambda *a, **kw: "")
     original_argv = sys.argv
-    sys.argv = ["yt-dl-cli"]  # Запускаем без аргументов
-
-    config = Config()
-
+    sys.argv = ["yt-dl-cli"]
+    config = parse_arguments()
     sys.argv = original_argv
-
     assert config.urls == []
-    assert config.save_dir == "."  # Значение по умолчанию
+    assert str(config.save_dir) == "downloads"
     assert config.quality == "best"
-    assert config.max_workers == 4
+    assert config.max_workers == 2
     assert config.audio_only is False
