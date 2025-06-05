@@ -1,3 +1,37 @@
+"""
+File system utilities module for safe filename handling and file operations.
+
+This module provides utilities for checking file existence and sanitizing
+filenames to ensure compatibility across different operating systems.
+The module includes two main classes:
+
+- FileSystemChecker: Wrapper for file system operations
+- FilenameSanitizer: Utility for sanitizing strings into safe filenames
+
+The module is designed with testability in mind, providing abstractions
+that allow for easy mocking and alternative implementations.
+
+Example:
+    Basic usage of the file system utilities:
+
+    >>> from pathlib import Path
+    >>> checker = FileSystemChecker()
+    >>> sanitizer = FilenameSanitizer()
+    >>>
+    >>> # Check if a file exists
+    >>> file_path = Path("example.txt")
+    >>> if checker.exists(file_path):
+    ...     print("File exists")
+    >>>
+    >>> # Sanitize a filename
+    >>> safe_name = sanitizer.sanitize("Video: Title with <special> chars!")
+    >>> print(safe_name)  # "Video_ Title with _special_ chars!"
+
+Dependencies:
+    - pathlib: For cross-platform path handling
+    - re: For regular expression operations
+"""
+
 from pathlib import Path
 import re
 
@@ -8,17 +42,58 @@ class FileSystemChecker:
 
     This class provides an abstraction layer over file system operations,
     making the code more testable and allowing for alternative implementations.
+    It can be easily mocked or extended for different file system backends.
+
+    Attributes:
+        None
+
+    Example:
+        >>> checker = FileSystemChecker()
+        >>> file_path = Path("my_file.txt")
+        >>> if checker.exists(file_path):
+        ...     print("File found!")
+        ... else:
+        ...     print("File not found.")
     """
+
+    def __init__(self):
+        """
+        Initialize the FileSystemChecker instance.
+
+        Creates a new instance of the file system checker with default
+        configuration. No parameters are required for initialization.
+        """
 
     def exists(self, filepath: Path) -> bool:
         """
         Check if a file exists at the specified path.
 
+        This method wraps the pathlib Path.exists() method to provide
+        a consistent interface that can be easily mocked for testing
+        or replaced with alternative implementations.
+
         Args:
-            filepath (Path): Path to check for file existence
+            filepath (Path): Path object representing the file location
+                           to check for existence
 
         Returns:
-            bool: True if file exists, False otherwise
+            bool: True if the file exists at the specified path,
+                 False if the file does not exist or if there's an
+                 error accessing the path
+
+        Raises:
+            OSError: May be raised if there are permission issues
+                    accessing the file system (though this is rare
+                    for existence checks)
+
+        Example:
+            >>> from pathlib import Path
+            >>> checker = FileSystemChecker()
+            >>> file_path = Path("/home/user/document.txt")
+            >>> if checker.exists(file_path):
+            ...     print("File is available")
+            ... else:
+            ...     print("File not found")
         """
         return filepath.exists()
 
@@ -28,8 +103,37 @@ class FilenameSanitizer:
     Utility class for sanitizing filenames to ensure file system compatibility.
 
     This class handles the conversion of video titles and other strings into
-    safe filenames that work across different operating systems.
+    safe filenames that work across different operating systems including
+    Windows, macOS, and Linux. It removes invalid characters and enforces
+    length limits to prevent file system errors.
+
+    The sanitizer handles common problematic characters found in user-generated
+    content such as video titles, avoiding issues with file creation and
+    manipulation across different platforms.
+
+    Attributes:
+        None (all methods are static)
+
+    Example:
+        >>> sanitizer = FilenameSanitizer()
+        >>> title = 'My Video: "The Best" <Part 1>'
+        >>> safe_title = sanitizer.sanitize(title)
+        >>> print(safe_title)  # 'My Video_ _The Best_ _Part 1_'
     """
+
+    def __init__(self):
+        """
+        Initialize the FilenameSanitizer instance.
+
+        Creates a new instance of the filename sanitizer. While all methods
+        are static and don't require instance state, this constructor allows
+        for consistent instantiation patterns and future extensibility.
+
+        Note:
+            All sanitization methods are static, so instantiation is optional.
+            You can call FilenameSanitizer.sanitize() directly without
+            creating an instance.
+        """
 
     @staticmethod
     def sanitize(name: str, max_length: int = 100) -> str:
@@ -38,18 +142,62 @@ class FilenameSanitizer:
 
         Removes or replaces characters that are invalid in filenames on most
         operating systems, and truncates the result to a maximum length.
+        This method handles the most common problematic characters that
+        cause issues across Windows, macOS, and Linux file systems.
+
+        The following characters are replaced with underscores:
+        - < > : " / \\ | ? *
+
+        These characters are problematic because:
+        - Windows reserves them for special purposes
+        - Unix-like systems may interpret some as shell metacharacters
+        - They can cause issues in various file operations
 
         Args:
-            name (str): Original string to sanitize
+            name (str): Original string to sanitize. Can contain any
+                       Unicode characters, though non-ASCII characters
+                       may cause issues on some older file systems.
             max_length (int, optional): Maximum length of resulting filename.
-            Defaults to 100.
+                                      Defaults to 100 characters. Should be
+                                      less than the file system's limit
+                                      (typically 255 characters).
 
         Returns:
-            str: Sanitized filename safe for file system use
+            str: Sanitized filename safe for file system use. The result
+                will contain only characters that are safe across all
+                major operating systems, with a length not exceeding
+                the specified maximum.
+
+        Raises:
+            TypeError: If name is not a string or max_length is not an integer
+            ValueError: If max_length is less than 1
+
+        Example:
+            >>> # Basic sanitization
+            >>> FilenameSanitizer.sanitize('Video: "Title"')
+            'Video_ _Title_'
+
+            >>> # With custom length limit
+            >>> long_title = "Very long video title that exceeds normal limits"
+            >>> FilenameSanitizer.sanitize(long_title, max_length=20)
+            'Very long video titl'
+
+            >>> # Handling special characters
+            >>> problematic = 'File<name>with:bad/chars\\and|more?stuff*'
+            >>> FilenameSanitizer.sanitize(problematic)
+            'File_name_with_bad_chars_and_more_stuff_'
 
         Note:
-            Invalid characters (<>:"/\\|?*) are replaced with underscores,
-            and the result is trimmed of leading/trailing whitespace.
+            - Invalid characters are replaced with underscores, not removed
+            - Leading and trailing whitespace is stripped from the result
+            - The method preserves the original string's case
+            - Empty strings or strings with only invalid characters will
+              result in a string of underscores
         """
+        if not isinstance(name, str):
+            raise TypeError("Name must be a string")
+        if not isinstance(max_length, int) or max_length < 1:
+            raise ValueError("max_length must be a positive integer")
+
         safe = re.sub(r'[<>:"/\\|?*]', "_", name)
         return safe[:max_length].strip()

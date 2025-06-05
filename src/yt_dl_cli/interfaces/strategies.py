@@ -1,3 +1,60 @@
+"""
+Format strategy implementations for media download configuration.
+
+This module implements the Strategy design pattern to provide flexible format
+selection for media downloads. It abstracts the complexity of format specification
+into discrete strategy classes, allowing for easy extension and testing of
+different download configurations.
+
+The module provides strategies for both video and audio-only downloads, with
+configurable quality settings and format preferences optimized for compatibility
+and user experience. The factory function enables clean separation between
+configuration parsing and strategy instantiation.
+
+Classes:
+    IFormatStrategy: Abstract base class defining the strategy interface
+    VideoFormatStrategy: Concrete strategy for video downloads with quality control
+    AudioFormatStrategy: Concrete strategy for audio-only downloads
+
+Functions:
+    get_strategy: Factory function for creating appropriate strategy instances
+
+Design Patterns:
+    - Strategy Pattern: Encapsulates format selection algorithms
+    - Factory Pattern: Provides centralized strategy instantiation
+    - Abstract Base Class: Ensures consistent interface across strategies
+
+Example:
+    Basic usage with different configurations:
+
+    >>> from format_strategies import get_strategy
+    >>>
+    >>> # Audio download configuration
+    >>> class AudioConfig:
+    ...     audio_only = True
+    ...     quality = "best"
+    >>>
+    >>> audio_strategy = get_strategy(AudioConfig())
+    >>> audio_opts = audio_strategy.get_opts()
+    >>> print(audio_opts)
+    {'format': 'bestaudio/best', 'extractaudio': True, 'audioformat': 'mp3'}
+
+    >>> # High-quality video configuration
+    >>> class VideoConfig:
+    ...     audio_only = False
+    ...     quality = "1080"
+    >>>
+    >>> video_strategy = get_strategy(VideoConfig())
+    >>> video_opts = video_strategy.get_opts()
+    >>> print(video_opts)
+    {'format': 'best[height<=1080][ext=mp4]', 'merge_output_format': 'mp4'}
+
+Note:
+    The strategies are designed to work with yt-dlp library format specifications,
+    but the pattern can be adapted for other download libraries by modifying
+    the option dictionaries returned by get_opts() methods.
+"""
+
 from abc import ABC, abstractmethod
 from typing import Dict, Any
 
@@ -10,6 +67,7 @@ class IFormatStrategy(ABC):
     implements specific logic for choosing appropriate download formats
     and options.
     """
+
     @abstractmethod
     def get_opts(self) -> Dict[str, Any]:
         """Get download options dictionary for the specific format strategy.
@@ -37,6 +95,7 @@ class VideoFormatStrategy(IFormatStrategy):
             - "worst": Downloads lowest quality video
             - Numeric string (e.g., "720"): Downloads best video up to specified height
     """
+
     def __init__(self, quality: str):
         """Initialize the video format strategy with a quality setting.
 
@@ -85,6 +144,7 @@ class AudioFormatStrategy(IFormatStrategy):
     providing a consistent audio-only download experience regardless
     of the source video format.
     """
+
     def get_opts(self) -> Dict[str, Any]:
         """Generate audio-only download options.
 

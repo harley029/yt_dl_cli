@@ -1,7 +1,10 @@
-# -------------------- Video Information Extractor --------------------
+# pylint: disable=too-many-instance-attributes, too-many-arguments, too-many-positional-arguments
+# pylint: disable=broad-exception-caught
+
+
 from typing import Any, Dict
 
-import yt_dlp  # type: ignore[import-not-found]
+import yt_dlp  # type: ignore
 
 from yt_dl_cli.i18n.messages import Messages
 from yt_dl_cli.interfaces.interfaces import IFileChecker, ILogger, IStatsCollector
@@ -52,6 +55,12 @@ class VideoInfoExtractor:
                 if info is None:
                     raise yt_dlp.DownloadError(Messages.Extractor.ERROR_NO_INFO())
                 return info
+        except yt_dlp.DownloadError as e:
+            self.logger.error(Messages.Extractor.ERROR_EXTRACT(url=url, error=e))
+            return None
+        except yt_dlp.utils.ExtractorError as e:
+            self.logger.error(Messages.Extractor.ERROR_EXTRACT(url=url, error=e))
+            return None
         except Exception as e:
             self.logger.error(Messages.Extractor.ERROR_EXTRACT(url=url, error=e))
             return None
@@ -96,6 +105,9 @@ class DownloadExecutor:
             with yt_dlp.YoutubeDL(opts) as ydl:
                 ydl.download([url])
                 return True
+        except yt_dlp.DownloadError as e:
+            self.logger.error(Messages.Executor.ERROR_DOWNLOAD(url=url, error=e))
+            return False
         except Exception as e:
             self.logger.error(Messages.Executor.ERROR_DOWNLOAD(url=url, error=e))
             return False

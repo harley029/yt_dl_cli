@@ -41,6 +41,7 @@ License: MIT
 
 import asyncio
 import logging
+import traceback
 from typing import Optional
 
 from yt_dl_cli.config.config import Config
@@ -51,7 +52,7 @@ from yt_dl_cli.utils.parser import parse_arguments
 # -------------------- Internationalization --------------------
 from yt_dl_cli.i18n.init import setup_i18n
 setup_i18n()  # noqa: E402
-from yt_dl_cli.i18n.messages import Messages
+from yt_dl_cli.i18n.messages import Messages  # noqa: E402
 
 
 class VideoDownloader:
@@ -268,11 +269,13 @@ class VideoDownloader:
                 asyncio.run(orchestrator.run())
         except KeyboardInterrupt:
             core.logger.warning(Messages.CLI.USER_INTERRUPT())
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             core.logger.critical(Messages.CLI.CRITICAL_ERROR(error=e))
+            core.logger.critical(traceback.format_exc())
+            import sys
+            sys.exit(1)
 
 
 if __name__ == "__main__":
     downloader = VideoDownloader()
     downloader.download()
-

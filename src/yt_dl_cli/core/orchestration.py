@@ -1,4 +1,3 @@
-# -------------------- Async Orchestrator --------------------
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import logging
