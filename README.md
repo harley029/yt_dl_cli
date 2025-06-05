@@ -121,7 +121,7 @@ The module supports multiple usage scenarios:
 
 The package requires **Python 3.8** or newer.
 
-The project is actively developed and tested on Python **3.12**, so using this version is recommended for maximum stability. 
+The project is actively developed and tested on Python **3.12**, so using this version is recommended for maximum stability.
 Install from PyPI:
 
 ```bash
