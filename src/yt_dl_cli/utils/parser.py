@@ -227,6 +227,11 @@ def parse_arguments() -> Config:
                 Messages.CLI.FILE_READ_ERROR(file=args.file, error=f"Value error: {e}"),
                 file=sys.stderr,
             )
+        except Exception as e:
+            print(
+                Messages.CLI.FILE_READ_ERROR(file=args.file, error=e),
+                file=sys.stderr,
+            )
 
     # Clean and filter the URL list
     # Remove empty lines, comments, and strip whitespace

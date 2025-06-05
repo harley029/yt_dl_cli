@@ -32,6 +32,7 @@ Note:
 
 import locale
 import gettext
+import os
 from pathlib import Path
 from typing import Optional
 
@@ -72,9 +73,21 @@ def get_system_lang() -> str:
         The function truncates longer locale strings to just the language code.
         For example, "en_US.UTF-8" becomes "en", "de_DE" becomes "de".
     """
+    # Try environment variables first (most reliable for i18n!)
+    for var in ("LANGUAGE", "LC_ALL", "LC_MESSAGES", "LANG"):
+        lang = os.environ.get(var)
+        if lang:
+            # Extract first two letters (ISO 639-1), e.g. "de_DE.UTF-8" → "de"
+            lang_code = lang.split("_")[0].split("-")[0].lower()
+            if lang_code in ("en", "de", "uk", "ru"):
+                return lang_code
+
+    # Fallback to locale
     lang, _ = locale.getlocale()
     if lang:
-        return lang[:2]
+        lang_code = lang[:2].lower()
+        if lang_code in ("en", "de", "uk", "ru"):
+            return lang_code
     return "en"
 
 
