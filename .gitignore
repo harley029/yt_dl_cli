@@ -3,8 +3,6 @@ __pycache__/
 downloads/
 build/
 yt_dl_cli.egg-info/
-Pipfile
-Pipfile.lock
 *.py[cod]
 *$py.class
 .vscode/
@@ -12,9 +10,11 @@ Pipfile.lock
 .venv/
 *.crt
 readme.txt
-links.txt
 .pylintrc
 .mypy_cache/
 .pytest_cache/
 video_downloader.py
 test.py
+links.txt
+Pipfile
+Pipfile.lock

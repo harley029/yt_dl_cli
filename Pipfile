@@ -4,12 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-yt-dlp = "2025.5.22"
-flake8 = "7.2.0"
-pylint = "3.3.7"
-mypy = "1.16.0"
-colorama = "0.4.6"
-types-colorama = "0.4.15.20240311"
+pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+yt-dlp = "*"
+colorama = "*"
+types-colorama = "*"
+flake8 = "*"
+pylint = "*"
+mypy = "*"
+yt-dl-cli = {file = "."}
 
 [dev-packages]
 

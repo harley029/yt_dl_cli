@@ -32,7 +32,6 @@ def test_config_parsing_from_args(monkeypatch):
 
 
 def test_config_default_values(monkeypatch):
-    # monkeypatch Path.read_text, чтобы возвращать пустую строку
     monkeypatch.setattr("pathlib.Path.read_text", lambda *a, **kw: "")
     original_argv = sys.argv
     sys.argv = ["yt-dl-cli"]
