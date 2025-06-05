@@ -10,6 +10,8 @@ yt_dl_cli.egg-info/
 .venv/
 *.crt
 readme.txt
+links.txt
+.pylintrc
 .mypy_cache/
 .pytest_cache/
 video_downloader.py
