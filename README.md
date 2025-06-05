@@ -102,11 +102,6 @@ The module supports multiple usage scenarios:
    * Aggregate and track statistics across operations.
    * Graceful handling of individual download failures.
 
-3. **Integration with Async Systems**:
-   * Compatible with `asyncio` event loops.
-   * Non-blocking, efficient operations.
-   * Proper resource cleanup in asynchronous contexts.
-
 ### Security Considerations
 
 * Robust input validation for URLs and file paths.
