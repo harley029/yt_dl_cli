@@ -11,12 +11,12 @@
 
 ## Features
 
-* Download videos from YouTube and numerous other supported sites.
+* Download videos from YouTube, Vimeo, Dailymotion, and other platforms supported by [yt-dlp](https://github.com/yt-dlp/yt-dlp#supported-sites).
 * Internationalized messages in English, German, Ukrainian, and Russian.
-* Rich terminal output with colored messages.
 * Flexible command-line interface with customizable configuration.
 * Robust error handling and comprehensive logging.
 * Supports concurrent downloads to improve performance.
+* Easy use for development.
 
 ## Installation
 
@@ -36,12 +36,14 @@ yt-dl-cli --urls https://www.youtube.com/watch?v=dQw4w9WgXcQ --quality 720 --dir
 
 ### Available CLI Options
 
-* `-f`, `--file`: Specify a file containing URLs (one per line).
-* `-d`, `--dir`: Directory to save downloaded files.
-* `-w`, `--workers`: Number of concurrent download workers (default: 2).
-* `-q`, `--quality`: Video quality preference (`best`, `worst`, `720`, `480`, `360`).
-* `-a`, `--audio-only`: Download audio only.
-* `--urls`: Provide URLs directly via command line.
+| Option               | Description                              | Example Value          |
+|----------------------|------------------------------------------|------------------------|
+| `-f`, `--file`       | File containing URLs (one per line)      | `links.txt`            |
+| `-d`, `--dir`        | Directory to save downloaded files       | `my_videos`            |
+| `-w`, `--workers`    | Number of concurrent download workers    | `4`                    |
+| `-q`, `--quality`    | Video quality preference                 | `best`, `720`, `480`   |
+| `-a`, `--audio-only` | Download audio only                      | (flag)                 |
+| `--urls`             | URLs provided directly via CLI           | `<YouTube URL>`        |
 
 Example:
 
@@ -58,7 +60,7 @@ You can integrate **yt-dl-cli** directly into your Python scripts or application
 ```python
 from yt_dl_cli.main import VideoDownloader
 
-# Initialize downloader with default settings
+# Initialize downloader with default settings (links are in links.txt)
 downloader = VideoDownloader()
 downloader.download()
 ```
@@ -79,18 +81,14 @@ config = Config(
     urls=["https://www.youtube.com/watch?v=dQw4w9WgXcQ"]
 )
 
-# Custom logger setup (optional)
-logger = logging.getLogger("custom_logger")
-logging.basicConfig(level=logging.INFO)
-
 # Initialize downloader with custom settings
-downloader = VideoDownloader(config=config, logger=logger)
+downloader = VideoDownloader(config=config)
 downloader.download()
 ```
 
 ## Internationalization
 
-The tool automatically detects your system locale, but you can explicitly set the language:
+The tool automatically detects your system locale, but you can explicitly set the language from **English**, **German**, **Ukrainian**, **Russian**:
 
 ```bash
 export LANGUAGE=de  # German language
@@ -99,8 +97,15 @@ export LANGUAGE=de  # German language
 or in Python:
 
 ```python
+from yt_dl_cli.main import VideoDownloader
 from yt_dl_cli.i18n.init import setup_i18n
-setup_i18n(language="uk")  # Ukrainian language
+
+# Set up Ukrainian language
+setup_i18n(language="uk")
+
+# Initialize downloader and call download method
+downloader = VideoDownloader()
+downloader.download()
 ```
 
 ## Project Structure
