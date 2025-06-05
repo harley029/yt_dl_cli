@@ -37,6 +37,8 @@ jobs:
           name: ${{ github.ref_name }}
           body: |
             Автоматический релиз для тега ${{ github.ref_name }}
+          draft: false
+          prerelease: false
           files: |
             dist/yt_dl_cli-${{ steps.get_version.outputs.version }}.tar.gz
             dist/yt_dl_cli-${{ steps.get_version.outputs.version }}-py3-none-any.whl
