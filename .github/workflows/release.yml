@@ -26,6 +26,10 @@ jobs:
         run: |
           python -m pip install --upgrade build
           python -m build
+    
+      - name: Extract version without v
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         id: create_release
@@ -46,20 +50,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/yt_dl_cli-${{ github.ref_name }}.tar.gz
-          asset_name: yt_dl_cli-${{ github.ref_name }}.tar.gz
+          asset_path: dist/yt_dl_cli-${{ env.VERSION }}.tar.gz
+          asset_name: yt_dl_cli-${{ env.VERSION }}.tar.gz
           asset_content_type: application/gzip
-
+  
       - name: Upload wheel (.whl)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/yt_dl_cli-${{ github.ref_name }}-py3-none-any.whl
-          asset_name: yt_dl_cli-${{ github.ref_name }}-py3-none-any.whl
+          asset_path: dist/yt_dl_cli-${{ env.VERSION }}-py3-none-any.whl
+          asset_name: yt_dl_cli-${{ env.VERSION }}-py3-none-any.whl
           asset_content_type: application/zip
-
+  
       - name: Create source zip
         run: |
           cd src
