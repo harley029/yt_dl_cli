@@ -2,7 +2,7 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=harley029_yt_dl_cli\&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=harley029_yt_dl_cli)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/d93d2765d003461683d7390a05c78beb)](https://app.codacy.com/gh/harley029/yt_dl_cli/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3110/)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![GitHub release](https://img.shields.io/github/v/release/harley029/yt_dl_cli)
 ![Repo Size](https://img.shields.io/github/repo-size/harley029/yt_dl_cli)
@@ -20,11 +20,19 @@
 
 ## Installation
 
+The package requires **Python 3.8** or newer.
+
+The project is actively developed and tested on Python **3.12**, so using this version is recommended for maximum stability. 
 Install from PyPI:
 
 ```bash
 pip install yt_dl_cli
 ```
+
+## Dependencies
+
+* **yt-dlp** – Core library for downloading videos.
+* **colorama** – Terminal text styling and coloring.
 
 ## Usage
 
@@ -53,7 +61,7 @@ yt-dl-cli -f links.txt -d my_videos -w 4 -q best
 
 ## Usage in Python Projects
 
-You can integrate **yt-dl-cli** directly into your Python scripts or applications:
+You can integrate **yt-dl-cli** directly into your Python scripts or applications
 
 ### Basic Usage
 
