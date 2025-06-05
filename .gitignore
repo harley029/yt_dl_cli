@@ -16,3 +16,5 @@ links.txt
 .pytest_cache/
 video_downloader.py
 test.py
+Pipfile
+Pipfile.lock

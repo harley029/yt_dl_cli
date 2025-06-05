@@ -1,3 +1,34 @@
+"""
+Asynchronous Download Orchestration Module
+
+This module provides the main orchestration layer for managing concurrent video downloads.
+It contains the AsyncOrchestrator class for coordinating multiple downloads and the
+DIContainer class for dependency injection and component creation.
+
+The module implements asynchronous processing using asyncio and ThreadPoolExecutor
+to efficiently handle multiple downloads while respecting concurrency limits and
+providing comprehensive statistics reporting.
+
+Classes:
+    AsyncOrchestrator: Main orchestrator for managing concurrent downloads
+    DIContainer: Dependency injection container for component creation
+
+Key Features:
+    - Asynchronous download coordination with configurable concurrency
+    - Thread-based execution to avoid blocking the event loop
+    - Comprehensive timing and statistics reporting
+    - Dependency injection pattern for clean component composition
+    - Proper resource management with context managers
+
+Dependencies:
+    - asyncio: For asynchronous execution and event loop management
+    - concurrent.futures: For thread pool execution
+    - logging: For logger type hints and configuration
+    - time: For performance timing measurements
+    - typing: For type hints and annotations
+    - Various yt_dl_cli modules: For core functionality and configuration
+"""
+
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import logging
@@ -19,16 +50,50 @@ class AsyncOrchestrator:
 
     This class handles the coordination of multiple concurrent downloads using
     asyncio and ThreadPoolExecutor, providing efficient parallel processing
-    while respecting the configured worker limits.
+    while respecting the configured worker limits. It serves as the main
+    orchestration layer for the download application.
+
+    The orchestrator manages the entire download lifecycle from initialization
+    through completion, including timing measurements and final reporting.
+
+    Attributes:
+        core (DownloaderCore): The core downloader instance used for each download
+        config (Config): Configuration containing URLs and concurrency settings
+
+    Example:
+        >>> import asyncio
+        >>> from yt_dl_cli.config.config import Config
+        >>> from pathlib import Path
+        >>>
+        >>> config = Config(
+        ...     save_dir=Path("/downloads"),
+        ...     max_workers=4,
+        ...     quality="720",
+        ...     audio_only=False,
+        ...     urls=["https://example.com/video1", "https://example.com/video2"]
+        ... )
+        >>> core = DIContainer.create_downloader_core(config)
+        >>> orchestrator = AsyncOrchestrator(core, config)
+        >>> asyncio.run(orchestrator.run())
     """
 
-    def __init__(self, core: DownloaderCore, config: Config):
+    def __init__(self, core: DownloaderCore, config: Config) -> None:
         """
         Initialize the async orchestrator with core downloader and configuration.
 
+        Sets up the orchestrator with the necessary components for managing
+        concurrent downloads. The core downloader and configuration are stored
+        as instance attributes for use during execution.
+
         Args:
-            core (DownloaderCore): The core downloader instance to use for each download
-            config (Config): Configuration containing URLs and concurrency settings
+            core (DownloaderCore): The core downloader instance to use for each download.
+                                 Must be fully configured with all dependencies.
+            config (Config): Configuration containing URLs and concurrency settings.
+                           Must include valid URLs list and max_workers setting.
+
+        Example:
+            >>> core = DIContainer.create_downloader_core(config)
+            >>> orchestrator = AsyncOrchestrator(core, config)
         """
         self.core = core
         self.config = config
@@ -37,19 +102,33 @@ class AsyncOrchestrator:
         """
         Execute all configured downloads asynchronously with timing and reporting.
 
-        This method:
+        This method orchestrates the complete download process:
         1. Validates that there are URLs to download
-        2. Creates a thread pool with the configured number of workers
-        3. Submits all download tasks to the thread pool
-        4. Waits for all downloads to complete
-        5. Generates and logs a final statistics report
+        2. Logs the start of operations with worker and URL counts
+        3. Creates a thread pool with the configured number of workers
+        4. Submits all download tasks to the thread pool using run_in_executor
+        5. Waits for all downloads to complete using asyncio.gather
+        6. Measures total elapsed time and generates final statistics report
 
         The method uses asyncio.gather() to wait for all downloads to complete,
         ensuring that statistics are only reported after all work is done.
+        Downloads run in threads to avoid blocking the asyncio event loop,
+        since yt-dlp operations are CPU and I/O intensive.
+
+        Raises:
+            Exception: Any exception from individual downloads will be propagated
+                      after other downloads complete (due to asyncio.gather behavior).
 
         Note:
-            Downloads run in threads to avoid blocking the asyncio event loop,
-            since yt-dlp operations are CPU and I/O intensive.
+            If no URLs are configured, the method logs a warning and returns early
+            without performing any downloads.
+
+        Example:
+            >>> orchestrator = AsyncOrchestrator(core, config)
+            >>> await orchestrator.run()
+            # Logs: "Starting download of 5 URLs with 4 workers"
+            # ... downloads execute concurrently ...
+            # Logs: Final statistics report with timing information
         """
         if not self.config.urls:
             self.core.logger.warning(Messages.Orchestrator.NO_URLS())
@@ -78,9 +157,21 @@ class DIContainer:
     """
     Dependency injection container for creating fully configured downloader instances.
 
-    This class acts as a factory and dependency injection container, creating
-    all the required components and wiring them together to produce a ready-to-use
-    downloader core with all dependencies properly injected.
+    This class acts as a factory and dependency injection container, implementing
+    the composition root pattern. It creates all the required components and wires
+    them together to produce a ready-to-use downloader core with all dependencies
+    properly injected.
+
+    The container centralizes dependency creation and management, making the system
+    more testable and maintainable by removing direct dependencies between components.
+
+    Static Methods:
+        create_downloader_core: Factory method for creating configured DownloaderCore instances
+
+    Design Pattern:
+        This class implements the Dependency Injection Container pattern and
+        Composition Root pattern, providing a single place where all object
+        composition happens.
     """
 
     @staticmethod
@@ -91,23 +182,45 @@ class DIContainer:
         Create a fully configured DownloaderCore with all dependencies injected.
 
         This factory method creates and wires together all the components needed
-        for a functioning downloader:
-        - Logger configured for the save directory
-        - Format strategy based on configuration (audio/video)
-        - Statistics manager for tracking results
-        - File system checker for existence tests
-        - Video info extractor for metadata
-        - Download executor for actual downloads
+        for a functioning downloader system. It handles the complete object graph
+        construction, ensuring all components are properly configured and connected.
+
+        Components created and wired:
+        - Logger: Configured for the specified save directory
+        - Format strategy: Selected based on audio_only configuration
+        - Statistics manager: For tracking download results
+        - File system checker: For file existence validation
+        - Video info extractor: For metadata retrieval
+        - Download executor: For actual download operations
+        - DownloaderCore: Main coordinator with all dependencies injected
 
         Args:
-            config (Config): Application configuration to use for component setup
+            config (Config): Application configuration to use for component setup.
+                           Must contain valid save_dir, quality, audio_only settings.
+            logger (Optional[logging.Logger], optional): Custom logger instance.
+                                                       If None, creates a new logger
+                                                       using LoggerFactory. Defaults to None.
 
         Returns:
             DownloaderCore: Fully configured and ready-to-use downloader instance
+                          with all dependencies properly injected and initialized.
+
+        Example:
+            >>> from pathlib import Path
+            >>> config = Config(
+            ...     save_dir=Path("/downloads"),
+            ...     max_workers=4,
+            ...     quality="720",
+            ...     audio_only=False
+            ... )
+            >>> core = DIContainer.create_downloader_core(config)
+            >>> # core is now ready to use with all dependencies configured
 
         Note:
             This method implements the composition root pattern, centralizing
-            all dependency creation and injection in one place.
+            all dependency creation and injection in one place. This makes the
+            system more testable and maintainable by providing a single point
+            of object graph construction.
         """
         logger = logger or LoggerFactory.get_logger(config.save_dir)
         strategy = get_strategy(config)
