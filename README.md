@@ -18,6 +18,110 @@
 * Supports concurrent downloads to improve performance.
 * Easy use for development.
 
+## Architecture and Design
+
+The video downloader is built around the principle of single responsibility, with each class handling a specific aspect of the download process. This design promotes testability, maintainability, and allows for easy extension and modification of individual components.
+
+### Architecture Overview
+
+The module implements a layered architecture with clear separation between:
+
+1. **Information Layer** (`VideoInfoExtractor`):
+   * Extracts video metadata without downloading content.
+   * Validates video availability and accessibility.
+   * Retrieves video information for processing decisions.
+
+2. **Execution Layer** (`DownloadExecutor`):
+   * Handles actual download operations.
+   * Manages interactions and configurations with `yt-dlp`.
+   * Provides robust error handling for download failures.
+
+3. **Orchestration Layer** (`DownloaderCore`):
+   * Coordinates the complete download workflow.
+   * Integrates all components and manages dependencies.
+   * Ensures proper resource lifecycle management and cleanup.
+   * Manages file system operations and maintains download statistics.
+
+### Key Components
+
+* `VideoInfoExtractor`: Metadata extraction and validation.
+* `DownloadExecutor`: Core download execution engine.
+* `DownloaderCore`: Main orchestrator and workflow manager.
+
+### Design Patterns
+
+The architecture utilizes several well-known design patterns:
+
+* **Strategy Pattern**: Format selection through `IFormatStrategy` interface.
+* **Dependency Injection**: All dependencies injected through constructor parameters.
+* **Context Manager**: Resource management implemented using `__enter__` and `__exit__` methods.
+* **Facade Pattern**: `DownloaderCore` provides a simplified interface to complex operations.
+* **Template Method**: Standardized download workflow with extensible, customizable steps.
+
+### Error Handling Philosophy
+
+The module emphasizes defensive programming practices:
+
+* External API calls wrapped in try-catch blocks.
+* Errors logged comprehensively without crashing the application.
+* Graceful handling and logging of individual download failures.
+* Resource cleanup guaranteed through context managers.
+* Detailed error messages for easy troubleshooting and debugging.
+
+### Performance Considerations
+
+* Efficient metadata extraction without unnecessary downloads.
+* File existence checking to avoid redundant operations.
+* Resource pooling and cleanup to prevent memory leaks.
+* Asynchronous design for concurrent operations.
+* Minimal I/O operations through intelligent caching strategies.
+
+### Integration Points
+
+The module integrates smoothly with several external systems:
+
+* **yt-dlp**: Core download engine and interface to video platforms.
+* **File System**: Abstracted through `IFileChecker` interface.
+* **Logging**: Managed through `ILogger` interface for monitoring and debugging.
+* **Statistics**: Download progress tracking via `IStatsCollector`.
+* **Configuration**: User preferences and settings via `Config` class.
+* **Internationalization (i18n)**: Localized user feedback through `Messages`.
+
+### Usage Patterns
+
+The module supports multiple usage scenarios:
+
+1. **Single Download Operations**:
+   * Extract video information.
+   * Check file existence.
+   * Execute download if necessary.
+   * Update statistics and logs.
+
+2. **Batch Download Operations**:
+   * Concurrent processing of multiple URLs.
+   * Aggregate and track statistics across operations.
+   * Graceful handling of individual download failures.
+
+3. **Integration with Async Systems**:
+   * Compatible with `asyncio` event loops.
+   * Non-blocking, efficient operations.
+   * Proper resource cleanup in asynchronous contexts.
+
+### Security Considerations
+
+* Robust input validation for URLs and file paths.
+* Safe filename sanitization to prevent directory traversal attacks.
+* Secure handling of temporary files and downloaded content.
+* Validation and sanitization of video metadata.
+* Protection mechanisms against malicious URLs and potentially harmful content.
+
+### Thread Safety
+
+* `VideoInfoExtractor`: Thread-safe; each instance creates isolated yt-dlp sessions.
+* `DownloadExecutor`: Thread-safe; each operation is isolated.
+* `DownloaderCore`: Not thread-safe; designed to operate within single-thread contexts.
+* Resource Management: Requires careful handling and coordination in multi-threaded environments.
+
 ## Installation
 
 The package requires **Python 3.8** or newer.
