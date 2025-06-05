@@ -5,6 +5,9 @@ on:
     tags:
       - '*'        # Любой тег: v1.0.0, v2.1, release-42 и т.д.
 
+permissions:
+  contents: write
+  
 jobs:
   build-release:
     runs-on: ubuntu-latest
