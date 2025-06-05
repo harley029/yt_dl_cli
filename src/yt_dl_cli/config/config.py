@@ -1,7 +1,7 @@
 """
 Configuration Management Module
 
-This module provides configuration management functionality for the YouTube downloader CLI application.
+This module provides configuration management functionality for the video downloader application.
 It defines the Config dataclass that holds all application settings including download paths,
 quality preferences, concurrency controls, and validation logic.
 
