@@ -3,11 +3,11 @@ name: Release on Tag
 on:
   push:
     tags:
-      - '*'        # Любой тег: v1.0.0, v2.1, release-42 и т.д.
+      - '*'
 
 permissions:
   contents: write
-  
+
 jobs:
   build-release:
     runs-on: ubuntu-latest
@@ -21,60 +21,31 @@ jobs:
         with:
           python-version: '3.11'
 
-      # Собираем wheel и sdist
       - name: Build package
         run: |
           python -m pip install --upgrade build
           python -m build
-    
-      - name: Extract version without v
-        id: version
-        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract version
+        id: get_version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release & Upload Artifacts
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          release_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           body: |
             Автоматический релиз для тега ${{ github.ref_name }}
-          draft: false
-          prerelease: false
+          files: |
+            dist/yt_dl_cli-${{ steps.get_version.outputs.version }}.tar.gz
+            dist/yt_dl_cli-${{ steps.get_version.outputs.version }}-py3-none-any.whl
+            src/yt_dl_cli.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload sdist (.tar.gz)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/yt_dl_cli-${{ env.VERSION }}.tar.gz
-          asset_name: yt_dl_cli-${{ env.VERSION }}.tar.gz
-          asset_content_type: application/gzip
-  
-      - name: Upload wheel (.whl)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/yt_dl_cli-${{ env.VERSION }}-py3-none-any.whl
-          asset_name: yt_dl_cli-${{ env.VERSION }}-py3-none-any.whl
-          asset_content_type: application/zip
-  
       - name: Create source zip
         run: |
           cd src
           zip -r yt_dl_cli.zip yt_dl_cli
-
-      - name: Upload source zip
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: src/yt_dl_cli.zip
-          asset_name: yt_dl_cli.zip
-          asset_content_type: application/zip
+          mv yt_dl_cli.zip ../
