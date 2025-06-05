@@ -2,6 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
 
+from yt_dl_cli.config.config import Config
 from yt_dl_cli.utils.parser import parse_arguments
 
 
@@ -37,3 +38,10 @@ def test_config_default_values(monkeypatch):
     assert config.quality == "best"
     assert config.max_workers == 2
     assert config.audio_only is False
+
+
+def test_config_invalid_workers():
+    try:
+        Config(save_dir="d", max_workers=0, quality="best", audio_only=False, urls=[]) # type: ignore
+    except ValueError as e:
+        assert "must be at least 1" in str(e)
