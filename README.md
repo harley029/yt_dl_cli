@@ -9,10 +9,10 @@
 
 ## Features
 
-- Download videos from YouTube and many other sites
-- Internationalized messages (English, German, Ukrainian, Russian)
-- Rich terminal output
-- CLI with custom configuration options
+  - Download videos from YouTube and many other sites
+  - Internationalized messages (English, German, Ukrainian, Russian)
+  - Rich terminal output
+  - CLI with custom configuration options
 
 ## Installation
 
