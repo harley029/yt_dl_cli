@@ -1,5 +1,7 @@
 import sys
-from yt_dl_cli.config.config import Config
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
+
 from yt_dl_cli.utils.parser import parse_arguments
 
 
@@ -16,13 +18,8 @@ def test_config_parsing_from_args(monkeypatch):
         "5",
         "--audio-only",
     ]
-    original_argv = sys.argv
     sys.argv = test_args
-
-    from yt_dl_cli.utils.parser import parse_arguments
     config = parse_arguments()
-
-    sys.argv = original_argv
 
     assert config.urls == ["https://www.youtube.com/watch?v=dQw4w9WgXcQ"]
     assert str(config.save_dir) == "test_videos"
@@ -33,10 +30,8 @@ def test_config_parsing_from_args(monkeypatch):
 
 def test_config_default_values(monkeypatch):
     monkeypatch.setattr("pathlib.Path.read_text", lambda *a, **kw: "")
-    original_argv = sys.argv
     sys.argv = ["yt-dl-cli"]
     config = parse_arguments()
-    sys.argv = original_argv
     assert config.urls == []
     assert str(config.save_dir) == "downloads"
     assert config.quality == "best"

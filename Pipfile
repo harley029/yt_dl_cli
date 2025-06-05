@@ -13,7 +13,6 @@ types-colorama = "*"
 flake8 = "*"
 pylint = "*"
 mypy = "*"
-yt-dl-cli = {file = "."}
 
 [dev-packages]
 

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c522e1fbec04917efed475734b646955f7c178546c7d38fa465a73fe80f05c73"
+            "sha256": "773afe10c44d165032aa916cc61340003bbc9b07a3a40ffe5610927a901b6ead"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -313,9 +313,6 @@
             ],
             "markers": "python_version >= '3.9'",
             "version": "==4.14.0"
-        },
-        "yt-dl-cli": {
-            "file": "."
         },
         "yt-dlp": {
             "hashes": [
