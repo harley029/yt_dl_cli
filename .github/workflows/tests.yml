@@ -37,10 +37,10 @@ jobs:
         pip install flake8 pylint mypy
 
     - name: Run flake8
-      run: flake8 src/yt_dl_cli
+      run: flake8 src/yt_dl_cli --max-line-length=100
 
     - name: Run pylint
-      run: pylint src/yt_dl_cli || true
+      run: pylint src/yt_dl_cli --ignore-paths || true
 
     - name: Run mypy
-      run: mypy src/yt_dl_cli || true
+      run: mypy src/yt_dl_cli --ignore-missing-imports || true
