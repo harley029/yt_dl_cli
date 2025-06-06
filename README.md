@@ -8,7 +8,7 @@
 ![GitHub release](https://img.shields.io/github/v/release/harley029/yt_dl_cli)
 ![Repo Size](https://img.shields.io/github/repo-size/harley029/yt_dl_cli)
 [![PyPI version](https://img.shields.io/pypi/v/yt_dl_cli.svg)](https://pypi.org/project/yt_dl_cli/)
-[![PyPI downloads](https://img.shields.io/pypi/dm/yt_dl_cli)](https://pypi.org/project/yt_dl_cli/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/yt_dl_cli)](https://pypi.org/project/yt-dl-cli/)
 [![Build Status](https://github.com/harley029/yt_dl_cli/actions/workflows/tests.yml/badge.svg)](https://github.com/harley029/yt_dl_cli/actions)
 [![Pylint](https://img.shields.io/badge/lint-pylint-brightgreen)](https://github.com/harley029/yt_dl_cli/actions/workflows/tests.yml)
 [![Flake8](https://img.shields.io/badge/lint-flake8-blue)](https://github.com/harley029/yt_dl_cli/actions/workflows/tests.yml)
