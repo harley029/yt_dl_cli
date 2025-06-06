@@ -98,9 +98,15 @@ class FileSystemChecker:
         return filepath.exists()
 
     def is_dir(self, path):
+        """
+        Check if an Path oject is a folder.
+        """
         return Path(path).is_dir()
 
     def ensure_dir(self, path):
+        """
+        Create a requested folder.
+        """
         Path(path).mkdir(parents=True, exist_ok=True)
 
 

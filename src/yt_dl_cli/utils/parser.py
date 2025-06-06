@@ -227,7 +227,7 @@ def parse_arguments() -> Config:
                 Messages.CLI.FILE_READ_ERROR(file=args.file, error=f"Value error: {e}"),
                 file=sys.stderr,
             )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=W0718
             print(
                 Messages.CLI.FILE_READ_ERROR(file=args.file, error=e),
                 file=sys.stderr,
