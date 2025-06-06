@@ -159,7 +159,42 @@ Example:
 yt-dl-cli -f links.txt -d my_videos -w 4 -q best
 ```
 
-## Usage in Python Projects
+## Testing & Code Coverage
+
+Automated tests and code coverage are set up to ensure yt-dl-cli is stable and reliable.
+All main modules are covered by unit tests.
+
+### Run Tests Locally
+
+Run the test suite using [pytest](https://docs.pytest.org):
+
+```bash
+pytest tests/ -v
+```
+
+Or with coverage report:
+
+```bash
+pytest --cov=yt_dl_cli --cov-report=html
+```
+
+After running with coverage, an HTML report will be generated in the htmlcov/ folder.
+
+### View Coverage Locally
+
+Open the generated report with:
+
+```bash
+python -m webbrowser htmlcov/index.html
+```
+
+### Continuous Integration
+
+* All tests are automatically run on each push and pull request to the main branch.
+* Coverage results are uploaded to [odecov](https://app.codecov.io/gh/harley029/yt_dl_cli) for tracking and reporting.
+* You can check the current coverage status using the badge at the top of this [README](https://github.com/harley029/yt_dl_cli/blob/main/README.md).
+
+## Usage as a Python module/API usuge
 
 You can integrate **yt-dl-cli** directly into your Python scripts or applications
 
