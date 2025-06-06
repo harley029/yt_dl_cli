@@ -23,3 +23,4 @@ Pipfile.lock
 .pylintrc
 pytest.ini
 test_dir/
+dist/
