@@ -19,3 +19,6 @@ links.txt
 Pipfile
 Pipfile.lock
 .coverage
+.coveragerc
+pytest.ini
+test_dir/
