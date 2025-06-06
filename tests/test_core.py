@@ -1,5 +1,6 @@
 from pathlib import Path
-import sys, os
+import sys
+import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
 import pytest
@@ -102,7 +103,7 @@ def make_executor(monkeypatch, error_type):
             return 0
 
     monkeypatch.setattr(core.yt_dlp, "YoutubeDL", lambda opts: DummyYDL())
-    return core.DownloadExecutor(logger), logger # type: ignore
+    return core.DownloadExecutor(logger), logger  # type: ignore
 
 
 def test_execute_download_success(monkeypatch):

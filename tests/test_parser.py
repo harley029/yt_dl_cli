@@ -1,6 +1,7 @@
 import io
 from pathlib import Path
-import sys, os
+import sys
+import os
 
 import pytest
 
@@ -31,16 +32,15 @@ def test_parse_arguments_basic(monkeypatch):
 
 
 def run_with_file_error(monkeypatch, error):
-    """Вспомогательная функция: подменяет Path.read_text чтобы выбрасывать ошибку, перехватывает stderr"""
+    """Вспомогательная функция: подменяет Path.read_text чтобы выбрасывать ошибку,
+    перехватывает stderr
+    """
     sys.argv = ["yt-dl-cli"]
     from pathlib import Path
 
     monkeypatch.setattr(
         Path, "read_text", lambda self, encoding=None: (_ for _ in ()).throw(error)
     )
-
-    # Перехватываем stderr
-    from yt_dl_cli.i18n.messages import Messages
 
     stderr = io.StringIO()
     old_stderr = sys.stderr

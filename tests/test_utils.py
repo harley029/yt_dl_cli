@@ -44,7 +44,7 @@ def test_filesystem_checker(tmp_path):
 def test_filename_sanitizer_type_error():
     # TypeError, если имя не строка
     with pytest.raises(TypeError):
-        FilenameSanitizer.sanitize(12345) # type: ignore
+        FilenameSanitizer.sanitize(12345)  # type: ignore
 
 
 def test_filename_sanitizer_value_error():

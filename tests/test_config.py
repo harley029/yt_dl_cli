@@ -44,11 +44,11 @@ def test_config_invalid_workers():
     try:
         Config(
             save_dir="d",  # type: ignore
-            max_workers=0, 
-            quality="best", 
-            audio_only=False, 
+            max_workers=0,
+            quality="best",
+            audio_only=False,
             urls=[]
-        ) # type: ignore
+        )  # type: ignore
     except ValueError as e:
         assert "max_workers must be at least 1, got 0" == str(e)
 
@@ -57,9 +57,9 @@ def test_config_quality():
     try:
         Config(
             save_dir="d",  # type: ignore
-            max_workers=2, 
-            quality="1080", 
-            audio_only=False, 
+            max_workers=2,
+            quality="1080",
+            audio_only=False,
             urls=[]
         )  # type: ignore
     except ValueError as e:

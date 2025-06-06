@@ -16,7 +16,7 @@ def test_downloader_runs_with_minimal_config(mocker):
     instance.__enter__.return_value.download.return_value = None
 
     config = Config(
-        save_dir="test_dir", # type: ignore
+        save_dir="test_dir",  # type: ignore
         max_workers=1,
         quality="best",
         audio_only=False,

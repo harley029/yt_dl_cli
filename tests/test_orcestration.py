@@ -1,4 +1,3 @@
-import pytest
 import asyncio
 
 from yt_dl_cli.core.orchestration import AsyncOrchestrator
@@ -40,7 +39,7 @@ def test_async_orchestrator_no_urls(monkeypatch):
 
     core = DummyCore()
     config = DummyConfig()
-    orchestrator = AsyncOrchestrator(core, config) # type: ignore
+    orchestrator = AsyncOrchestrator(core, config)  # type: ignore
     # Проверяем что run() возвращается сразу и вызывает warning
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)

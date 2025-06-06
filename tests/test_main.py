@@ -29,6 +29,8 @@ class DummyOrchestrator:
 
     async def run(self):
         return None
+
+
 @pytest.mark.filterwarnings("ignore:coroutine.*was never awaited")
 def test_download_keyboard_interrupt(monkeypatch):
     # Мокаем DIContainer и orchestrator
@@ -151,6 +153,7 @@ def test_main_video_downloader_download(monkeypatch):
     # Можно оставить так (настоящий asyncio.run), потому что run теперь awaitable
     downloader = main.VideoDownloader()
     downloader.download()
+
 
 @pytest.mark.filterwarnings("ignore:coroutine.*was never awaited")
 def test_main_main_function_invokes_download(monkeypatch):

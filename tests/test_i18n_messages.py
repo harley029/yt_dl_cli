@@ -1,5 +1,6 @@
 import builtins
-import sys, os
+import sys
+import os
 
 from colorama import Fore, Style
 import pytest
@@ -118,8 +119,6 @@ def test_get_system_lang(monkeypatch, envvar, value, expected):
     lang = get_system_lang()
     assert lang == expected
 
-import os
-
 
 def test_get_system_languages(monkeypatch):
 
@@ -175,12 +174,12 @@ def test_setup_i18n_fallback_to_gettext_install(monkeypatch):
 
     def fake_install(domain, *a, **k):
         called["domain"] = domain
-        builtins._ = lambda x: f"fallback:{x}" # type: ignore
+        builtins._ = lambda x: f"fallback:{x}"  # type: ignore
 
     monkeypatch.setattr("yt_dl_cli.i18n.init.gettext.install", fake_install)
 
     # 4. Запускаем setup_i18n — должен сработать fallback через gettext.install
     setup_i18n(language="en")
     assert hasattr(builtins, "_")
-    assert builtins._("hello") == "fallback:hello" # type: ignore
+    assert builtins._("hello") == "fallback:hello"  # type: ignore
     assert called["domain"] == "messages"
