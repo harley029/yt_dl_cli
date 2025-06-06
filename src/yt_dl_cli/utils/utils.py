@@ -98,8 +98,6 @@ class FileSystemChecker:
         return filepath.exists()
 
     def is_dir(self, path):
-        from pathlib import Path
-
         return Path(path).is_dir()
 
     def ensure_dir(self, path):

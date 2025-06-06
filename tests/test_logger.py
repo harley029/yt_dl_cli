@@ -1,6 +1,7 @@
-import pytest
-import logging
 from pathlib import Path
+import logging
+
+import pytest
 
 from yt_dl_cli.utils.logger import LoggerFactory
 

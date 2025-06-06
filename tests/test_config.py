@@ -6,7 +6,7 @@ from yt_dl_cli.config.config import Config
 from yt_dl_cli.utils.parser import parse_arguments
 
 
-def test_config_parsing_from_args(monkeypatch):
+def test_config_parsing_from_args():
     test_args = [
         "yt-dl-cli",
         "--urls",
@@ -42,13 +42,25 @@ def test_config_default_values(monkeypatch):
 
 def test_config_invalid_workers():
     try:
-        Config(save_dir="d", max_workers=0, quality="best", audio_only=False, urls=[]) # type: ignore
+        Config(
+            save_dir="d",  # type: ignore
+            max_workers=0, 
+            quality="best", 
+            audio_only=False, 
+            urls=[]
+        ) # type: ignore
     except ValueError as e:
         assert "max_workers must be at least 1, got 0" == str(e)
 
 
 def test_config_quality():
     try:
-        Config(save_dir="d", max_workers=2, quality="1080", audio_only=False, urls=[])  # type: ignore
+        Config(
+            save_dir="d",  # type: ignore
+            max_workers=2, 
+            quality="1080", 
+            audio_only=False, 
+            urls=[]
+        )  # type: ignore
     except ValueError as e:
         assert "quality must be one of: best, worst, 720, 480, 360, got 1080" == str(e)
