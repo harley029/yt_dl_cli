@@ -34,9 +34,7 @@ jobs:
 
     - name: Install linters
       run:
-        pip install flake8
-        pip install pylint
-        pip install mypy
+        pip install flake8 pylint mypy
 
     - name: Run flake8
       run: flake8 src/yt_dl_cli
