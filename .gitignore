@@ -20,5 +20,6 @@ Pipfile
 Pipfile.lock
 .coverage
 .coveragerc
+.pylintrc
 pytest.ini
 test_dir/
