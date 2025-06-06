@@ -31,3 +31,12 @@ jobs:
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
+
+    - name: Run flake8
+      run: flake8 src/yt_dl_cli
+
+    - name: Run pylint
+      run: pylint src/yt_dl_cli || true
+
+    - name: Run mypy
+      run: mypy src/yt_dl_cli || true

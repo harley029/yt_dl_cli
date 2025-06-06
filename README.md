@@ -7,6 +7,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![GitHub release](https://img.shields.io/github/v/release/harley029/yt_dl_cli)
 ![Repo Size](https://img.shields.io/github/repo-size/harley029/yt_dl_cli)
+[![Build Status](https://github.com/harley029/yt_dl_cli/actions/workflows/tests.yml/badge.svg)](https://github.com/harley029/yt_dl_cli/actions)
+[![Pylint](https://img.shields.io/badge/lint-pylint-brightgreen)](https://github.com/harley029/yt_dl_cli/actions/workflows/tests.yml)
+[![Flake8](https://img.shields.io/badge/lint-flake8-blue)](https://github.com/harley029/yt_dl_cli/actions/workflows/tests.yml)
+[![mypy](https://img.shields.io/badge/type%20check-mypy-purple)](https://github.com/harley029/yt_dl_cli/actions/workflows/tests.yml)
 
 🎥 **yt-dl-cli** is a command-line YouTube video downloader built with [yt-dlp](https://github.com/yt-dlp/yt-dlp), enhanced with internationalization (i18n), logging, and a modular, easily extensible architecture.
 
