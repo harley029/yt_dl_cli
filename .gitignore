@@ -18,3 +18,4 @@ test.py
 links.txt
 Pipfile
 Pipfile.lock
+.coverage
