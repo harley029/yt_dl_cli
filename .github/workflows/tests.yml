@@ -32,6 +32,12 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
 
+    - name: Install linters
+      run:
+        pip install flake8
+        pip install pylint
+        pip install mypy
+
     - name: Run flake8
       run: flake8 src/yt_dl_cli
 
