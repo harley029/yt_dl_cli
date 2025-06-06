@@ -218,7 +218,7 @@ downloader.download()
 
 ## Project Structure
 
-```
+```bash
 yt_dl_cli/
 ├── src/
 │   └── yt_dl_cli/

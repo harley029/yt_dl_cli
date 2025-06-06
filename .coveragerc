@@ -1,0 +1,3 @@
+[run]
+omit =
+    yt_dl_cli/tests/*
