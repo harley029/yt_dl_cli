@@ -40,7 +40,7 @@ jobs:
       run: flake8 src/yt_dl_cli --max-line-length=100
 
     - name: Run pylint
-      run: pylint src/yt_dl_cli --ignore-paths || true
+      run: pylint src/yt_dl_cli --ignore-paths=tests
 
     - name: Run mypy
-      run: mypy src/yt_dl_cli --ignore-missing-imports || true
+      run: mypy src/yt_dl_cli --ignore-missing-imports
