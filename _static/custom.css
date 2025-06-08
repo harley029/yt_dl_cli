@@ -1,0 +1,12 @@
+div.bodywrapper {
+    margin-left: 320px;
+}
+div.sphinxsidebar {
+    width: 300px;
+    min-width: 300px;
+}
+div.sphinxsidebar ul li,
+div.sphinxsidebar ul li a {
+    word-break: break-all;
+    white-space: normal;
+}
