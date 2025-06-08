@@ -22,3 +22,6 @@ Pipfile.lock
 pytest.ini
 test_dir/
 dist/
+_build/
+docs/makefile
+docs/make.bat
