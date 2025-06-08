@@ -25,6 +25,13 @@
 * Supports concurrent downloads to improve performance.
 * Easy use for development.
 
+## Documentation
+
+Full documentation is available at:  
+[https://harley029.github.io/yt_dl_cli/](https://harley029.github.io/yt_dl_cli/)
+
+You can always find API reference, usage guides, and examples there.
+
 ## Architecture and Design
 
 The video downloader is built around the principle of single responsibility, with each class handling a specific aspect of the download process. This design promotes testability, maintainability, and allows for easy extension and modification of individual components.
