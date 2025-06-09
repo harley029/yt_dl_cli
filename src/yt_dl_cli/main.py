@@ -158,6 +158,7 @@ import traceback
 from typing import Optional
 
 from yt_dl_cli.config.config import Config
+from yt_dl_cli.interfaces.interfaces import ILogger
 from yt_dl_cli.utils.logger import LoggerFactory
 from yt_dl_cli.core.orchestration import AsyncOrchestrator, DIContainer
 from yt_dl_cli.utils.parser import parse_arguments
@@ -230,7 +231,7 @@ class VideoDownloader:
     def __init__(
         self,
         config: Optional[Config] = None,
-        logger: Optional[logging.Logger] = None,
+        logger: Optional[ILogger] = None,
         language: Optional[str] = None,
     ) -> None:
         """

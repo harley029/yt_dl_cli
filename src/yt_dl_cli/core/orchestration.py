@@ -38,6 +38,7 @@ from typing import Optional
 from yt_dl_cli.config.config import Config
 from yt_dl_cli.core.core import DownloadExecutor, DownloaderCore, VideoInfoExtractor
 from yt_dl_cli.i18n.messages import Messages
+from yt_dl_cli.interfaces.interfaces import ILogger
 from yt_dl_cli.utils.logger import LoggerFactory
 from yt_dl_cli.utils.stats_manager import StatsManager
 from yt_dl_cli.interfaces.strategies import get_strategy
@@ -176,7 +177,7 @@ class DIContainer:
 
     @staticmethod
     def create_downloader_core(
-        config: Config, logger: Optional[logging.Logger] = None
+        config: Config, logger: Optional[ILogger] = None
     ) -> DownloaderCore:
         """
         Create a fully configured DownloaderCore with all dependencies injected.

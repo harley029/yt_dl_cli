@@ -25,3 +25,4 @@ dist/
 _build/
 docs/makefile
 docs/make.bat
+colorlogtest.py

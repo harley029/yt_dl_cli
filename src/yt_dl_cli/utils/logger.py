@@ -39,6 +39,74 @@ import logging
 from pathlib import Path
 
 
+RESET = "\x1b[0m"
+COLORS = {
+    "DEBUG": "\x1b[36m",  # Cyan
+    "INFO": "\x1b[32m",  # Green
+    "WARNING": "\x1b[33m",  # Yellow
+    "ERROR": "\x1b[31m",  # Red
+    "CRITICAL": "\x1b[41m",  # Red bg
+}
+
+
+class ColorFormatter(logging.Formatter):
+    """
+    Custom logging formatter that adds ANSI color codes to log messages.
+
+    This formatter extends the standard logging.Formatter to provide colored
+    output for different log levels when displaying messages in the console.
+    Colors help users quickly identify the severity of log messages.
+
+    The formatter applies different colors based on the log level:
+    - DEBUG: Cyan
+    - INFO: Green
+    - WARNING: Yellow
+    - ERROR: Red
+    - CRITICAL: Red background
+
+    Color codes are only applied to console output and are automatically
+    reset after each message to prevent color bleeding.
+
+    Attributes:
+        Inherits all attributes from logging.Formatter
+
+    Example:
+        >>> formatter = ColorFormatter("%(levelname)s: %(message)s")
+        >>> handler = logging.StreamHandler()
+        >>> handler.setFormatter(formatter)
+        >>> logger.addHandler(handler)
+        >>> logger.info("This will appear in green")
+        >>> logger.error("This will appear in red")
+    """
+
+    def format(self, record):
+        """
+        Format a log record with appropriate color coding.
+
+        This method overrides the parent format method to add ANSI color
+        codes before the formatted message and reset codes after it.
+        The color is determined by the log level of the record.
+
+        Args:
+            record (logging.LogRecord): The log record to be formatted.
+                Contains information about the log event including level,
+                message, timestamp, and other metadata.
+
+        Returns:
+            str: The formatted log message with ANSI color codes applied.
+                Format: "{color_code}{formatted_message}{reset_code}"
+
+        Note:
+            - Uses the parent class's format method for the base formatting
+            - Only adds color codes, doesn't change the underlying format
+            - Falls back to no color (RESET) if log level is not recognized
+            - Color codes are compatible with most modern terminals
+        """
+        color = COLORS.get(record.levelname, RESET)
+        message = super().format(record)
+        return f"{color}{message}{RESET}"
+
+
 class LoggerFactory:
     """
     Factory class for creating and configuring logger instances.
@@ -76,28 +144,6 @@ class LoggerFactory:
         >>> same_logger.warning("This uses the same configuration")
     """
 
-    def __init__(self):
-        """
-        Initialize the LoggerFactory instance.
-
-        Creates a new instance of the logger factory. While all methods are
-        static and don't require instance state, this constructor allows for
-        consistent instantiation patterns and potential future extensibility.
-
-        Note:
-            All factory methods are static, so instantiation is optional.
-            You can call LoggerFactory.get_logger() directly without
-            creating an instance.
-
-        Example:
-            >>> # Both approaches work identically
-            >>> factory = LoggerFactory()
-            >>> logger1 = factory.get_logger(Path("logs"))
-            >>>
-            >>> # Direct static call (preferred)
-            >>> logger2 = LoggerFactory.get_logger(Path("logs"))
-        """
-
     @staticmethod
     def get_logger(save_dir: Path) -> logging.Logger:
         """
@@ -109,11 +155,12 @@ class LoggerFactory:
         configures the root logger only once to prevent duplicate log entries.
 
         The logging configuration includes:
-        - INFO level logging (captures info, warning, error, and critical)
+        - DEBUG level logging (captures all log levels)
         - Timestamped log entries with ISO format
         - Standardized message format with level indicators
         - UTF-8 encoded file output for international character support
-        - Both console and file output streams
+        - Colored console output for better readability
+        - Plain text file output without color codes
 
         Args:
             save_dir (Path): Directory path where the log file will be created.
@@ -123,9 +170,9 @@ class LoggerFactory:
 
         Returns:
             logging.Logger: Configured logger instance named "video_dl_cli"
-                          ready for immediate use. The logger inherits from
-                          the configured root logger and will output to both
-                          console and the specified log file.
+                          ready for immediate use. The logger is set to DEBUG
+                          level and will output to both console and the
+                          specified log file.
 
         Raises:
             OSError: May be raised if the save directory cannot be created
@@ -136,8 +183,8 @@ class LoggerFactory:
         Side Effects:
             - Creates the specified directory and any missing parent directories
             - Creates or appends to "download.log" file in the save directory
-            - Configures the root logger (only on first call)
-            - May create multiple file handles if called with different directories
+            - Clears existing handlers to prevent duplication
+            - Configures both console and file handlers with appropriate formatters
 
         Example:
             >>> from pathlib import Path
@@ -151,10 +198,8 @@ class LoggerFactory:
             >>> logger = LoggerFactory.get_logger(Path("./app/logs/downloads"))
             >>> logger.warning("Using fallback quality setting")
             >>>
-            >>> # Multiple loggers (same configuration)
-            >>> logger1 = LoggerFactory.get_logger(Path("./logs"))
-            >>> logger2 = LoggerFactory.get_logger(Path("./logs"))
-            >>> # Both loggers share the same root configuration
+            >>> # Debug level logging
+            >>> logger.debug("Detailed debugging information")
 
         Log File Format:
             The log file entries follow this format:
@@ -163,46 +208,43 @@ class LoggerFactory:
                 2024-01-15 14:30:26,456 [ERROR] Network timeout occurred
                 2024-01-15 14:30:27,789 [WARNING] Retrying download attempt
 
+        Console Output:
+            Console output includes the same format but with color coding
+            applied to help distinguish between different log levels.
+
         Note:
-            - Only configures the root logger once to avoid duplicate handlers
-            - Subsequent calls with different directories will create additional
-              file handlers but won't duplicate console output
-            - The log file is created with UTF-8 encoding to handle international
-              characters in video titles and URLs
-            - Log level is set to INFO, so DEBUG messages won't appear
+            - Clears existing handlers on each call to prevent duplication
+            - Creates new handlers for both console and file output
+            - Console handler uses ColorFormatter for colored output
+            - File handler uses standard Formatter without colors
+            - Log file is created with UTF-8 encoding for international support
             - The save directory is created with parents=True and exist_ok=True
-              for robust directory handling
         """
         # Ensure the save directory exists, creating parent directories as needed
         try:
             save_dir.mkdir(parents=True, exist_ok=True)
         except OSError as e:
-            # Re-raise with more context for better error handling
             raise OSError(f"Failed to create log directory {save_dir}: {e}") from e
 
-        # Get the root logger instance
-        root = logging.getLogger()
+        logger = logging.getLogger("video_dl_cli")
+        logger.setLevel(logging.INFO)
 
-        # Configure the root logger only once to prevent duplicate handlers
-        if not root.handlers:
-            try:
-                logging.basicConfig(
-                    level=logging.INFO,
-                    format="%(asctime)s [%(levelname)s] %(message)s",
-                    handlers=[
-                        # Console handler for immediate feedback
-                        logging.StreamHandler(),
-                        # File handler for persistent logging
-                        logging.FileHandler(
-                            save_dir / "download.log", encoding="utf-8"
-                        ),
-                    ],
-                )
-            except PermissionError as e:
-                # Handle file creation permission errors
-                raise PermissionError(
-                    f"Cannot create log file in {save_dir}: {e}"
-                ) from e
+        # Clear existing handlers to prevent duplication on repeated calls
+        if logger.hasHandlers():
+            logger.handlers.clear()
 
-        # Return a named logger instance that inherits root configuration
-        return logging.getLogger("video_dl_cli")
+        # Set up colored console output
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(
+            ColorFormatter("%(asctime)s [%(levelname)s] %(message)s")
+        )
+        logger.addHandler(console_handler)
+
+        # Set up plain text file logging (without colors)
+        file_handler = logging.FileHandler(save_dir / "download.log", encoding="utf-8")
+        file_handler.setFormatter(
+            logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+        )
+        logger.addHandler(file_handler)
+
+        return logger

@@ -52,14 +52,6 @@ class FileSystemChecker:
         ...     print("File not found.")
     """
 
-    def __init__(self):
-        """
-        Initialize the FileSystemChecker instance.
-
-        Creates a new instance of the file system checker with default
-        configuration. No parameters are required for initialization.
-        """
-
     def exists(self, filepath: Path) -> bool:
         """
         Check if a file exists at the specified path.
@@ -220,20 +212,6 @@ class FilenameSanitizer:
         >>> safe_title = sanitizer.sanitize(title)
         >>> print(safe_title)  # 'My Video_ _The Best_ _Part 1_'
     """
-
-    def __init__(self):
-        """
-        Initialize the FilenameSanitizer instance.
-
-        Creates a new instance of the filename sanitizer. While all methods
-        are static and don't require instance state, this constructor allows
-        for consistent instantiation patterns and future extensibility.
-
-        Note:
-            All sanitization methods are static, so instantiation is optional.
-            You can call FilenameSanitizer.sanitize() directly without
-            creating an instance.
-        """
 
     @staticmethod
     def sanitize(name: str, max_length: int = 100) -> str:
