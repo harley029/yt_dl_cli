@@ -31,7 +31,6 @@ Dependencies:
 
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
-import logging
 import time
 from typing import Optional
 
