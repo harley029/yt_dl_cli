@@ -197,7 +197,7 @@ Last Modified: 20245</p>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="yt_dl_cli.main.VideoDownloader">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.main.</span></span><span class="sig-name descname"><span class="pre">VideoDownloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.config.config.Config" title="yt_dl_cli.config.config.Config"><span class="pre">Config</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.main.VideoDownloader" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.main.</span></span><span class="sig-name descname"><span class="pre">VideoDownloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.config.config.Config" title="yt_dl_cli.config.config.Config"><span class="pre">Config</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.interfaces.interfaces.ILogger" title="yt_dl_cli.interfaces.interfaces.ILogger"><span class="pre">ILogger</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.main.VideoDownloader" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Main orchestrator class for the YouTube video downloading application.</p>
 <p>This class serves as the primary entry point and coordinator for the entire
@@ -1309,7 +1309,7 @@ composition happens.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="yt_dl_cli.core.orchestration.DIContainer.create_downloader_core">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_downloader_core</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.config.config.Config" title="yt_dl_cli.config.config.Config"><span class="pre">Config</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#yt_dl_cli.core.core.DownloaderCore" title="yt_dl_cli.core.core.DownloaderCore"><span class="pre">DownloaderCore</span></a></span></span><a class="headerlink" href="#yt_dl_cli.core.orchestration.DIContainer.create_downloader_core" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_downloader_core</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.config.config.Config" title="yt_dl_cli.config.config.Config"><span class="pre">Config</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.interfaces.interfaces.ILogger" title="yt_dl_cli.interfaces.interfaces.ILogger"><span class="pre">ILogger</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#yt_dl_cli.core.core.DownloaderCore" title="yt_dl_cli.core.core.DownloaderCore"><span class="pre">DownloaderCore</span></a></span></span><a class="headerlink" href="#yt_dl_cli.core.orchestration.DIContainer.create_downloader_core" title="Link to this definition">¶</a></dt>
 <dd><p>Create a fully configured DownloaderCore with all dependencies injected.</p>
 <p>This factory method creates and wires together all the components needed
 for a functioning downloader system. It handles the complete object graph
@@ -2423,6 +2423,66 @@ attempts.</p>
 </dd>
 </dl>
 <dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.utils.logger.ColorFormatter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.utils.logger.</span></span><span class="sig-name descname"><span class="pre">ColorFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datefmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.utils.logger.ColorFormatter" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Formatter</span></code></p>
+<p>Custom logging formatter that adds ANSI color codes to log messages.</p>
+<p>This formatter extends the standard logging.Formatter to provide colored
+output for different log levels when displaying messages in the console.
+Colors help users quickly identify the severity of log messages.</p>
+<p>The formatter applies different colors based on the log level:
+- DEBUG: Cyan
+- INFO: Green
+- WARNING: Yellow
+- ERROR: Red
+- CRITICAL: Red background</p>
+<p>Color codes are only applied to console output and are automatically
+reset after each message to prevent color bleeding.</p>
+<dl>
+<dt>Attributes:</dt><dd><p>Inherits all attributes from logging.Formatter</p>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">formatter</span> <span class="o">=</span> <span class="n">ColorFormatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(levelname)s</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;This will appear in green&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;This will appear in red&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.utils.logger.ColorFormatter.format">
+<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.utils.logger.ColorFormatter.format" title="Link to this definition">¶</a></dt>
+<dd><p>Format a log record with appropriate color coding.</p>
+<p>This method overrides the parent format method to add ANSI color
+codes before the formatted message and reset codes after it.
+The color is determined by the log level of the record.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>record (logging.LogRecord): The log record to be formatted.</dt><dd><p>Contains information about the log event including level,
+message, timestamp, and other metadata.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>str: The formatted log message with ANSI color codes applied.</dt><dd><p>Format: “{color_code}{formatted_message}{reset_code}”</p>
+</dd>
+</dl>
+</dd>
+<dt>Note:</dt><dd><ul class="simple">
+<li><p>Uses the parent class’s format method for the base formatting</p></li>
+<li><p>Only adds color codes, doesn’t change the underlying format</p></li>
+<li><p>Falls back to no color (RESET) if log level is not recognized</p></li>
+<li><p>Color codes are compatible with most modern terminals</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="yt_dl_cli.utils.logger.LoggerFactory">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.utils.logger.</span></span><span class="sig-name descname"><span class="pre">LoggerFactory</span></span><a class="headerlink" href="#yt_dl_cli.utils.logger.LoggerFactory" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -2466,11 +2526,12 @@ the console (for immediate feedback) and a log file (for persistent
 record keeping). The method ensures the target directory exists and
 configures the root logger only once to prevent duplicate log entries.</p>
 <p>The logging configuration includes:
-- INFO level logging (captures info, warning, error, and critical)
+- DEBUG level logging (captures all log levels)
 - Timestamped log entries with ISO format
 - Standardized message format with level indicators
 - UTF-8 encoded file output for international character support
-- Both console and file output streams</p>
+- Colored console output for better readability
+- Plain text file output without color codes</p>
 <dl>
 <dt>Args:</dt><dd><dl class="simple">
 <dt>save_dir (Path): Directory path where the log file will be created.</dt><dd><p>The directory will be created automatically if it
@@ -2480,9 +2541,9 @@ Must be a valid pathlib.Path object.</p>
 </dl>
 </dd>
 <dt>Returns:</dt><dd><dl class="simple">
-<dt>logging.Logger: Configured logger instance named “video_dl_cli”</dt><dd><p>ready for immediate use. The logger inherits from
-the configured root logger and will output to both
-console and the specified log file.</p>
+<dt>logging.Logger: Configured logger instance named “video_dl_cli”</dt><dd><p>ready for immediate use. The logger is set to DEBUG
+level and will output to both console and the
+specified log file.</p>
 </dd>
 </dl>
 </dd>
@@ -2496,8 +2557,8 @@ console and the specified log file.</p>
 <dt>Side Effects:</dt><dd><ul class="simple">
 <li><p>Creates the specified directory and any missing parent directories</p></li>
 <li><p>Creates or appends to “download.log” file in the save directory</p></li>
-<li><p>Configures the root logger (only on first call)</p></li>
-<li><p>May create multiple file handles if called with different directories</p></li>
+<li><p>Clears existing handlers to prevent duplication</p></li>
+<li><p>Configures both console and file handlers with appropriate formatters</p></li>
 </ul>
 </dd>
 <dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -2511,10 +2572,8 @@ console and the specified log file.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./app/logs/downloads&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Using fallback quality setting&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Multiple loggers (same configuration)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logger1</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./logs&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logger2</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./logs&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Both loggers share the same root configuration</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Debug level logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Detailed debugging information&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd>
@@ -2525,15 +2584,16 @@ console and the specified log file.</p>
 2024-01-15 14:30:27,789 [WARNING] Retrying download attempt</p>
 </div></blockquote>
 </dd>
+<dt>Console Output:</dt><dd><p>Console output includes the same format but with color coding
+applied to help distinguish between different log levels.</p>
+</dd>
 <dt>Note:</dt><dd><ul class="simple">
-<li><p>Only configures the root logger once to avoid duplicate handlers</p></li>
-<li><p>Subsequent calls with different directories will create additional
-file handlers but won’t duplicate console output</p></li>
-<li><p>The log file is created with UTF-8 encoding to handle international
-characters in video titles and URLs</p></li>
-<li><p>Log level is set to INFO, so DEBUG messages won’t appear</p></li>
-<li><p>The save directory is created with parents=True and exist_ok=True
-for robust directory handling</p></li>
+<li><p>Clears existing handlers on each call to prevent duplication</p></li>
+<li><p>Creates new handlers for both console and file output</p></li>
+<li><p>Console handler uses ColorFormatter for colored output</p></li>
+<li><p>File handler uses standard Formatter without colors</p></li>
+<li><p>Log file is created with UTF-8 encoding for international support</p></li>
+<li><p>The save directory is created with parents=True and exist_ok=True</p></li>
 </ul>
 </dd>
 </dl>
@@ -3261,6 +3321,10 @@ result in a string of underscores</p></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-yt_dl_cli.utils.logger">Utils</a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.utils.logger.ColorFormatter"><code class="docutils literal notranslate"><span class="pre">ColorFormatter</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.utils.logger.ColorFormatter.format"><code class="docutils literal notranslate"><span class="pre">ColorFormatter.format()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#yt_dl_cli.utils.logger.LoggerFactory"><code class="docutils literal notranslate"><span class="pre">LoggerFactory</span></code></a><ul>
 <li><a class="reference internal" href="#yt_dl_cli.utils.logger.LoggerFactory.get_logger"><code class="docutils literal notranslate"><span class="pre">LoggerFactory.get_logger()</span></code></a></li>
 </ul>
