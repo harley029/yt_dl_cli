@@ -51,7 +51,7 @@ def test_loggerfactory_double_config_no_duplicate_handlers(tmp_path):
     logging.getLogger().handlers.clear()
     logger1 = LoggerFactory.get_logger(tmp_path)
     logger2 = LoggerFactory.get_logger(tmp_path)
-    root = logging.getLogger()
+    root = logging.getLogger("video_dl_cli")
     assert len(root.handlers) >= 2
     assert logger1 is not None
     assert logger2 is not None

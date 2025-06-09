@@ -241,7 +241,10 @@ class LoggerFactory:
         logger.addHandler(console_handler)
 
         # Set up plain text file logging (without colors)
-        file_handler = logging.FileHandler(save_dir / "download.log", encoding="utf-8")
+        try:
+            file_handler = logging.FileHandler(save_dir / "download.log", encoding="utf-8")
+        except PermissionError as e:
+            raise PermissionError(f"Cannot create log file: {e}") from e
         file_handler.setFormatter(
             logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
         )
