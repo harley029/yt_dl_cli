@@ -153,7 +153,6 @@ See Also:
 """
 
 import asyncio
-import logging
 import traceback
 from typing import Optional
 
