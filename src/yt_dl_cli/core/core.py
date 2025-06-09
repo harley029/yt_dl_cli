@@ -1,5 +1,8 @@
+# pylint: disable=too-many-instance-attributes, too-many-arguments, too-many-positional-arguments
+# pylint: disable=broad-exception-caught
+
 """
-YouTube Downloader Core Module.
+YT-DL-CLI Video Downloader Core Module.
 
 This module contains the core components responsible for the actual video downloading
 process. It provides a clean separation of concerns between video information extraction,
@@ -12,17 +15,17 @@ maintainability, and allows for easy extension and modification of individual co
 Architecture Overview:
     The module implements a layered architecture with clear separation between:
 
-    1. **Information Layer** (VideoInfoExtractor):
+    1. Information Layer (VideoInfoExtractor):
        - Extracts video metadata without downloading content
        - Validates video availability and accessibility
        - Retrieves video information for processing decisions
 
-    2. **Execution Layer** (DownloadExecutor):
+    2. Execution Layer (DownloadExecutor):
        - Handles the actual download operations
        - Manages yt-dlp interactions and configurations
        - Provides error handling for download failures
 
-    3. **Orchestration Layer** (DownloaderCore):
+    3. Orchestration Layer (DownloaderCore):
        - Coordinates the complete download workflow
        - Integrates all components and dependencies
        - Manages resource lifecycle and cleanup
@@ -34,11 +37,11 @@ Key Components:
     - DownloaderCore: Main orchestrator and workflow manager
 
 Design Patterns:
-    - **Strategy Pattern**: Format selection through IFormatStrategy interface
-    - **Dependency Injection**: All dependencies injected through constructor
-    - **Context Manager**: Resource management with __enter__/__exit__ methods
-    - **Facade Pattern**: DownloaderCore provides simplified interface to complex operations
-    - **Template Method**: Standardized download workflow with extensible steps
+    - Strategy Pattern: Format selection through IFormatStrategy interface
+    - Dependency Injection: All dependencies injected through constructor
+    - Context Manager: Resource management with __enter__/__exit__ methods
+    - Facade Pattern: DownloaderCore provides simplified interface to complex operations
+    - Template Method: Standardized download workflow with extensible steps
 
 Error Handling Philosophy:
     The module implements defensive programming practices:
@@ -67,18 +70,18 @@ Integration Points:
 Usage Patterns:
     The module is designed to be used in several contexts:
 
-    1. **Single Download Operations**:
+    1. Single Download Operations:
        - Extract video information
        - Check file existence
        - Execute download if needed
        - Update statistics and logs
 
-    2. **Batch Download Operations**:
+    2. Batch Download Operation:
        - Process multiple URLs concurrently
        - Maintain statistics across operations
        - Handle individual failures gracefully
 
-    3. **Integration with Async Systems**:
+    3. Integration with Async Systems:
        - Compatible with asyncio event loops
        - Non-blocking operations where possible
        - Resource cleanup compatible with async contexts
@@ -156,21 +159,13 @@ Version Compatibility:
     - Cross-platform: Works on Windows, macOS, and Linux
     - Unicode support: Handles international characters in titles and paths
 
-Author: Oleksandr Kharhenko
-License: MIT
-Created: 2025
-Last Modified: 2025
-
 See Also:
     - yt_dl_cli.core.orchestration: Asynchronous orchestration layer
     - yt_dl_cli.interfaces.interfaces: Core interface definitions
     - yt_dl_cli.config.config: Configuration management documentation
     - yt_dl_cli.utils.utils: Utility functions and helpers
-    - yt-dlp documentation: https://github.com/yt-dlp/yt-dlp
+    - yt-dlp documentation: https://harley029.github.io/yt_dl_cli/
 """
-
-# pylint: disable=too-many-instance-attributes, too-many-arguments, too-many-positional-arguments
-# pylint: disable=broad-exception-caught
 
 
 from typing import Any, Dict

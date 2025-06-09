@@ -234,7 +234,7 @@ config = Config(
     quality="720",
     max_workers=4,
     audio_only=False,
-    urls=["https://www.youtube.com/watch?v=dQw4w9WgXcQ"]
+    urls=["https://example.com/video1", "https://example.com/video2"]
 )
 
 # Initialize downloader with custom settings

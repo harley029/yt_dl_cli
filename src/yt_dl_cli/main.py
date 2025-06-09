@@ -1,5 +1,5 @@
 """
-YouTube Downloader Main Application Module.
+YT-DL-CLI Video Downloader Main Application Module.
 
 This module contains the primary VideoDownloader class that serves as the main
 orchestrator for the entire video downloading process. It integrates all

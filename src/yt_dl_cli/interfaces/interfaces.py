@@ -8,15 +8,6 @@ architecture by defining clear interfaces without concrete implementations.
 
 The protocols follow the Dependency Inversion Principle, allowing high-level
 modules to depend on abstractions rather than concrete implementations.
-
-Example:
-    Using protocols for dependency injection:
-
-    >>> def download_manager(logger: ILogger, stats: IStatsCollector):
-    ...     logger.info("Starting download process")
-    ...     # ... download logic ...
-    ...     stats.record_success()
-    ...     stats.report(logger, elapsed_time)
 """
 
 from typing import Protocol, Any
@@ -39,16 +30,6 @@ class ILogger(Protocol):
     Methods should follow standard logging conventions where higher-level
     methods (critical, error) typically indicate more severe issues than
     lower-level ones (info, warning).
-
-    Example:
-        >>> class ConsoleLogger:
-        ...     def info(self, msg, *args, **kwargs):
-        ...         print(f"INFO: {msg % args if args else msg}")
-        ...     # ... implement other methods
-        ...
-        >>> def process_data(logger: ILogger):
-        ...     logger.info("Processing started")
-        ...     logger.warning("Found %d warnings", warning_count)
     """
 
     def info(self, msg: Any, *args: Any, **kwargs: Any) -> None:
@@ -69,12 +50,7 @@ class ILogger(Protocol):
 
         Returns:
             None
-
-        Example:
-            >>> logger.info("User %s logged in", username)
-            >>> logger.info("Processing complete", extra={"duration": 1.23})
         """
-        ...
 
     def warning(self, msg: Any, *args: Any, **kwargs: Any) -> None:
         """
@@ -94,12 +70,7 @@ class ILogger(Protocol):
 
         Returns:
             None
-
-        Example:
-            >>> logger.warning("Deprecated API used: %s", api_name)
-            >>> logger.warning("Low disk space: %d%% remaining", space_percent)
         """
-        ...
 
     def error(self, msg: Any, *args: Any, **kwargs: Any) -> None:
         """
@@ -119,12 +90,7 @@ class ILogger(Protocol):
 
         Returns:
             None
-
-        Example:
-            >>> logger.error("Failed to process file: %s", filename)
-            >>> logger.error("Database connection failed", exc_info=True)
         """
-        ...
 
     def critical(self, msg: Any, *args: Any, **kwargs: Any) -> None:
         """
@@ -144,12 +110,7 @@ class ILogger(Protocol):
 
         Returns:
             None
-
-        Example:
-            >>> logger.critical("System out of memory")
-            >>> logger.critical("Failed to initialize: %s", component_name)
         """
-        ...
 
 
 class IStatsCollector(Protocol):
@@ -168,21 +129,6 @@ class IStatsCollector(Protocol):
 
     The statistics collected can be used for monitoring application performance,
     generating user feedback, debugging issues, or creating audit trails.
-
-    Example:
-        >>> class SimpleStatsCollector:
-        ...     def __init__(self):
-        ...         self.successes = 0
-        ...         self.failures = 0
-        ...         self.skips = 0
-        ...
-        ...     def record_success(self):
-        ...         self.successes += 1
-        ...     # ... implement other methods
-        ...
-        >>> stats = SimpleStatsCollector()
-        >>> stats.record_success()
-        >>> stats.report(logger, 5.2)
     """
 
     def record_success(self) -> None:
@@ -196,12 +142,7 @@ class IStatsCollector(Protocol):
 
         Returns:
             None
-
-        Example:
-            >>> stats.record_success()  # After successful file download
-            >>> stats.record_success()  # After successful data processing
         """
-        ...
 
     def record_failure(self) -> None:
         """
@@ -214,12 +155,7 @@ class IStatsCollector(Protocol):
 
         Returns:
             None
-
-        Example:
-            >>> stats.record_failure()  # After network timeout
-            >>> stats.record_failure()  # After file permission error
         """
-        ...
 
     def record_skip(self) -> None:
         """
@@ -235,12 +171,7 @@ class IStatsCollector(Protocol):
 
         Returns:
             None
-
-        Example:
-            >>> stats.record_skip()  # File already exists, skipping download
-            >>> stats.record_skip()  # Item filtered out by user preferences
         """
-        ...
 
     def report(self, logger: ILogger, elapsed: float) -> None:
         """
@@ -261,13 +192,7 @@ class IStatsCollector(Protocol):
 
         Returns:
             None
-
-        Example:
-            >>> stats.report(logger, 125.5)
-            # Logs something like:
-            # "Completed in 125.5s: 150 successful, 3 failed, 12 skipped (92% success rate)"
         """
-        ...
 
 
 class IFileChecker(Protocol):
@@ -286,17 +211,6 @@ class IFileChecker(Protocol):
     The protocol focuses on existence checking as this is often the primary
     file system query needed in download managers, file processors, and
     similar applications.
-
-    Example:
-        >>> class RealFileChecker:
-        ...     def exists(self, filepath: Path) -> bool:
-        ...         return filepath.exists() and filepath.is_file()
-        ...
-        >>> class MockFileChecker:
-        ...     def __init__(self, existing_files: set):
-        ...         self.files = existing_files
-        ...     def exists(self, filepath: Path) -> bool:
-        ...         return filepath in self.files
     """
 
     def exists(self, filepath: Path) -> bool:
@@ -323,12 +237,6 @@ class IFileChecker(Protocol):
             bool: True if the file exists and is accessible, False otherwise.
                 Does not distinguish between "file doesn't exist" and
                 "file exists but is not accessible".
-
-        Example:
-            >>> file_checker.exists(Path("/home/user/document.txt"))
-            True
-            >>> file_checker.exists(Path("./nonexistent.file"))
-            False
         """
         ...
 
@@ -349,19 +257,6 @@ class IMessage(Protocol):
     The protocol is designed to support user-friendly console applications
     that need to display status information, warnings, errors, and other
     messages with visual distinction through color coding.
-
-    Example:
-        >>> class ColorConsole:
-        ...     def printout(self, colour: str, msg: str) -> None:
-        ...         color_codes = {"red": "\\033[31m", "green": "\\033[32m"}
-        ...         reset = "\\033[0m"
-        ...         print(f"{color_codes.get(colour, '')}{msg}{reset}")
-        ...
-        >>> class TestMessage:
-        ...     def __init__(self):
-        ...         self.messages = []
-        ...     def printout(self, colour: str, msg: str) -> None:
-        ...         self.messages.append((colour, msg))
     """
 
     def printout(self, colour: str, msg: str) -> None:
@@ -388,14 +283,8 @@ class IMessage(Protocol):
         Returns:
             None
 
-        Example:
-            >>> message.printout("green", "Download completed successfully")
-            >>> message.printout("red", "Error: Failed to connect to server")
-            >>> message.printout("yellow", "Warning: File already exists")
-
         Note:
             Implementations should be thread-safe if concurrent access is
             expected, and should handle encoding issues gracefully when
             dealing with non-ASCII characters in messages.
         """
-        ...

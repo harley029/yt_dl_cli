@@ -10,21 +10,6 @@ The module is designed to work with standard GNU gettext .po/.mo file formats
 and follows common localization directory conventions used in many open-source
 projects.
 
-Example:
-    Basic usage for setting up translations:
-
-    >>> from your_package.i18n import setup_i18n
-    >>> setup_i18n()
-    >>> print(_("Hello, world!"))  # Will print translated text if available
-
-    Custom configuration:
-
-    >>> setup_i18n(
-    ...     domain="myapp",
-    ...     localedir="/path/to/translations",
-    ...     language="es"
-    ... )
-
 Note:
     After calling setup_i18n(), the _() function becomes globally available
     for string translation throughout your application.
@@ -59,15 +44,12 @@ def get_system_lang() -> str:
 
     Returns:
         str: A 2-character language code (ISO 639-1 format).
-            Examples: "en" for English, "es" for Spanish, "fr" for French.
+            Examples: "en" for English, "de" for German.
             Always returns "en" as fallback if system locale cannot be determined.
 
     Example:
         >>> get_system_lang()
         'en'
-        >>> # On a Spanish system, might return:
-        >>> get_system_lang()
-        'es'
 
     Note:
         The function truncates longer locale strings to just the language code.

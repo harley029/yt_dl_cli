@@ -139,7 +139,7 @@ class StatsManager:
             >>> elapsed_time = time.time() - start_time
             >>>
             >>> stats.report(logger, elapsed_time)
-            # This will log a formatted report with all statistics
+            This will log a formatted report with all statistics
         """
         summary = self.get_summary()
         logger.info(Messages.Stats.HEADER)

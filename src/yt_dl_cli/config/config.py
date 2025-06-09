@@ -10,12 +10,6 @@ providing a centralized way to manage application settings with proper error han
 
 Classes:
     Config: Main configuration dataclass with validation
-
-Dependencies:
-    - dataclasses: For creating the dataclass structure and field definitions
-    - pathlib: For filesystem path handling
-    - typing: For type hints and annotations
-    - yt_dl_cli.i18n.messages: For internationalized error messages
 """
 
 from dataclasses import dataclass, field

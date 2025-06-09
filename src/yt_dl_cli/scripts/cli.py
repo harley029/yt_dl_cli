@@ -1,7 +1,7 @@
 """
-Command Line Interface Entry Point Module for YouTube Downloader CLI Tool.
+Command Line Interface Entry Point Module for YT-DL-CLI Tool.
 
-This module serves as the primary entry point for the YouTube downloader command-line
+This module serves as the primary entry point for the video downloader command-line
 interface application. It provides a simple interface to initialize and execute
 the video downloading functionality through the main VideoDownloader class.
 
@@ -18,9 +18,6 @@ Example:
     Or when installed as a package:
 
     $ yt-dl
-
-Author: Oleksandr Kharhenko
-License: MIT
 """
 
 from yt_dl_cli.main import VideoDownloader  # type: ignore[import-untyped]
@@ -28,7 +25,7 @@ from yt_dl_cli.main import VideoDownloader  # type: ignore[import-untyped]
 
 def main():
     """
-    Main entry point function for the YouTube downloader CLI application.
+    Main entry point function for the YT-DL-CLI application.
 
     This function serves as the primary interface between the command-line
     environment and the core downloading functionality. It instantiates the
@@ -58,11 +55,6 @@ def main():
         ImportError: May be raised if the main module or VideoDownloader
                     class cannot be imported due to missing dependencies
                     or incorrect module structure.
-
-    Example:
-        >>> main()
-        # Starts the interactive download process
-        # User will be prompted for URLs, quality settings, etc.
 
     Note:
         This function expects the VideoDownloader class to handle all user

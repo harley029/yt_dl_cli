@@ -26,10 +26,6 @@ Example:
     >>> # Sanitize a filename
     >>> safe_name = sanitizer.sanitize("Video: Title with <special> chars!")
     >>> print(safe_name)  # "Video_ Title with _special_ chars!"
-
-Dependencies:
-    - pathlib: For cross-platform path handling
-    - re: For regular expression operations
 """
 
 from pathlib import Path
@@ -99,13 +95,105 @@ class FileSystemChecker:
 
     def is_dir(self, path):
         """
-        Check if an Path oject is a folder.
+        Check if a path represents a directory (folder).
+
+        This method determines whether the specified path points to a directory
+        rather than a regular file or other filesystem object. It provides a
+        consistent interface that can be easily mocked for testing purposes.
+
+        The method handles both existing and non-existing paths gracefully:
+        - For existing paths: returns True if it's a directory, False otherwise
+        - For non-existing paths: returns False
+
+        Args:
+            path (str or Path): Path to check. Can be either a string path
+                              or a pathlib.Path object. The path can be
+                              absolute or relative to the current working
+                              directory.
+
+        Returns:
+            bool: True if the path exists and is a directory,
+                 False if the path doesn't exist, is a file,
+                 or is another type of filesystem object
+
+        Raises:
+            OSError: May be raised if there are permission issues
+                    accessing the path or its parent directory
+            TypeError: If path cannot be converted to a Path object
+
+        Example:
+            >>> checker = FileSystemChecker()
+            >>>
+            >>> # Check existing directory
+            >>> if checker.is_dir("/home/user/documents"):
+            ...     print("It's a directory")
+            >>>
+            >>> # Check file (should return False)
+            >>> if not checker.is_dir("/home/user/file.txt"):
+            ...     print("It's not a directory")
+            >>>
+            >>> # Works with Path objects too
+            >>> from pathlib import Path
+            >>> dir_path = Path("./my_folder")
+            >>> if checker.is_dir(dir_path):
+            ...     print("Directory exists")
         """
         return Path(path).is_dir()
 
     def ensure_dir(self, path):
         """
-        Create a requested folder.
+        Create a directory and all necessary parent directories.
+
+        This method ensures that a directory exists at the specified path,
+        creating it along with any missing parent directories if needed.
+        If the directory already exists, the method completes successfully
+        without raising an error.
+
+        This is equivalent to the Unix 'mkdir -p' command and is useful
+        for preparing directory structures before file operations.
+
+        Args:
+            path (str or Path): Path where the directory should be created.
+                              Can be either a string path or a pathlib.Path
+                              object. The path can be absolute or relative
+                              to the current working directory.
+
+        Returns:
+            None: This method doesn't return a value. Success is indicated
+                 by the absence of exceptions.
+
+        Raises:
+            OSError: Raised if directory creation fails due to:
+                    - Insufficient permissions
+                    - Path conflicts (e.g., a file exists with the same name)
+                    - Filesystem errors or limitations
+            FileExistsError: Raised if the path exists but is not a directory
+                           (e.g., it's a regular file)
+            TypeError: If path cannot be converted to a Path object
+
+        Example:
+            >>> checker = FileSystemChecker()
+            >>>
+            >>> # Create a simple directory
+            >>> checker.ensure_dir("new_folder")
+            >>>
+            >>> # Create nested directories
+            >>> checker.ensure_dir("path/to/deep/folder")
+            >>>
+            >>> # Works with Path objects
+            >>> from pathlib import Path
+            >>> output_dir = Path("./output/results/data")
+            >>> checker.ensure_dir(output_dir)
+            >>>
+            >>> # Safe to call multiple times
+            >>> checker.ensure_dir("existing_folder")  # Won't raise error
+
+        Note:
+            - The method creates all missing parent directories automatically
+            - If any part of the path already exists as a directory, it's preserved
+            - The method is idempotent: calling it multiple times is safe
+            - File permissions for created directories follow system defaults
+            - On Windows, this handles long path names appropriately
         """
         Path(path).mkdir(parents=True, exist_ok=True)
 
@@ -159,11 +247,6 @@ class FilenameSanitizer:
 
         The following characters are replaced with underscores:
         - < > : " / \\ | ? *
-
-        These characters are problematic because:
-        - Windows reserves them for special purposes
-        - Unix-like systems may interpret some as shell metacharacters
-        - They can cause issues in various file operations
 
         Args:
             name (str): Original string to sanitize. Can contain any

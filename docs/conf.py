@@ -1,4 +1,4 @@
-# Configuration file for the Sphinx documentation builder.
+"""Configuration file for the Sphinx documentation builder."""
 
 import os
 import sys
@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.abspath("../src"))
 
 project = "YT-DL-CLI Video downloader"  # pylint: disable=invalid-name
 copyright = "2025, Oleksandr Kharchenko"
-author = "Oleksandr Kharchenko"  # noqa  # pylint: disable=invalid-name
+author = "Oleksandr Kharchenko"  # noqa  # pylint: disable=invalid-name, C0103, W0622
 
 # Расширения Sphinx
 extensions = [
