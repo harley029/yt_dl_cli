@@ -41,7 +41,7 @@
 </section>
 <section id="module-yt_dl_cli.main">
 <span id="main-module"></span><h1>Main Module<a class="headerlink" href="#module-yt_dl_cli.main" title="Link to this heading">¶</a></h1>
-<p>YouTube Downloader Main Application Module.</p>
+<p>YT-DL-CLI Video Downloader Main Application Module.</p>
 <p>This module contains the primary VideoDownloader class that serves as the main
 orchestrator for the entire video downloading process. It integrates all
 components of the application including configuration management, dependency
@@ -491,13 +491,6 @@ providing a centralized way to manage application settings with proper error han
 <dl class="simple">
 <dt>Classes:</dt><dd><p>Config: Main configuration dataclass with validation</p>
 </dd>
-<dt>Dependencies:</dt><dd><ul class="simple">
-<li><p>dataclasses: For creating the dataclass structure and field definitions</p></li>
-<li><p>pathlib: For filesystem path handling</p></li>
-<li><p>typing: For type hints and annotations</p></li>
-<li><p>yt_dl_cli.i18n.messages: For internationalized error messages</p></li>
-</ul>
-</dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="yt_dl_cli.config.config.Config">
@@ -564,7 +557,7 @@ urls (List[str]): List of URLs to download. Defaults to empty list.</p>
 </section>
 <section id="module-yt_dl_cli.core.core">
 <span id="core"></span><h1>Core<a class="headerlink" href="#module-yt_dl_cli.core.core" title="Link to this heading">¶</a></h1>
-<p>YouTube Downloader Core Module.</p>
+<p>YT-DL-CLI Video Downloader Core Module.</p>
 <p>This module contains the core components responsible for the actual video downloading
 process. It provides a clean separation of concerns between video information extraction,
 download execution, and the orchestration of the complete download workflow.</p>
@@ -574,15 +567,15 @@ maintainability, and allows for easy extension and modification of individual co
 <dl>
 <dt>Architecture Overview:</dt><dd><p>The module implements a layered architecture with clear separation between:</p>
 <ol class="arabic simple">
-<li><p><strong>Information Layer</strong> (VideoInfoExtractor):
+<li><p>Information Layer (VideoInfoExtractor):
 - Extracts video metadata without downloading content
 - Validates video availability and accessibility
 - Retrieves video information for processing decisions</p></li>
-<li><p><strong>Execution Layer</strong> (DownloadExecutor):
+<li><p>Execution Layer (DownloadExecutor):
 - Handles the actual download operations
 - Manages yt-dlp interactions and configurations
 - Provides error handling for download failures</p></li>
-<li><p><strong>Orchestration Layer</strong> (DownloaderCore):
+<li><p>Orchestration Layer (DownloaderCore):
 - Coordinates the complete download workflow
 - Integrates all components and dependencies
 - Manages resource lifecycle and cleanup
@@ -596,11 +589,11 @@ maintainability, and allows for easy extension and modification of individual co
 </ul>
 </dd>
 <dt>Design Patterns:</dt><dd><ul class="simple">
-<li><p><strong>Strategy Pattern</strong>: Format selection through IFormatStrategy interface</p></li>
-<li><p><strong>Dependency Injection</strong>: All dependencies injected through constructor</p></li>
-<li><p><strong>Context Manager</strong>: Resource management with __enter__/__exit__ methods</p></li>
-<li><p><strong>Facade Pattern</strong>: DownloaderCore provides simplified interface to complex operations</p></li>
-<li><p><strong>Template Method</strong>: Standardized download workflow with extensible steps</p></li>
+<li><p>Strategy Pattern: Format selection through IFormatStrategy interface</p></li>
+<li><p>Dependency Injection: All dependencies injected through constructor</p></li>
+<li><p>Context Manager: Resource management with __enter__/__exit__ methods</p></li>
+<li><p>Facade Pattern: DownloaderCore provides simplified interface to complex operations</p></li>
+<li><p>Template Method: Standardized download workflow with extensible steps</p></li>
 </ul>
 </dd>
 <dt>Error Handling Philosophy:</dt><dd><p>The module implements defensive programming practices:
@@ -628,16 +621,16 @@ maintainability, and allows for easy extension and modification of individual co
 </dd>
 <dt>Usage Patterns:</dt><dd><p>The module is designed to be used in several contexts:</p>
 <ol class="arabic simple">
-<li><p><strong>Single Download Operations</strong>:
+<li><p>Single Download Operations:
 - Extract video information
 - Check file existence
 - Execute download if needed
 - Update statistics and logs</p></li>
-<li><p><strong>Batch Download Operations</strong>:
+<li><p>Batch Download Operation:
 - Process multiple URLs concurrently
 - Maintain statistics across operations
 - Handle individual failures gracefully</p></li>
-<li><p><strong>Integration with Async Systems</strong>:
+<li><p>Integration with Async Systems:
 - Compatible with asyncio event loops
 - Non-blocking operations where possible
 - Resource cleanup compatible with async contexts</p></li>
@@ -722,18 +715,12 @@ maintainability, and allows for easy extension and modification of individual co
 <li><p>Unicode support: Handles international characters in titles and paths</p></li>
 </ul>
 </dd>
-</dl>
-<p>Author: Oleksandr Kharhenko
-License: MIT
-Created: 2025
-Last Modified: 2025</p>
-<dl class="simple">
 <dt>See Also:</dt><dd><ul class="simple">
 <li><p>yt_dl_cli.core.orchestration: Asynchronous orchestration layer</p></li>
 <li><p>yt_dl_cli.interfaces.interfaces: Core interface definitions</p></li>
 <li><p>yt_dl_cli.config.config: Configuration management documentation</p></li>
 <li><p>yt_dl_cli.utils.utils: Utility functions and helpers</p></li>
-<li><p>yt-dlp documentation: <a class="reference external" href="https://github.com/yt-dlp/yt-dlp">https://github.com/yt-dlp/yt-dlp</a></p></li>
+<li><p>yt-dlp documentation: <a class="reference external" href="https://harley029.github.io/yt_dl_cli/">https://harley029.github.io/yt_dl_cli/</a></p></li>
 </ul>
 </dd>
 </dl>
@@ -1382,22 +1369,7 @@ and gracefully falls back to English when translations are unavailable.</p>
 <p>The module is designed to work with standard GNU gettext .po/.mo file formats
 and follows common localization directory conventions used in many open-source
 projects.</p>
-<dl>
-<dt>Example:</dt><dd><p>Basic usage for setting up translations:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">your_package.i18n</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_i18n</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">setup_i18n</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">))</span>  <span class="c1"># Will print translated text if available</span>
-</pre></div>
-</div>
-<p>Custom configuration:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">setup_i18n</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;myapp&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">localedir</span><span class="o">=</span><span class="s2">&quot;/path/to/translations&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">language</span><span class="o">=</span><span class="s2">&quot;es&quot;</span>
-<span class="gp">... </span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
+<dl class="simple">
 <dt>Note:</dt><dd><p>After calling setup_i18n(), the _() function becomes globally available
 for string translation throughout your application.</p>
 </dd>
@@ -1415,16 +1387,13 @@ current locale configuration. If no locale is detected or an error occurs,
 it defaults to English (“en”).</p>
 <dl>
 <dt>Returns:</dt><dd><dl class="simple">
-<dt>str: A 2-character language code (ISO 639-1 format).</dt><dd><p>Examples: “en” for English, “es” for Spanish, “fr” for French.
+<dt>str: A 2-character language code (ISO 639-1 format).</dt><dd><p>Examples: “en” for English, “de” for German.
 Always returns “en” as fallback if system locale cannot be determined.</p>
 </dd>
 </dl>
 </dd>
 <dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_system_lang</span><span class="p">()</span>
 <span class="go">&#39;en&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># On a Spanish system, might return:</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">get_system_lang</span><span class="p">()</span>
-<span class="go">&#39;es&#39;</span>
 </pre></div>
 </div>
 </dd>
@@ -1871,17 +1840,6 @@ coupling, easier testing through mock implementations, and flexible
 architecture by defining clear interfaces without concrete implementations.</p>
 <p>The protocols follow the Dependency Inversion Principle, allowing high-level
 modules to depend on abstractions rather than concrete implementations.</p>
-<dl>
-<dt>Example:</dt><dd><p>Using protocols for dependency injection:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">download_manager</span><span class="p">(</span><span class="n">logger</span><span class="p">:</span> <span class="n">ILogger</span><span class="p">,</span> <span class="n">stats</span><span class="p">:</span> <span class="n">IStatsCollector</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting download process&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="c1"># ... download logic ...</span>
-<span class="gp">... </span>    <span class="n">stats</span><span class="o">.</span><span class="n">record_success</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="n">stats</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">elapsed_time</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
-</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="yt_dl_cli.interfaces.interfaces.IFileChecker">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.interfaces.interfaces.</span></span><span class="sig-name descname"><span class="pre">IFileChecker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.interfaces.interfaces.IFileChecker" title="Link to this definition">¶</a></dt>
@@ -1897,20 +1855,6 @@ implementations that optimize repeated checks.</p>
 <p>The protocol focuses on existence checking as this is often the primary
 file system query needed in download managers, file processors, and
 similar applications.</p>
-<dl>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">RealFileChecker</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">return</span> <span class="n">filepath</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="n">filepath</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">MockFileChecker</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">existing_files</span><span class="p">:</span> <span class="nb">set</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">files</span> <span class="o">=</span> <span class="n">existing_files</span>
-<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">return</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span>
-</pre></div>
-</div>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="yt_dl_cli.interfaces.interfaces.IFileChecker.exists">
 <span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#yt_dl_cli.interfaces.interfaces.IFileChecker.exists" title="Link to this definition">¶</a></dt>
@@ -1924,7 +1868,7 @@ but should be documented clearly.</p>
 - Network timeouts for remote file systems
 - Invalid path formats
 - Non-existent parent directories</p>
-<dl>
+<dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
 <dt>filepath (Path): A Path object representing the file location</dt><dd><p>to check. Should be an absolute or relative path that can
 be resolved by the underlying file system implementation.</p>
@@ -1936,13 +1880,6 @@ be resolved by the underlying file system implementation.</p>
 “file exists but is not accessible”.</p>
 </dd>
 </dl>
-</dd>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_checker</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/home/user/document.txt&quot;</span><span class="p">))</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">file_checker</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./nonexistent.file&quot;</span><span class="p">))</span>
-<span class="go">False</span>
-</pre></div>
-</div>
 </dd>
 </dl>
 </dd></dl>
@@ -1964,19 +1901,6 @@ structured logging, and additional context via keyword arguments.</p>
 <p>Methods should follow standard logging conventions where higher-level
 methods (critical, error) typically indicate more severe issues than
 lower-level ones (info, warning).</p>
-<dl>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">ConsoleLogger</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;INFO: </span><span class="si">{</span><span class="n">msg</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="c1"># ... implement other methods</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">process_data</span><span class="p">(</span><span class="n">logger</span><span class="p">:</span> <span class="n">ILogger</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing started&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Found </span><span class="si">%d</span><span class="s2"> warnings&quot;</span><span class="p">,</span> <span class="n">warning_count</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="yt_dl_cli.interfaces.interfaces.ILogger.critical">
 <span class="sig-name descname"><span class="pre">critical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#yt_dl_cli.interfaces.interfaces.ILogger.critical" title="Link to this definition">¶</a></dt>
@@ -1984,7 +1908,7 @@ lower-level ones (info, warning).</p>
 <p>Used for very serious error conditions that may cause the
 program to terminate or indicate system-level failures that
 require immediate attention.</p>
-<dl>
+<dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
 <dt>msg (Any): The critical error message to log. Can be a string</dt><dd><p>with format placeholders or any object with a string representation.</p>
 </dd>
@@ -1996,11 +1920,6 @@ require immediate attention.</p>
 </dd>
 <dt>Returns:</dt><dd><p>None</p>
 </dd>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;System out of memory&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Failed to initialize: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">component_name</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
 </dl>
 </dd></dl>
 
@@ -2011,7 +1930,7 @@ require immediate attention.</p>
 <p>Used for error conditions that prevented a specific operation
 from completing successfully but don’t necessarily terminate
 the entire program.</p>
-<dl>
+<dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
 <dt>msg (Any): The error message to log. Can be a string with</dt><dd><p>format placeholders or any object with a string representation.</p>
 </dd>
@@ -2023,11 +1942,6 @@ the entire program.</p>
 </dd>
 <dt>Returns:</dt><dd><p>None</p>
 </dd>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to process file: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Database connection failed&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
 </dl>
 </dd></dl>
 
@@ -2037,7 +1951,7 @@ the entire program.</p>
 <dd><p>Log an informational message.</p>
 <p>Used for general information about program execution flow,
 successful operations, or non-critical status updates.</p>
-<dl>
+<dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
 <dt>msg (Any): The message to log. Can be a string with format</dt><dd><p>placeholders or any object with a string representation.</p>
 </dd>
@@ -2050,11 +1964,6 @@ context, stack info, etc.).</p>
 </dd>
 <dt>Returns:</dt><dd><p>None</p>
 </dd>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;User </span><span class="si">%s</span><span class="s2"> logged in&quot;</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing complete&quot;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">1.23</span><span class="p">})</span>
-</pre></div>
-</div>
-</dd>
 </dl>
 </dd></dl>
 
@@ -2065,7 +1974,7 @@ context, stack info, etc.).</p>
 <p>Used for potentially problematic situations that don’t prevent
 the program from continuing but may indicate issues that should
 be addressed or monitored.</p>
-<dl>
+<dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
 <dt>msg (Any): The warning message to log. Can be a string with</dt><dd><p>format placeholders or any object with a string representation.</p>
 </dd>
@@ -2076,11 +1985,6 @@ be addressed or monitored.</p>
 </dl>
 </dd>
 <dt>Returns:</dt><dd><p>None</p>
-</dd>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Deprecated API used: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">api_name</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Low disk space: </span><span class="si">%d%%</span><span class="s2"> remaining&quot;</span><span class="p">,</span> <span class="n">space_percent</span><span class="p">)</span>
-</pre></div>
-</div>
 </dd>
 </dl>
 </dd></dl>
@@ -2102,22 +2006,6 @@ or mock implementations for testing that capture output for verification.</p>
 <p>The protocol is designed to support user-friendly console applications
 that need to display status information, warnings, errors, and other
 messages with visual distinction through color coding.</p>
-<dl>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">ColorConsole</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">printout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="n">color_codes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;red&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[31m&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[32m&quot;</span><span class="p">}</span>
-<span class="gp">... </span>        <span class="n">reset</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">color_codes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">colour</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}{</span><span class="n">msg</span><span class="si">}{</span><span class="n">reset</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">TestMessage</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">printout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colour</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">colour</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span>
-</pre></div>
-</div>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="yt_dl_cli.interfaces.interfaces.IMessage.printout">
 <span class="sig-name descname"><span class="pre">printout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#yt_dl_cli.interfaces.interfaces.IMessage.printout" title="Link to this definition">¶</a></dt>
@@ -2129,7 +2017,7 @@ implementation (ANSI codes, GUI colors, HTML colors, etc.).</p>
 “cyan”, “magenta”, “white”, but implementations should document their
 supported color set. Implementations should handle unknown colors
 gracefully, typically by falling back to default formatting.</p>
-<dl>
+<dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
 <dt>colour (str): The color specification for the message. Format</dt><dd><p>and supported values depend on the implementation. Common
 values include standard color names like “red”, “green”, etc.</p>
@@ -2140,12 +2028,6 @@ markup or formatting codes.</p>
 </dl>
 </dd>
 <dt>Returns:</dt><dd><p>None</p>
-</dd>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">message</span><span class="o">.</span><span class="n">printout</span><span class="p">(</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;Download completed successfully&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">message</span><span class="o">.</span><span class="n">printout</span><span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;Error: Failed to connect to server&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">message</span><span class="o">.</span><span class="n">printout</span><span class="p">(</span><span class="s2">&quot;yellow&quot;</span><span class="p">,</span> <span class="s2">&quot;Warning: File already exists&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
 </dd>
 <dt>Note:</dt><dd><p>Implementations should be thread-safe if concurrent access is
 expected, and should handle encoding issues gracefully when
@@ -2171,24 +2053,6 @@ protocol is designed to be thread-safe in implementations where concurrent
 access is expected.</p>
 <p>The statistics collected can be used for monitoring application performance,
 generating user feedback, debugging issues, or creating audit trails.</p>
-<dl>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">SimpleStatsCollector</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">successes</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">failures</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">skips</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="gp">...</span>
-<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">record_success</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">successes</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="gp">... </span>    <span class="c1"># ... implement other methods</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span> <span class="o">=</span> <span class="n">SimpleStatsCollector</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">record_success</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="yt_dl_cli.interfaces.interfaces.IStatsCollector.record_failure">
 <span class="sig-name descname"><span class="pre">record_failure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#yt_dl_cli.interfaces.interfaces.IStatsCollector.record_failure" title="Link to this definition">¶</a></dt>
@@ -2197,13 +2061,8 @@ generating user feedback, debugging issues, or creating audit trails.</p>
 exceptions, or other issues that prevent successful completion.
 Implementations should increment their failure counter and may store
 additional context about the failure type or cause.</p>
-<dl>
+<dl class="simple">
 <dt>Returns:</dt><dd><p>None</p>
-</dd>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">record_failure</span><span class="p">()</span>  <span class="c1"># After network timeout</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">record_failure</span><span class="p">()</span>  <span class="c1"># After file permission error</span>
-</pre></div>
-</div>
 </dd>
 </dl>
 </dd></dl>
@@ -2218,13 +2077,8 @@ operation not needed due to current state, or user-defined filtering
 rules that exclude the operation.</p>
 <p>Skipped operations are distinct from failures as they represent
 intentional non-execution rather than failed attempts.</p>
-<dl>
+<dl class="simple">
 <dt>Returns:</dt><dd><p>None</p>
-</dd>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">record_skip</span><span class="p">()</span>  <span class="c1"># File already exists, skipping download</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">record_skip</span><span class="p">()</span>  <span class="c1"># Item filtered out by user preferences</span>
-</pre></div>
-</div>
 </dd>
 </dl>
 </dd></dl>
@@ -2237,13 +2091,8 @@ intentional non-execution rather than failed attempts.</p>
 file processing, or data transformation) completes successfully without
 errors. Implementations should increment their success counter and may
 also record additional metadata like timestamps or operation details.</p>
-<dl>
+<dl class="simple">
 <dt>Returns:</dt><dd><p>None</p>
-</dd>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">record_success</span><span class="p">()</span>  <span class="c1"># After successful file download</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">record_success</span><span class="p">()</span>  <span class="c1"># After successful data processing</span>
-</pre></div>
-</div>
 </dd>
 </dl>
 </dd></dl>
@@ -2256,7 +2105,7 @@ also record additional metadata like timestamps or operation details.</p>
 summary and output it using the provided logger. The report typically
 includes counts for each operation type, percentages, rates, and timing
 information.</p>
-<dl>
+<dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
 <dt>logger (ILogger): The logger instance to use for outputting the</dt><dd><p>statistics report. Should typically use info level for
 normal reporting.</p>
@@ -2267,12 +2116,6 @@ performance metrics.</p>
 </dl>
 </dd>
 <dt>Returns:</dt><dd><p>None</p>
-</dd>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="mf">125.5</span><span class="p">)</span>
-<span class="go"># Logs something like:</span>
-<span class="go"># &quot;Completed in 125.5s: 150 successful, 3 failed, 12 skipped (92% success rate)&quot;</span>
-</pre></div>
-</div>
 </dd>
 </dl>
 </dd></dl>
@@ -2481,8 +2324,8 @@ VideoFormatStrategy based on the configuration.</p>
 </section>
 <section id="module-yt_dl_cli.scripts.cli">
 <span id="scripts"></span><h1>Scripts<a class="headerlink" href="#module-yt_dl_cli.scripts.cli" title="Link to this heading">¶</a></h1>
-<p>Command Line Interface Entry Point Module for YouTube Downloader CLI Tool.</p>
-<p>This module serves as the primary entry point for the YouTube downloader command-line
+<p>Command Line Interface Entry Point Module for YT-DL-CLI Tool.</p>
+<p>This module serves as the primary entry point for the video downloader command-line
 interface application. It provides a simple interface to initialize and execute
 the video downloading functionality through the main VideoDownloader class.</p>
 <p>The module implements a clean separation of concerns by delegating the actual
@@ -2496,12 +2339,10 @@ entry point:</p>
 <p>$ yt-dl</p>
 </dd>
 </dl>
-<p>Author: Oleksandr Kharhenko
-License: MIT</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="yt_dl_cli.scripts.cli.main">
 <span class="sig-prename descclassname"><span class="pre">yt_dl_cli.scripts.cli.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.scripts.cli.main" title="Link to this definition">¶</a></dt>
-<dd><p>Main entry point function for the YouTube downloader CLI application.</p>
+<dd><p>Main entry point function for the YT-DL-CLI application.</p>
 <p>This function serves as the primary interface between the command-line
 environment and the core downloading functionality. It instantiates the
 VideoDownloader class and initiates the download process.</p>
@@ -2509,7 +2350,7 @@ VideoDownloader class and initiates the download process.</p>
 on application initialization and delegation to the core downloader logic.
 It handles the high-level orchestration while leaving specific download
 operations to the VideoDownloader class.</p>
-<dl>
+<dl class="simple">
 <dt>Workflow:</dt><dd><ol class="arabic simple">
 <li><p>Creates a new VideoDownloader instance</p></li>
 <li><p>Calls the download method to start the download process</p></li>
@@ -2532,12 +2373,6 @@ VideoDownloader class.</p>
 or incorrect module structure.</p>
 </dd>
 </dl>
-</dd>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">main</span><span class="p">()</span>
-<span class="go"># Starts the interactive download process</span>
-<span class="go"># User will be prompted for URLs, quality settings, etc.</span>
-</pre></div>
-</div>
 </dd>
 <dt>Note:</dt><dd><p>This function expects the VideoDownloader class to handle all user
 interaction, error handling, and graceful shutdown procedures.
@@ -2950,7 +2785,7 @@ messages for consistent presentation.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">elapsed_time</span><span class="p">)</span>
-<span class="go"># This will log a formatted report with all statistics</span>
+<span class="go">This will log a formatted report with all statistics</span>
 </pre></div>
 </div>
 </dd>
@@ -2996,11 +2831,6 @@ that allow for easy mocking and alternative implementations.</p>
 </pre></div>
 </div>
 </dd>
-<dt>Dependencies:</dt><dd><ul class="simple">
-<li><p>pathlib: For cross-platform path handling</p></li>
-<li><p>re: For regular expression operations</p></li>
-</ul>
-</dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="yt_dl_cli.utils.utils.FileSystemChecker">
@@ -3026,7 +2856,65 @@ It can be easily mocked or extended for different file system backends.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="yt_dl_cli.utils.utils.FileSystemChecker.ensure_dir">
 <span class="sig-name descname"><span class="pre">ensure_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.utils.utils.FileSystemChecker.ensure_dir" title="Link to this definition">¶</a></dt>
-<dd><p>Create a requested folder.</p>
+<dd><p>Create a directory and all necessary parent directories.</p>
+<p>This method ensures that a directory exists at the specified path,
+creating it along with any missing parent directories if needed.
+If the directory already exists, the method completes successfully
+without raising an error.</p>
+<p>This is equivalent to the Unix ‘mkdir -p’ command and is useful
+for preparing directory structures before file operations.</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>path (str or Path): Path where the directory should be created.</dt><dd><p>Can be either a string path or a pathlib.Path
+object. The path can be absolute or relative
+to the current working directory.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>None: This method doesn’t return a value. Success is indicated</dt><dd><p>by the absence of exceptions.</p>
+</dd>
+</dl>
+</dd>
+<dt>Raises:</dt><dd><dl class="simple">
+<dt>OSError: Raised if directory creation fails due to:</dt><dd><ul class="simple">
+<li><p>Insufficient permissions</p></li>
+<li><p>Path conflicts (e.g., a file exists with the same name)</p></li>
+<li><p>Filesystem errors or limitations</p></li>
+</ul>
+</dd>
+<dt>FileExistsError: Raised if the path exists but is not a directory</dt><dd><p>(e.g., it’s a regular file)</p>
+</dd>
+</dl>
+<p>TypeError: If path cannot be converted to a Path object</p>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">checker</span> <span class="o">=</span> <span class="n">FileSystemChecker</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a simple directory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">checker</span><span class="o">.</span><span class="n">ensure_dir</span><span class="p">(</span><span class="s2">&quot;new_folder&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create nested directories</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">checker</span><span class="o">.</span><span class="n">ensure_dir</span><span class="p">(</span><span class="s2">&quot;path/to/deep/folder&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Works with Path objects</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./output/results/data&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">checker</span><span class="o">.</span><span class="n">ensure_dir</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Safe to call multiple times</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">checker</span><span class="o">.</span><span class="n">ensure_dir</span><span class="p">(</span><span class="s2">&quot;existing_folder&quot;</span><span class="p">)</span>  <span class="c1"># Won&#39;t raise error</span>
+</pre></div>
+</div>
+</dd>
+<dt>Note:</dt><dd><ul class="simple">
+<li><p>The method creates all missing parent directories automatically</p></li>
+<li><p>If any part of the path already exists as a directory, it’s preserved</p></li>
+<li><p>The method is idempotent: calling it multiple times is safe</p></li>
+<li><p>File permissions for created directories follow system defaults</p></li>
+<li><p>On Windows, this handles long path names appropriately</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -3070,7 +2958,52 @@ for existence checks)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="yt_dl_cli.utils.utils.FileSystemChecker.is_dir">
 <span class="sig-name descname"><span class="pre">is_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.utils.utils.FileSystemChecker.is_dir" title="Link to this definition">¶</a></dt>
-<dd><p>Check if an Path oject is a folder.</p>
+<dd><p>Check if a path represents a directory (folder).</p>
+<p>This method determines whether the specified path points to a directory
+rather than a regular file or other filesystem object. It provides a
+consistent interface that can be easily mocked for testing purposes.</p>
+<p>The method handles both existing and non-existing paths gracefully:
+- For existing paths: returns True if it’s a directory, False otherwise
+- For non-existing paths: returns False</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>path (str or Path): Path to check. Can be either a string path</dt><dd><p>or a pathlib.Path object. The path can be
+absolute or relative to the current working
+directory.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>bool: True if the path exists and is a directory,</dt><dd><p>False if the path doesn’t exist, is a file,
+or is another type of filesystem object</p>
+</dd>
+</dl>
+</dd>
+<dt>Raises:</dt><dd><dl class="simple">
+<dt>OSError: May be raised if there are permission issues</dt><dd><p>accessing the path or its parent directory</p>
+</dd>
+</dl>
+<p>TypeError: If path cannot be converted to a Path object</p>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">checker</span> <span class="o">=</span> <span class="n">FileSystemChecker</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Check existing directory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">checker</span><span class="o">.</span><span class="n">is_dir</span><span class="p">(</span><span class="s2">&quot;/home/user/documents&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;It&#39;s a directory&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Check file (should return False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="ow">not</span> <span class="n">checker</span><span class="o">.</span><span class="n">is_dir</span><span class="p">(</span><span class="s2">&quot;/home/user/file.txt&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;It&#39;s not a directory&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Works with Path objects too</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dir_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./my_folder&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">checker</span><span class="o">.</span><span class="n">is_dir</span><span class="p">(</span><span class="n">dir_path</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Directory exists&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -3108,10 +3041,6 @@ This method handles the most common problematic characters that
 cause issues across Windows, macOS, and Linux file systems.</p>
 <p>The following characters are replaced with underscores:
 - &lt; &gt; : “ / | ? *</p>
-<p>These characters are problematic because:
-- Windows reserves them for special purposes
-- Unix-like systems may interpret some as shell metacharacters
-- They can cause issues in various file operations</p>
 <dl>
 <dt>Args:</dt><dd><dl class="simple">
 <dt>name (str): Original string to sanitize. Can contain any</dt><dd><p>Unicode characters, though non-ASCII characters
