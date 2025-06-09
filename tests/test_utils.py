@@ -8,6 +8,7 @@ from yt_dl_cli.utils.utils import FilenameSanitizer, FileSystemChecker
 
 
 def test_filename_sanitizer():
+    """ Testing of FilenameSanitizer.sanitize  """
     bad = "Bad/File:Name*With|Chars?"
     clean = FilenameSanitizer.sanitize(bad)
     assert "/" not in clean
@@ -19,6 +20,7 @@ def test_filename_sanitizer():
 
 
 def test_filesystem_checker(tmp_path):
+    """ Testing of FileSystemChecker  """
     # tmp_path — это стандартная pytest-фикстура для временной директории
     checker = FileSystemChecker()
 
@@ -42,12 +44,14 @@ def test_filesystem_checker(tmp_path):
 
 
 def test_filename_sanitizer_type_error():
+    """ Testing of FilenameSanitizer  with type and value errors  """
     # TypeError, если имя не строка
     with pytest.raises(TypeError):
         FilenameSanitizer.sanitize(12345)  # type: ignore
 
 
 def test_filename_sanitizer_value_error():
+    """ Testing of FilenameSanitizer  with value errors  """
     # ValueError, если max_length меньше 1
     with pytest.raises(ValueError):
         FilenameSanitizer.sanitize("goodname", max_length=0)

@@ -7,6 +7,7 @@ from yt_dl_cli.utils.parser import parse_arguments
 
 
 def test_config_parsing_from_args():
+    """ Test parsing config from command line arguments  """
     test_args = [
         "yt-dl-cli",
         "--urls",
@@ -30,6 +31,7 @@ def test_config_parsing_from_args():
 
 
 def test_config_default_values(monkeypatch):
+    """ Test default config values  """
     monkeypatch.setattr("pathlib.Path.read_text", lambda *a, **kw: "")
     sys.argv = ["yt-dl-cli"]
     config = parse_arguments()
@@ -41,6 +43,7 @@ def test_config_default_values(monkeypatch):
 
 
 def test_config_invalid_workers():
+    """ Test invalid max_workers value  """
     try:
         Config(
             save_dir="d",  # type: ignore
@@ -54,6 +57,7 @@ def test_config_invalid_workers():
 
 
 def test_config_quality():
+    """ Test invalid quality value  """
     try:
         Config(
             save_dir="d",  # type: ignore

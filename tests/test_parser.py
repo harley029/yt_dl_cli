@@ -11,6 +11,7 @@ from yt_dl_cli.utils.parser import parse_arguments
 
 
 def test_parse_arguments_basic(monkeypatch):
+    """ Test parsing arguments with basic usage  """
     sys.argv = [
         "yt-dl-cli",
         "--urls",
@@ -32,9 +33,7 @@ def test_parse_arguments_basic(monkeypatch):
 
 
 def run_with_file_error(monkeypatch, error):
-    """Вспомогательная функция: подменяет Path.read_text чтобы выбрасывать ошибку,
-    перехватывает stderr
-    """
+    """ Run parse_arguments with file-related error  """
     sys.argv = ["yt-dl-cli"]
     from pathlib import Path
 
@@ -54,18 +53,21 @@ def run_with_file_error(monkeypatch, error):
 
 
 def test_parse_arguments_filenotfound(monkeypatch):
+    """ Test parsing arguments with FileNotFoundError  """
     config, output = run_with_file_error(monkeypatch, FileNotFoundError("test"))
     assert config.urls == []
     assert "not found" in output or "Error" in output
 
 
 def test_parse_arguments_permissionerror(monkeypatch):
+    """ Test parsing arguments with PermissionError  """
     config, output = run_with_file_error(monkeypatch, PermissionError("test"))
     assert config.urls == []
     assert "Permission denied" in output or "Error" in output
 
 
 def test_parse_arguments_unicodeerror(monkeypatch):
+    """ Test parsing arguments with UnicodeDecodeError  """
     config, output = run_with_file_error(
         monkeypatch, UnicodeDecodeError("utf-8", b"", 0, 1, "reason")
     )
@@ -74,6 +76,7 @@ def test_parse_arguments_unicodeerror(monkeypatch):
 
 
 def test_parse_arguments_generic_exception(monkeypatch):
+    """ Test parsing arguments with generic exception  """
     config, output = run_with_file_error(monkeypatch, Exception("Some error"))
     assert config.urls == []
     assert "Error" in output
@@ -96,6 +99,7 @@ def test_parse_arguments_generic_exception(monkeypatch):
     ],
 )
 def test_parse_arguments_all_exceptions(monkeypatch, exc_type, exc_args, expected_part):
+    """ Test parsing arguments with a variety of exceptions  """
     sys.argv = ["yt-dl-cli", "--file", "bad.txt"]
 
     # Patch Path.read_text to raise the desired exception

@@ -11,11 +11,13 @@ from yt_dl_cli.i18n.messages import MessagePrinter, Messages
 
 
 def test_messages_config():
+    """ Testing of Messages.Config  """
     msg = Messages.Config.INVALID_WORKERS(workers=0)
     assert "must be at least" in msg
 
 
 def test_lazy_translation_str_raises():
+    """ Testing of lazy translation strings  """
     # Проверяем, что попытка str() вызывает RuntimeError
     lazy = Messages.Config.INVALID_WORKERS
     with pytest.raises(RuntimeError):
@@ -23,6 +25,7 @@ def test_lazy_translation_str_raises():
 
 
 def test_message_printer_printout(monkeypatch):
+    """ Testing of MessagePrinter.printout  """
     printer = MessagePrinter()
 
     printed = {}
@@ -65,6 +68,7 @@ def test_message_printer_printout(monkeypatch):
     ],
 )
 def test_message_printer_printout_colors(monkeypatch, color_name, color_code):
+    """ Testing of MessagePrinter.printout with colors  """
     printer = MessagePrinter()
     captured = {}
 
@@ -107,6 +111,7 @@ def test_message_printer_printout_colors(monkeypatch, color_name, color_code):
     ],
 )
 def test_get_system_lang(monkeypatch, envvar, value, expected):
+    """ Test get_system_lang  """
     # Сбрасываем все возможные переменные окружения
     for var in ["LANGUAGE", "LC_ALL", "LC_MESSAGES", "LANG"]:
         monkeypatch.delenv(var, raising=False)
@@ -121,6 +126,7 @@ def test_get_system_lang(monkeypatch, envvar, value, expected):
 
 
 def test_get_system_languages(monkeypatch):
+    """ Test get_system_languages  """
 
     monkeypatch.setenv("LANGUAGE", "de_DE.UTF-8")
     assert get_system_lang() == "de"
@@ -136,6 +142,7 @@ def test_get_system_languages(monkeypatch):
 
 
 def test_get_system_lang_fallback_locale(monkeypatch):
+    """ Test get_system_lang with fallback to locale.getlocale  """
     import locale
     from yt_dl_cli.i18n.init import get_system_lang
 
@@ -157,6 +164,7 @@ def test_get_system_lang_fallback_locale(monkeypatch):
 
 
 def test_setup_i18n_fallback_to_gettext_install(monkeypatch):
+    """ Test setup_i18n_fallback_to_gettext_install  """
     # 1. Мокаем gettext.translation чтобы всегда возвращать объект без install()
     class FakeTranslation:
         def install(self):

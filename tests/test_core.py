@@ -10,23 +10,30 @@ from yt_dl_cli.interfaces.interfaces import ILogger
 
 
 class DummyLogger(ILogger):
+    """Logger for tests"""
     def __init__(self):
+        """init Logger for tests"""
         self.messages = []
 
     def error(self, msg):
+        """Log error messages"""
         self.messages.append(msg)
 
     def info(self, msg):
+        """Log info messages"""
         self.messages.append(msg)
 
     def warning(self, msg):
+        """Log warning messages"""
         self.messages.append(msg)
 
     def critical(self, msg):
+        """Log critical messages"""
         self.messages.append(msg)
 
 
 def test_extract_info_logs_error(mocker):
+    """Test VideoInfoExtractor logs error when extracting info"""
     dummy_logger = DummyLogger()
     mocker.patch("yt_dlp.YoutubeDL", side_effect=Exception("fail"))
     extractor = VideoInfoExtractor(logger=dummy_logger)
@@ -36,6 +43,7 @@ def test_extract_info_logs_error(mocker):
 
 
 def test_download_executor_handles_error(mocker):
+    """Test DownloadExecutor handles exceptions"""
     dummy_logger = DummyLogger()
     mocker.patch("yt_dlp.YoutubeDL", side_effect=Exception("fail"))
     executor = DownloadExecutor(logger=dummy_logger)
@@ -45,6 +53,7 @@ def test_download_executor_handles_error(mocker):
 
 
 def test_downloadercore_exit_handles_exceptions(monkeypatch):
+    """Test DownloaderCore.exit() handles exceptions"""
     import yt_dl_cli.core.core as core
 
     class DummyLogger:
@@ -76,6 +85,7 @@ def test_downloadercore_exit_handles_exceptions(monkeypatch):
 
 
 class DummyLogger2:
+    """Logger for tests"""
     def __init__(self):
         self.errors = []
 
@@ -84,6 +94,7 @@ class DummyLogger2:
 
 
 def make_executor(monkeypatch, error_type):
+    """Make DownloadExecutor with mocked YoutubeDL"""
     import yt_dl_cli.core.core as core
 
     logger = DummyLogger2()
@@ -107,31 +118,38 @@ def make_executor(monkeypatch, error_type):
 
 
 def test_execute_download_success(monkeypatch):
+    """Test DownloadExecutor.execute_download() with success"""
     executor, logger = make_executor(monkeypatch, None)
     assert executor.execute_download("url", {}) is True
 
 
 def test_execute_download_downloaderror(monkeypatch):
+    """Test DownloadExecutor.execute_download() with DownloadError"""
     executor, logger = make_executor(monkeypatch, "download")
     assert executor.execute_download("url", {}) is False
     assert logger.errors
 
 
 def test_execute_download_other(monkeypatch):
+    """Test DownloadExecutor.execute_download() with other error"""
     executor, logger = make_executor(monkeypatch, "other")
     assert executor.execute_download("url", {}) is False
     assert logger.errors
 
 
 class DummyLogger3:
+    """Logger for tests"""
     def __init__(self):
+        """init Logger for tests"""
         self.errors = []
 
     def error(self, msg):
+        """Log error messages"""
         self.errors.append(msg)
 
 
 def make_extractor(monkeypatch, error_type):
+    """Make VideoInfoExtractor with mocked YoutubeDL"""
     import yt_dl_cli.core.core as core
 
     logger = DummyLogger3()
@@ -159,6 +177,7 @@ def make_extractor(monkeypatch, error_type):
 
 
 def test_extract_info_none(monkeypatch):
+    """Test VideoInfoExtractor.extract_info() with None"""
     extractor, logger = make_extractor(monkeypatch, "none")
     info = extractor.extract_info("url", {})
     assert info is None
@@ -166,6 +185,7 @@ def test_extract_info_none(monkeypatch):
 
 
 def test_extract_info_downloaderror(monkeypatch):
+    """Test VideoInfoExtractor.extract_info() with DownloadError """
     extractor, logger = make_extractor(monkeypatch, "download")
     info = extractor.extract_info("url", {})
     assert info is None
@@ -173,6 +193,7 @@ def test_extract_info_downloaderror(monkeypatch):
 
 
 def test_extract_info_extractorerror(monkeypatch):
+    """Test VideoInfoExtractor.extract_info() with ExtractorError """
     extractor, logger = make_extractor(monkeypatch, "extractor")
     info = extractor.extract_info("url", {})
     assert info is None
@@ -180,6 +201,7 @@ def test_extract_info_extractorerror(monkeypatch):
 
 
 def test_extract_info_other(monkeypatch):
+    """Test VideoInfoExtractor.extract_info() with other error """
     extractor, logger = make_extractor(monkeypatch, "other")
     info = extractor.extract_info("url", {})
     assert info is None
@@ -194,6 +216,7 @@ def test_extract_info_other(monkeypatch):
     ],
 )
 def test_download_single_branches(info, file_exists, expect_failure, expect_skip):
+    """Test DownloaderCore.download_single() with branches"""
     from yt_dl_cli.core.core import DownloaderCore
     from yt_dl_cli.i18n.messages import Messages
 

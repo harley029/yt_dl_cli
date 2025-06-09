@@ -6,6 +6,7 @@ from yt_dl_cli.utils.stats_manager import StatsManager
 
 
 def test_stats_manager_counts():
+    """ Testing of StatsManager.counts  """
     stats = StatsManager()
     stats.record_success()
     stats.record_skip()

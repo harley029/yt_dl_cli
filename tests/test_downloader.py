@@ -9,6 +9,7 @@ from yt_dl_cli.config.config import Config
 
 
 def test_downloader_runs_with_minimal_config(mocker):
+    """VideoDownloader start with minimal settings test"""
     # Мокаем весь yt_dlp чтобы не было настоящих запросов
     mock_ytdlp = mocker.patch("yt_dlp.YoutubeDL")
     instance = mock_ytdlp.return_value

@@ -5,14 +5,18 @@ from yt_dl_cli.main import VideoDownloader
 
 
 class DummyCore:
+    """Dummy core for tests"""
     def __enter__(self):
+        """Enter a context block."""
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        """Exit a context block."""
         return False
 
     @property
     def logger(self):
+        """Return logger instance."""
         class L:
             def warning(self, *args, **kwargs):
                 self.last = args
@@ -24,15 +28,18 @@ class DummyCore:
 
 
 class DummyOrchestrator:
+    """Dummy orchestrator for tests"""
     def __init__(self, *a, **k):
-        pass
+        """Initialize the orchestrator."""
 
     async def run(self):
+        """Run the orchestrator."""
         return None
 
 
 @pytest.mark.filterwarnings("ignore:coroutine.*was never awaited")
 def test_download_keyboard_interrupt(monkeypatch):
+    """Test download with KeyboardInterrupt."""
     # Мокаем DIContainer и orchestrator
     from yt_dl_cli import main
 
@@ -56,6 +63,7 @@ def test_download_keyboard_interrupt(monkeypatch):
 
 @pytest.mark.filterwarnings("ignore:coroutine.*was never awaited")
 def test_download_system_exit(monkeypatch):
+    """Test download with SystemExit."""
     from yt_dl_cli import main
 
     monkeypatch.setattr(
@@ -76,6 +84,7 @@ def test_download_system_exit(monkeypatch):
 
 @pytest.mark.filterwarnings("ignore:coroutine.*was never awaited")
 def test_download_generic_exception(monkeypatch):
+    """Test download with generic exception."""
     from yt_dl_cli import main
 
     logs = []
@@ -116,6 +125,7 @@ def test_download_generic_exception(monkeypatch):
 
 @pytest.mark.filterwarnings("ignore:coroutine.*was never awaited")
 def test_main_video_downloader_download(monkeypatch):
+    """Test main VideoDownloader.download() with successful download."""
     from yt_dl_cli import main
 
     class DummyCore:
@@ -157,7 +167,7 @@ def test_main_video_downloader_download(monkeypatch):
 
 @pytest.mark.filterwarnings("ignore:coroutine.*was never awaited")
 def test_main_main_function_invokes_download(monkeypatch):
-    """Проверяет, что main.main() создает VideoDownloader и вызывает download()."""
+    """Test main() function invokes VideoDownloader.download()."""
     from yt_dl_cli import main
 
     called = {}
