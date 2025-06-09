@@ -6,9 +6,9 @@ import sys
 # Добавляем src/ в PYTHONPATH, чтобы Sphinx видел пакеты как yt_dl_cli.*
 sys.path.insert(0, os.path.abspath("../src"))
 
-project = "YT-DL-CLI Video downloader"
+project = "YT-DL-CLI Video downloader"  # pylint: disable=invalid-name
 copyright = "2025, Oleksandr Kharchenko"
-author = "Oleksandr Kharchenko"
+author = "Oleksandr Kharchenko"  # noqa  # pylint: disable=invalid-name
 
 # Расширения Sphinx
 extensions = [
@@ -28,7 +28,7 @@ autodoc_default_options = {
 
 
 # Тема HTML
-html_theme = "nature"
+html_theme = "nature"  # pylint: disable=invalid-name
 html_static_path = ["_static"]
 def setup(app):
     """Customize Sphinx HTML theme"""

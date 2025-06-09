@@ -1,3 +1,4 @@
+""" Tests global settings  """
 import warnings
 
 warnings.filterwarnings(

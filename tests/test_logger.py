@@ -1,3 +1,4 @@
+""" Tests for yt_dl_cli.utils.logger module  """
 from pathlib import Path
 import logging
 
