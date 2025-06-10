@@ -32,6 +32,7 @@ Example:
     >>> console_printer.printout("blue", start_msg)
 """
 
+
 class LazyTranslation:
     """
     Deferred translation wrapper for internationalization support.
