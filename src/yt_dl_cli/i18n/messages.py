@@ -32,7 +32,6 @@ Example:
     >>> console_printer.printout("blue", start_msg)
 """
 
-from colorama import Fore, Style, init
 from yt_dl_cli.interfaces.interfaces import IMessage
 
 
