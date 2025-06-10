@@ -32,9 +32,6 @@ Example:
     >>> console_printer.printout("blue", start_msg)
 """
 
-from yt_dl_cli.interfaces.interfaces import IMessage
-
-
 class LazyTranslation:
     """
     Deferred translation wrapper for internationalization support.
