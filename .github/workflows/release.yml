@@ -38,7 +38,7 @@ jobs:
           mv yt_dl_cli.zip ../
 
       - name: Create GitHub Release & Upload Artifacts
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
