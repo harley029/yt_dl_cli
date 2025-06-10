@@ -49,7 +49,7 @@ jobs:
           files: |
             dist/yt_dl_cli-${{ steps.get_version.outputs.version }}.tar.gz
             dist/yt_dl_cli-${{ steps.get_version.outputs.version }}-py3-none-any.whl
-            src/yt_dl_cli.zip
+            yt_dl_cli.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
