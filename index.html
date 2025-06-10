@@ -39,17 +39,1317 @@
 <div class="toctree-wrapper compound">
 </div>
 </section>
-<section id="main-module">
-<h1>Main Module<a class="headerlink" href="#main-module" title="Link to this heading">¶</a></h1>
+<section id="module-yt_dl_cli.main">
+<span id="main-module"></span><h1>Main Module<a class="headerlink" href="#module-yt_dl_cli.main" title="Link to this heading">¶</a></h1>
+<p>YT-DL-CLI Video Downloader Main Application Module.</p>
+<p>This module contains the primary VideoDownloader class that serves as the main
+orchestrator for the entire video downloading process. It integrates all
+components of the application including configuration management, dependency
+injection, asynchronous orchestration, and comprehensive error handling.</p>
+<p>The module is designed with a clean architecture approach, separating concerns
+between configuration, logging, orchestration, and execution. It provides a
+high-level interface that abstracts away the complexity of concurrent downloads,
+internationalization, and error management.</p>
+<dl>
+<dt>Key Features:</dt><dd><ul class="simple">
+<li><p>Command-line argument parsing and configuration management</p></li>
+<li><p>Dependency injection for clean component integration</p></li>
+<li><p>Asynchronous download orchestration for optimal performance</p></li>
+<li><p>Comprehensive error handling with user-friendly messages</p></li>
+<li><p>Internationalization support for multi-language environments</p></li>
+<li><p>Graceful handling of user interruptions and system errors</p></li>
+</ul>
+</dd>
+<dt>Architecture:</dt><dd><p>The module follows the dependency injection pattern to ensure loose coupling
+between components. The VideoDownloader class acts as a facade that coordinates
+between different subsystems without being tightly coupled to their implementations.</p>
+<p>The application architecture consists of several layers:</p>
+<ol class="arabic simple">
+<li><p>Presentation Layer (CLI Interface):
+- Command-line argument parsing
+- User interaction and feedback
+- Progress reporting and error messages</p></li>
+<li><p>Application Layer (Main Orchestration):
+- VideoDownloader class (main entry point)
+- Configuration management and validation
+- High-level workflow coordination</p></li>
+<li><p>Domain Layer (Business Logic):
+- AsyncOrchestrator for concurrent operations
+- Download core functionality
+- Business rules and validation</p></li>
+<li><p>Infrastructure Layer (External Dependencies):
+- File system operations
+- Network communication
+- Logging and monitoring
+- Internationalization services</p></li>
+</ol>
+</dd>
+<dt>Design Patterns:</dt><dd><ul class="simple">
+<li><p>Facade Pattern: VideoDownloader provides simplified interface to complex subsystems</p></li>
+<li><p>Dependency Injection: Promotes loose coupling and enhances testability</p></li>
+<li><p>Context Manager: Ensures proper resource management and cleanup</p></li>
+<li><p>Observer Pattern: Progress tracking and event notification</p></li>
+<li><p>Strategy Pattern: Multiple download strategies and quality options</p></li>
+</ul>
+</dd>
+<dt>Error Handling Strategy:</dt><dd><p>The module implements a comprehensive error handling approach:</p>
+<ul class="simple">
+<li><p>Graceful Degradation: Continues operation when possible, falls back to defaults</p></li>
+<li><p>User-Friendly Messages: Translates technical errors into understandable feedback</p></li>
+<li><p>Logging Hierarchy: Different log levels for different audiences (user vs developer)</p></li>
+<li><p>Resource Cleanup: Ensures proper cleanup even in error scenarios</p></li>
+<li><p>Interruption Handling: Responds appropriately to user cancellation requests</p></li>
+</ul>
+</dd>
+<dt>Performance Considerations:</dt><dd><ul class="simple">
+<li><p>Asynchronous I/O operations to prevent blocking</p></li>
+<li><p>Concurrent downloads with configurable limits</p></li>
+<li><p>Memory-efficient streaming for large files</p></li>
+<li><p>Progress tracking without performance impact</p></li>
+<li><p>Lazy loading of heavy dependencies</p></li>
+</ul>
+</dd>
+<dt>Internationalization:</dt><dd><p>The module supports multiple languages through the i18n system:
+- Dynamic language detection from system locale
+- Runtime language switching capability
+- Localized error messages and user feedback
+- Cultural adaptation of date/time formats
+- Support for right-to-left languages</p>
+</dd>
+<dt>Security Considerations:</dt><dd><ul class="simple">
+<li><p>Input validation for URLs and file paths</p></li>
+<li><p>Safe file naming to prevent directory traversal</p></li>
+<li><p>Secure temporary file handling</p></li>
+<li><p>Network request validation and sanitization</p></li>
+<li><p>Proper handling of sensitive configuration data</p></li>
+</ul>
+</dd>
+<dt>Example Usage:</dt><dd><p>Command-line usage:</p>
+<p>$ python main.py –url “<a class="reference external" href="https://youtube.com/watch?v=example">https://youtube.com/watch?v=example</a>” –quality 720p
+$ python main.py –playlist “<a class="reference external" href="https://youtube.com/playlist?list=example">https://youtube.com/playlist?list=example</a>” –format mp3
+$ python main.py –url “<a class="reference external" href="https://youtube.com/watch?v=example">https://youtube.com/watch?v=example</a>” –save-dir “/custom/path”</p>
+<p>Programmatic usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">main</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoDownloader</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Basic usage with defaults</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">downloader</span> <span class="o">=</span> <span class="n">VideoDownloader</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">downloader</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Custom configuration</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">yt_dl_cli.config.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">save_dir</span><span class="o">=</span><span class="s2">&quot;/downloads&quot;</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="s2">&quot;1080p&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;mp4&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">downloader</span> <span class="o">=</span> <span class="n">VideoDownloader</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">downloader</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># With custom logger and language</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;custom_downloader&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">downloader</span> <span class="o">=</span> <span class="n">VideoDownloader</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;ru&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">downloader</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+<dt>Module Dependencies:</dt><dd><dl class="simple">
+<dt>Core Dependencies:</dt><dd><ul class="simple">
+<li><p>asyncio: Asynchronous I/O operations and event loop management</p></li>
+<li><p>logging: Comprehensive logging infrastructure</p></li>
+<li><p>traceback: Exception tracking and debugging information</p></li>
+<li><p>typing: Type hints for better code documentation and IDE support</p></li>
+</ul>
+</dd>
+<dt>Application Dependencies:</dt><dd><ul class="simple">
+<li><p>yt_dl_cli.config.config: Configuration management and validation</p></li>
+<li><p>yt_dl_cli.utils.logger: Logger factory and configuration utilities</p></li>
+<li><p>yt_dl_cli.core.orchestration: Asynchronous orchestration and DI container</p></li>
+<li><p>yt_dl_cli.utils.parser: Command-line argument parsing utilities</p></li>
+<li><p>yt_dl_cli.i18n.init: Internationalization initialization</p></li>
+<li><p>yt_dl_cli.i18n.messages: Localized message management</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>Testing:</dt><dd><p>The module is designed with testability in mind:
+- Dependency injection allows for easy mocking
+- Separation of concerns enables unit testing of individual components
+- Error handling can be tested through exception simulation
+- Configuration can be provided programmatically for test scenarios</p>
+</dd>
+<dt>Compatibility:</dt><dd><ul class="simple">
+<li><p>Python 3.8+: Utilizes modern async/await syntax and type hints</p></li>
+<li><p>Cross-platform: Works on Windows, macOS, and Linux</p></li>
+<li><p>Unicode support: Handles international characters in filenames and paths</p></li>
+<li><p>Network protocols: Supports HTTP/HTTPS with proxy configuration</p></li>
+</ul>
+</dd>
+</dl>
+<p>Author: Oleksandr Kharhenko
+License: MIT
+Created: 2025
+Last Modified: 20245</p>
+<dl class="simple">
+<dt>See Also:</dt><dd><ul class="simple">
+<li><p>yt_dl_cli.config.config: Configuration management documentation</p></li>
+<li><p>yt_dl_cli.core.orchestration: Asynchronous orchestration details</p></li>
+<li><p>yt_dl_cli.utils.logger: Logging configuration and best practices</p></li>
+<li><p>yt_dl_cli.i18n: Internationalization and localization guide</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.main.VideoDownloader">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.main.</span></span><span class="sig-name descname"><span class="pre">VideoDownloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.config.config.Config" title="yt_dl_cli.config.config.Config"><span class="pre">Config</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.interfaces.interfaces.ILogger" title="yt_dl_cli.interfaces.interfaces.ILogger"><span class="pre">ILogger</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.main.VideoDownloader" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Main orchestrator class for the YouTube video downloading application.</p>
+<p>This class serves as the primary entry point and coordinator for the entire
+download process. It encapsulates the complexity of managing configuration,
+dependency injection, asynchronous orchestration, and error handling while
+providing a simple interface for initiating downloads.</p>
+<p>The class follows the facade pattern, providing a simplified interface to
+a complex subsystem of downloaders, parsers, loggers, and orchestrators.
+It ensures proper initialization order, resource management, and graceful
+error handling throughout the application lifecycle.</p>
+<dl>
+<dt>Responsibilities:</dt><dd><ol class="arabic simple">
+<li><p>Parse and validate command-line arguments</p></li>
+<li><p>Initialize configuration and logging systems</p></li>
+<li><p>Create and configure the dependency injection container</p></li>
+<li><p>Orchestrate asynchronous download operations</p></li>
+<li><p>Handle user interruptions and system errors gracefully</p></li>
+<li><p>Manage resource cleanup and proper shutdown procedures</p></li>
+</ol>
+</dd>
+<dt>Design Patterns:</dt><dd><ul class="simple">
+<li><p>Facade: Simplifies interaction with complex subsystems</p></li>
+<li><p>Dependency Injection: Promotes loose coupling and testability</p></li>
+<li><p>Context Manager: Ensures proper resource management</p></li>
+</ul>
+</dd>
+<dt>Thread Safety:</dt><dd><p>This class is not thread-safe by design. Each instance should be used
+in a single thread context. For concurrent operations, the class
+delegates to AsyncOrchestrator which handles async/await patterns.</p>
+</dd>
+<dt>Attributes:</dt><dd><dl class="simple">
+<dt>config (Config): Application configuration object containing all</dt><dd><p>settings for download operations, paths, and preferences.</p>
+</dd>
+<dt>logger (logging.Logger): Configured logger instance for the application,</dt><dd><p>set up with appropriate handlers and formatters.</p>
+</dd>
+</dl>
+</dd>
+<dt>Example:</dt><dd><p>Basic usage with default configuration:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">downloader</span> <span class="o">=</span> <span class="n">VideoDownloader</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">downloader</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Usage with custom configuration:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">custom_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">save_dir</span><span class="o">=</span><span class="s2">&quot;/custom/path&quot;</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="s2">&quot;1080p&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">custom_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">downloader</span> <span class="o">=</span> <span class="n">VideoDownloader</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">custom_config</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">custom_logger</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">downloader</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+<dt>See Also:</dt><dd><p>Config: Configuration management class
+AsyncOrchestrator: Handles concurrent download operations
+DIContainer: Dependency injection container for component creation
+LoggerFactory: Factory for creating configured logger instances</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.main.VideoDownloader.download">
+<span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#yt_dl_cli.main.VideoDownloader.download" title="Link to this definition">¶</a></dt>
+<dd><p>Execute the complete video download process with comprehensive error handling.</p>
+<p>This method orchestrates the entire download workflow from initialization
+to completion. It serves as the main entry point for the download process,
+coordinating between multiple subsystems including dependency injection,
+asynchronous orchestration, resource management, and error handling.</p>
+<p>The method implements a sophisticated error handling strategy that provides
+different responses for different types of failures, ensuring graceful
+degradation and proper user feedback. It uses context managers to guarantee
+resource cleanup regardless of how the process terminates.</p>
+<dl>
+<dt>Process Architecture:</dt><dd><p>The download process follows a well-defined workflow:</p>
+<ol class="arabic simple">
+<li><p><strong>Dependency Resolution</strong>: Creates the downloader core through the
+dependency injection container, ensuring all required components
+are properly initialized and configured.</p></li>
+<li><p><strong>Orchestrator Setup</strong>: Initializes the AsyncOrchestrator with the
+core components and configuration, preparing for concurrent operations.</p></li>
+<li><p><strong>Resource Management</strong>: Enters a context manager that ensures proper
+resource allocation and cleanup, including file handles, network
+connections, and temporary files.</p></li>
+<li><p><strong>Asynchronous Execution</strong>: Launches the main download orchestration
+using asyncio, enabling concurrent downloads and efficient I/O operations.</p></li>
+<li><p><strong>Completion Handling</strong>: Manages successful completion, user interruption,
+or error scenarios with appropriate logging and cleanup procedures.</p></li>
+</ol>
+</dd>
+<dt>Error Handling Strategy:</dt><dd><p>The method implements a multi-layered error handling approach:</p>
+<ul class="simple">
+<li><p><strong>User Interruption (KeyboardInterrupt)</strong>: Caught when the user presses
+Ctrl+C or sends SIGINT. Logs a localized warning message and performs
+graceful shutdown, allowing for cleanup of partial downloads and
+temporary files.</p></li>
+<li><p><strong>Critical System Errors (Exception)</strong>: Catches all other unexpected
+exceptions, logs them as critical errors with full stack traces for
+debugging, and terminates the application with a non-zero exit code
+to indicate failure to calling processes.</p></li>
+<li><p><strong>Resource Management</strong>: The context manager pattern ensures that
+resources are properly cleaned up even if exceptions occur during
+the download process, preventing resource leaks and corruption.</p></li>
+</ul>
+</dd>
+<dt>Concurrency and Performance:</dt><dd><ul class="simple">
+<li><p>Utilizes asyncio event loop for efficient concurrent operations</p></li>
+<li><p>Delegates heavy I/O operations to specialized async components</p></li>
+<li><p>Implements proper backpressure handling to prevent memory exhaustion</p></li>
+<li><p>Provides real-time progress tracking without performance overhead</p></li>
+<li><p>Manages connection pooling and rate limiting for optimal throughput</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>None: This method operates through side effects and does not return</dt><dd><p>a value. Success is indicated by completion without exceptions,
+while failures are communicated through logging, user messages,
+and appropriate exit codes for process management.</p>
+</dd>
+</dl>
+</dd>
+<dt>Raises:</dt><dd><dl class="simple">
+<dt>SystemExit: May be raised by underlying components for critical errors</dt><dd><p>that require immediate application termination. This typically
+occurs for configuration errors, permission issues, or
+unrecoverable system states. The exit code indicates the
+type of failure for process management and scripting.</p>
+</dd>
+</dl>
+</dd>
+<dt>Side Effects:</dt><dd><dl class="simple">
+<dt>File System:</dt><dd><ul class="simple">
+<li><p>Creates downloaded video/audio files in the configured directory</p></li>
+<li><p>Generates temporary files during the download process</p></li>
+<li><p>Creates and updates log files with operation details</p></li>
+<li><p>May create directory structures for organized storage</p></li>
+</ul>
+</dd>
+<dt>Network:</dt><dd><ul class="simple">
+<li><p>Establishes connections to video hosting services</p></li>
+<li><p>Downloads video metadata and content streams</p></li>
+<li><p>May configure proxy settings and authentication</p></li>
+<li><p>Implements rate limiting and retry mechanisms</p></li>
+</ul>
+</dd>
+<dt>User Interface:</dt><dd><ul class="simple">
+<li><p>Displays progress indicators and download statistics</p></li>
+<li><p>Shows real-time status updates and completion notifications</p></li>
+<li><p>Provides error messages and troubleshooting information</p></li>
+<li><p>Updates terminal title and status (where supported)</p></li>
+</ul>
+</dd>
+<dt>System Resources:</dt><dd><ul class="simple">
+<li><p>Manages memory usage for concurrent operations</p></li>
+<li><p>Utilizes available CPU cores for parallel processing</p></li>
+<li><p>Monitors disk space and prevents over-allocation</p></li>
+<li><p>Handles system signals for graceful shutdown</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>Performance Characteristics:</dt><dd><ul class="simple">
+<li><p><strong>Memory Usage</strong>: Scales with concurrent download count and video quality</p></li>
+<li><p><strong>CPU Usage</strong>: Minimal except during transcoding operations</p></li>
+<li><p><strong>Network Usage</strong>: Optimized with connection pooling and compression</p></li>
+<li><p><strong>Disk I/O</strong>: Efficient streaming writes to minimize disk thrashing</p></li>
+<li><p><strong>Response Time</strong>: Real-time progress updates every 100ms</p></li>
+</ul>
+</dd>
+<dt>Example Usage:</dt><dd><p>Basic download execution:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">downloader</span> <span class="o">=</span> <span class="n">VideoDownloader</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">downloader</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<span class="go"># Output: Progress bars, status messages, completion notification</span>
+</pre></div>
+</div>
+<p>Error handling in scripts:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">downloader</span> <span class="o">=</span> <span class="n">VideoDownloader</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">downloader</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Download completed successfully&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">SystemExit</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Download failed with exit code: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Integration with exception handling:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">downloader</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Download cancelled by user&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># Error details are already logged by the method</span>
+</pre></div>
+</div>
+</dd>
+<dt>Monitoring and Debugging:</dt><dd><p>The method provides extensive logging at multiple levels:
+- <strong>INFO</strong>: General progress and status information
+- <strong>WARNING</strong>: Non-critical issues and user interruptions
+- <strong>ERROR</strong>: Recoverable errors and retry attempts
+- <strong>CRITICAL</strong>: Unrecoverable errors requiring termination
+- <strong>DEBUG</strong>: Detailed internal state for troubleshooting</p>
+</dd>
+<dt>Thread Safety:</dt><dd><p>This method is not thread-safe and should only be called once per
+VideoDownloader instance. The internal AsyncOrchestrator handles
+concurrency through async/await patterns within a single thread.
+For multi-threaded applications, create separate VideoDownloader
+instances for each thread.</p>
+</dd>
+<dt>Note:</dt><dd><p>This method is designed to be called once per VideoDownloader instance
+and represents the complete lifecycle of a download session. Multiple
+calls may result in undefined behavior due to resource state management
+and configuration handling. Create a new VideoDownloader instance for
+each independent download session.</p>
+</dd>
+<dt>See Also:</dt><dd><p>DIContainer.create_downloader_core: Creates configured download engine
+AsyncOrchestrator: Manages concurrent download operations and scheduling
+Messages.CLI: Internationalized user interface messages and error texts
+Config: Configuration options that affect download behavior
+LoggerFactory: Logging configuration and output management</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yt_dl_cli.main.main">
+<span class="sig-prename descclassname"><span class="pre">yt_dl_cli.main.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#yt_dl_cli.main.main" title="Link to this definition">¶</a></dt>
+<dd><p>Main entry point function for command-line execution.</p>
+<p>This function serves as the primary entry point when the module is executed
+directly from the command line. It provides a clean interface for script
+execution and handles the complete lifecycle of a download session.</p>
+<p>The function creates a VideoDownloader instance with default configuration
+(parsed from command-line arguments) and initiates the download process.
+It’s designed to be simple and straightforward for command-line usage.</p>
+<dl>
+<dt>Process Flow:</dt><dd><ol class="arabic simple">
+<li><p>Create VideoDownloader instance with default configuration</p></li>
+<li><p>Parse command-line arguments automatically</p></li>
+<li><p>Initialize logging and internationalization</p></li>
+<li><p>Execute the download process</p></li>
+<li><p>Handle completion or errors appropriately</p></li>
+</ol>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>None: This function operates through side effects and process exit codes.</dt><dd><p>Success is indicated by normal completion, while errors result in
+non-zero exit codes.</p>
+</dd>
+</dl>
+</dd>
+<dt>Raises:</dt><dd><dl class="simple">
+<dt>SystemExit: Raised by the VideoDownloader.download() method for critical</dt><dd><p>errors that require immediate termination. The exit code
+indicates the type of failure.</p>
+</dd>
+</dl>
+</dd>
+<dt>Side Effects:</dt><dd><ul class="simple">
+<li><p>Parses command-line arguments from sys.argv</p></li>
+<li><p>Creates VideoDownloader instance with parsed configuration</p></li>
+<li><p>Executes complete download process with all associated side effects</p></li>
+<li><p>May exit the process with non-zero code on failure</p></li>
+</ul>
+</dd>
+<dt>Example:</dt><dd><p>Command-line usage:</p>
+<p>$ python main.py –url “<a class="reference external" href="https://youtube.com/watch?v=example">https://youtube.com/watch?v=example</a>”
+$ python main.py –help
+$ python main.py –url “<a class="reference external" href="https://youtube.com/watch?v=example">https://youtube.com/watch?v=example</a>” –quality 720p</p>
+</dd>
+<dt>Note:</dt><dd><p>This function is specifically designed for command-line execution.
+For programmatic usage, create VideoDownloader instances directly
+rather than calling this function.</p>
+</dd>
+<dt>See Also:</dt><dd><p>VideoDownloader: Main orchestrator class for download operations
+parse_arguments: Command-line argument parsing implementation</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="configuration">
-<h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h1>
+<section id="module-yt_dl_cli.config.config">
+<span id="configuration"></span><h1>Configuration<a class="headerlink" href="#module-yt_dl_cli.config.config" title="Link to this heading">¶</a></h1>
+<p>Configuration Management Module</p>
+<p>This module provides configuration management functionality for the video downloader application.
+It defines the Config dataclass that holds all application settings including download paths,
+quality preferences, concurrency controls, and validation logic.</p>
+<p>The module ensures configuration integrity through automatic validation and type conversion,
+providing a centralized way to manage application settings with proper error handling.</p>
+<dl class="simple">
+<dt>Classes:</dt><dd><p><strong>Config</strong>: Main configuration dataclass with validation</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.config.config.Config">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.config.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_dir:</span> <span class="pre">~pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_only:</span> <span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">urls:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.config.config.Config" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Configuration data class containing all application settings.</p>
+<p>This class holds all the configuration parameters needed for the YouTube
+downloader application, including download paths, quality settings, and
+concurrency controls. It provides automatic validation of configuration
+values and type conversion where appropriate.</p>
+<dl>
+<dt>Attributes:</dt><dd><dl class="simple">
+<dt>save_dir (Path): Directory where downloaded files will be saved.</dt><dd><p>Automatically converted to Path object if string is provided.</p>
+</dd>
+<dt>max_workers (int): Maximum number of concurrent download threads.</dt><dd><p>Must be at least 1.</p>
+</dd>
+<dt>quality (str): Video quality preference. Valid options are:</dt><dd><p>‘best’, ‘worst’, ‘720’, ‘480’, ‘360’.</p>
+</dd>
+</dl>
+<p>audio_only (bool): Whether to download only audio (MP3) instead of video.
+urls (List[str]): List of URLs to download. Defaults to empty list.</p>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: If max_workers is less than 1 or quality is not in valid options.</p>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">save_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/downloads&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">quality</span><span class="o">=</span><span class="s2">&quot;720&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">audio_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">urls</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;https://example.com/video1&quot;</span><span class="p">,</span> <span class="s2">&quot;https://example.com/video2&quot;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.config.config.Config.audio_only">
+<span class="sig-name descname"><span class="pre">audio_only</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#yt_dl_cli.config.config.Config.audio_only" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.config.config.Config.max_workers">
+<span class="sig-name descname"><span class="pre">max_workers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#yt_dl_cli.config.config.Config.max_workers" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.config.config.Config.quality">
+<span class="sig-name descname"><span class="pre">quality</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#yt_dl_cli.config.config.Config.quality" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.config.config.Config.save_dir">
+<span class="sig-name descname"><span class="pre">save_dir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><a class="headerlink" href="#yt_dl_cli.config.config.Config.save_dir" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.config.config.Config.urls">
+<span class="sig-name descname"><span class="pre">urls</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#yt_dl_cli.config.config.Config.urls" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="core">
-<h1>Core<a class="headerlink" href="#core" title="Link to this heading">¶</a></h1>
+<section id="module-yt_dl_cli.core.core">
+<span id="core"></span><h1>Core<a class="headerlink" href="#module-yt_dl_cli.core.core" title="Link to this heading">¶</a></h1>
+<p>YT-DL-CLI Video Downloader Core Module.</p>
+<p>This module contains the core components responsible for the actual video downloading
+process. It provides a clean separation of concerns between video information extraction,
+download execution, and the orchestration of the complete download workflow.</p>
+<p>The module is built around the principle of single responsibility, with each class
+handling a specific aspect of the download process. This design promotes testability,
+maintainability, and allows for easy extension and modification of individual components.</p>
+<dl>
+<dt>Architecture Overview:</dt><dd><p>The module implements a layered architecture with clear separation between:</p>
+<ol class="arabic simple">
+<li><p>Information Layer (VideoInfoExtractor):
+- Extracts video metadata without downloading content
+- Validates video availability and accessibility
+- Retrieves video information for processing decisions</p></li>
+<li><p>Execution Layer (DownloadExecutor):
+- Handles the actual download operations
+- Manages yt-dlp interactions and configurations
+- Provides error handling for download failures</p></li>
+<li><p>Orchestration Layer (DownloaderCore):
+- Coordinates the complete download workflow
+- Integrates all components and dependencies
+- Manages resource lifecycle and cleanup
+- Handles file system operations and statistics</p></li>
+</ol>
+</dd>
+<dt>Key Components:</dt><dd><ul class="simple">
+<li><p>VideoInfoExtractor: Metadata extraction and video validation</p></li>
+<li><p>DownloadExecutor: Core download execution engine</p></li>
+<li><p>DownloaderCore: Main orchestrator and workflow manager</p></li>
+</ul>
+</dd>
+<dt>Design Patterns:</dt><dd><ul class="simple">
+<li><p>Strategy Pattern: Format selection through IFormatStrategy interface</p></li>
+<li><p>Dependency Injection: All dependencies injected through constructor</p></li>
+<li><p>Context Manager: Resource management with __enter__/__exit__ methods</p></li>
+<li><p>Facade Pattern: DownloaderCore provides simplified interface to complex operations</p></li>
+<li><p>Template Method: Standardized download workflow with extensible steps</p></li>
+</ul>
+</dd>
+<dt>Error Handling Philosophy:</dt><dd><p>The module implements defensive programming practices:
+- All external API calls are wrapped in try-catch blocks
+- Errors are logged but don’t crash the application
+- Graceful degradation when individual downloads fail
+- Resource cleanup is guaranteed through context managers
+- Detailed error messages for troubleshooting and debugging</p>
+</dd>
+<dt>Performance Considerations:</dt><dd><ul class="simple">
+<li><p>Efficient metadata extraction without unnecessary downloads</p></li>
+<li><p>File existence checking to avoid redundant operations</p></li>
+<li><p>Resource pooling and cleanup to prevent memory leaks</p></li>
+<li><p>Asynchronous-friendly design for concurrent operations</p></li>
+<li><p>Minimal I/O operations through smart caching strategies</p></li>
+</ul>
+</dd>
+<dt>Integration Points:</dt><dd><p>The module integrates with several external systems:
+- yt-dlp: Primary download engine and video platform interface
+- File System: Through IFileChecker for file operations
+- Logging: Through ILogger for monitoring and debugging
+- Statistics: Through IStatsCollector for progress tracking
+- Configuration: Through Config for user preferences and settings
+- Internationalization: Through Messages for localized user feedback</p>
+</dd>
+<dt>Usage Patterns:</dt><dd><p>The module is designed to be used in several contexts:</p>
+<ol class="arabic simple">
+<li><p>Single Download Operations:
+- Extract video information
+- Check file existence
+- Execute download if needed
+- Update statistics and logs</p></li>
+<li><p>Batch Download Operation:
+- Process multiple URLs concurrently
+- Maintain statistics across operations
+- Handle individual failures gracefully</p></li>
+<li><p>Integration with Async Systems:
+- Compatible with asyncio event loops
+- Non-blocking operations where possible
+- Resource cleanup compatible with async contexts</p></li>
+</ol>
+</dd>
+<dt>Security Considerations:</dt><dd><ul class="simple">
+<li><p>Input validation for URLs and file paths</p></li>
+<li><p>Safe filename sanitization to prevent directory traversal</p></li>
+<li><p>Secure handling of temporary files and downloads</p></li>
+<li><p>Validation of video information before processing</p></li>
+<li><p>Protection against malicious URLs and content</p></li>
+</ul>
+</dd>
+<dt>Thread Safety:</dt><dd><ul class="simple">
+<li><p>VideoInfoExtractor: Thread-safe, creates isolated yt-dlp instances</p></li>
+<li><p>DownloadExecutor: Thread-safe, each operation uses separate context</p></li>
+<li><p>DownloaderCore: Not thread-safe, designed for single-thread usage</p></li>
+<li><p>Resource management: Requires careful coordination in multi-threaded environments</p></li>
+</ul>
+</dd>
+<dt>Example Usage:</dt><dd><p>Basic usage with dependency injection:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">yt_dl_cli.config.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">yt_dl_cli.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggerFactory</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Setup dependencies</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">save_dir</span><span class="o">=</span><span class="s2">&quot;/downloads&quot;</span><span class="p">,</span> <span class="n">audio_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="s2">&quot;/downloads&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create core components</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info_extractor</span> <span class="o">=</span> <span class="n">VideoInfoExtractor</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download_executor</span> <span class="o">=</span> <span class="n">DownloadExecutor</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create and use downloader core</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">DownloaderCore</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">strategy</span><span class="p">,</span> <span class="n">stats</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span>
+<span class="gp">... </span>                   <span class="n">file_checker</span><span class="p">,</span> <span class="n">info_extractor</span><span class="p">,</span> <span class="n">download_executor</span><span class="p">)</span> <span class="k">as</span> <span class="n">core</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">core</span><span class="o">.</span><span class="n">download_single</span><span class="p">(</span><span class="s2">&quot;https://youtube.com/watch?v=example&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>Dependencies:</dt><dd><dl class="simple">
+<dt>External Libraries:</dt><dd><ul class="simple">
+<li><p>yt-dlp: Video downloading and information extraction</p></li>
+<li><p>typing: Type hints for better code documentation</p></li>
+</ul>
+</dd>
+<dt>Internal Modules:</dt><dd><ul class="simple">
+<li><p>yt_dl_cli.i18n.messages: Internationalized user messages</p></li>
+<li><p>yt_dl_cli.interfaces.interfaces: Core interface definitions</p></li>
+<li><p>yt_dl_cli.interfaces.strategies: Format selection strategies</p></li>
+<li><p>yt_dl_cli.utils.utils: Utility functions and helpers</p></li>
+<li><p>yt_dl_cli.config.config: Configuration management</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>Error Types:</dt><dd><p>The module handles several categories of errors:
+- Network errors: Connection timeouts, DNS failures
+- Platform errors: Video unavailable, private videos, geo-blocking
+- File system errors: Permission denied, disk full, invalid paths
+- Format errors: Unsupported formats, codec issues
+- Configuration errors: Invalid settings, missing dependencies</p>
+</dd>
+<dt>Monitoring and Observability:</dt><dd><ul class="simple">
+<li><p>Detailed logging at multiple levels (DEBUG, INFO, WARNING, ERROR)</p></li>
+<li><p>Statistics collection for success/failure rates</p></li>
+<li><p>Progress tracking for individual downloads</p></li>
+<li><p>Resource usage monitoring and cleanup verification</p></li>
+<li><p>Performance metrics for optimization opportunities</p></li>
+</ul>
+</dd>
+<dt>Testing Considerations:</dt><dd><p>The module is designed with testability in mind:
+- Dependency injection allows for easy mocking
+- Clear separation of concerns enables unit testing
+- Context managers ensure proper test cleanup
+- Error handling can be tested through exception simulation
+- Statistics tracking provides measurable test outcomes</p>
+</dd>
+<dt>Version Compatibility:</dt><dd><ul class="simple">
+<li><p>Python 3.8+: Uses modern type hints and context managers</p></li>
+<li><p>yt-dlp: Compatible with latest stable versions</p></li>
+<li><p>Cross-platform: Works on Windows, macOS, and Linux</p></li>
+<li><p>Unicode support: Handles international characters in titles and paths</p></li>
+</ul>
+</dd>
+<dt>See Also:</dt><dd><ul class="simple">
+<li><p>yt_dl_cli.core.orchestration: Asynchronous orchestration layer</p></li>
+<li><p>yt_dl_cli.interfaces.interfaces: Core interface definitions</p></li>
+<li><p>yt_dl_cli.config.config: Configuration management documentation</p></li>
+<li><p>yt_dl_cli.utils.utils: Utility functions and helpers</p></li>
+<li><p>yt-dlp documentation: <a class="reference external" href="https://harley029.github.io/yt_dl_cli/">https://harley029.github.io/yt_dl_cli/</a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.core.core.DownloadExecutor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.core.core.</span></span><span class="sig-name descname"><span class="pre">DownloadExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.interfaces.interfaces.ILogger" title="yt_dl_cli.interfaces.interfaces.ILogger"><span class="pre">ILogger</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.core.core.DownloadExecutor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handles the actual download execution using yt-dlp.</p>
+<p>This class provides a clean interface to yt-dlp’s download functionality,
+focusing specifically on executing download operations with comprehensive
+error handling and logging. It serves as the execution engine for the
+download workflow, handling the actual file transfer and storage operations.</p>
+<p>The class implements robust error handling to ensure that download failures
+are properly managed and don’t crash the application. It provides detailed
+logging for monitoring download progress and troubleshooting issues.</p>
+<dl>
+<dt>Key Responsibilities:</dt><dd><ul class="simple">
+<li><p>Execute video/audio downloads using yt-dlp</p></li>
+<li><p>Handle download-related errors and exceptions</p></li>
+<li><p>Provide detailed logging for monitoring and debugging</p></li>
+<li><p>Manage yt-dlp configuration and options</p></li>
+<li><p>Support multiple output formats and quality settings</p></li>
+</ul>
+</dd>
+<dt>Design Principles:</dt><dd><ul class="simple">
+<li><p>Single Responsibility: Only handles download execution</p></li>
+<li><p>Defensive Programming: Comprehensive error handling</p></li>
+<li><p>Logging Integration: Detailed progress and error reporting</p></li>
+<li><p>Configuration Flexibility: Supports various yt-dlp options</p></li>
+</ul>
+</dd>
+<dt>Error Categories:</dt><dd><p>The class handles several types of download errors:
+- Network errors: Connection issues, timeouts, bandwidth problems
+- Storage errors: Disk full, permission denied, invalid paths
+- Format errors: Unsupported formats, codec issues
+- Platform errors: Video removed, geo-blocked, private content</p>
+</dd>
+<dt>Thread Safety:</dt><dd><p>This class is thread-safe as it creates isolated yt-dlp instances
+for each download operation and doesn’t maintain mutable state.
+Multiple threads can safely use the same DownloadExecutor instance.</p>
+</dd>
+<dt>Performance Characteristics:</dt><dd><ul class="simple">
+<li><p>I/O intensive: Performance depends on network and disk speed</p></li>
+<li><p>Memory efficient: Streaming downloads minimize memory usage</p></li>
+<li><p>Resumable: Supports partial download resumption where possible</p></li>
+<li><p>Concurrent friendly: Designed for use in concurrent environments</p></li>
+</ul>
+</dd>
+<dt>Attributes:</dt><dd><dl class="simple">
+<dt>logger (ILogger): Logger instance for error reporting and progress tracking.</dt><dd><p>Used to record download attempts, progress updates,
+completion status, and detailed error information.</p>
+</dd>
+</dl>
+</dd>
+<dt>Example:</dt><dd><p>Basic usage for single download:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">yt_dl_cli.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggerFactory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="s2">&quot;/downloads&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">executor</span> <span class="o">=</span> <span class="n">DownloadExecutor</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Configure download options</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;best[height&lt;=720]&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;outtmpl&quot;</span><span class="p">:</span> <span class="s2">&quot;/downloads/</span><span class="si">%(title)s</span><span class="s2">.</span><span class="si">%(ext)s</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;writeinfojson&quot;</span><span class="p">:</span> <span class="kc">True</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Execute download</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">success</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">execute_download</span><span class="p">(</span><span class="s2">&quot;https://youtube.com/watch?v=example&quot;</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Download completed successfully&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Download failed - check logs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Batch download example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;https://youtube.com/watch?v=video1&quot;</span><span class="p">,</span> <span class="s2">&quot;https://youtube.com/watch?v=video2&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">success_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">executor</span><span class="o">.</span><span class="n">execute_download</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">opts</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">success_count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully downloaded </span><span class="si">{</span><span class="n">success_count</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span><span class="si">}</span><span class="s2"> videos&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>See Also:</dt><dd><p>yt_dlp.YoutubeDL: Primary download engine
+ILogger: Logging interface for progress tracking
+Messages.Executor: Localized error and status messages</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.core.core.DownloadExecutor.execute_download">
+<span class="sig-name descname"><span class="pre">execute_download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#yt_dl_cli.core.core.DownloadExecutor.execute_download" title="Link to this definition">¶</a></dt>
+<dd><p>Execute a download operation for a single URL.</p>
+<p>This method performs the actual download using yt-dlp with the provided
+configuration options. It handles the complete download process including
+format selection, quality negotiation, file transfer, and storage operations.
+The method implements comprehensive error handling to ensure that failures
+are properly managed and logged.</p>
+<p>The download process is designed to be robust and handle various error
+conditions gracefully, ensuring that individual download failures don’t
+crash the entire application. This makes it suitable for batch operations
+and concurrent download scenarios.</p>
+<dl>
+<dt>Process Flow:</dt><dd><ol class="arabic simple">
+<li><p>Create yt-dlp instance with provided options</p></li>
+<li><p>Initiate download operation for the specified URL</p></li>
+<li><p>Monitor download progress and handle any errors</p></li>
+<li><p>Log success or failure with appropriate details</p></li>
+<li><p>Return status indicator for calling code</p></li>
+</ol>
+</dd>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>url (str): Video URL to download. Should be a valid URL pointing to</dt><dd><p>a video on a platform supported by yt-dlp. The URL will
+be processed by yt-dlp’s URL recognition system to determine
+the appropriate extractor and download strategy.</p>
+</dd>
+<dt>opts (Dict[str, Any]): yt-dlp configuration options for the download.</dt><dd><p>These options control all aspects of the download
+process including:
+- “format”: Quality and format selection
+- “outtmpl”: Output filename template
+- “writeinfojson”: Save metadata to JSON file
+- “writesubtitles”: Download subtitle files
+- “embedsubs”: Embed subtitles in video file
+- “extractaudio”: Extract audio only
+- “audioformat”: Audio format specification
+- “postprocessors”: Post-processing operations</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>bool: True if the download completed successfully, False if it failed.</dt><dd><p>Success is determined by yt-dlp completing the download process
+without raising exceptions. The return value allows calling code
+to track success/failure rates and handle batch operations
+appropriately.</p>
+</dd>
+</dl>
+</dd>
+<dt>Error Handling:</dt><dd><p>The method catches and handles several types of exceptions:</p>
+<ul class="simple">
+<li><p>yt_dlp.DownloadError: Raised when yt-dlp encounters download-specific
+errors such as network issues, format unavailability, or storage
+problems. These are logged with detailed error information including
+the URL and specific error details.</p></li>
+<li><p>Exception: Catches all other unexpected errors to prevent
+application crashes. This includes system-level errors, memory
+issues, and other unforeseen problems. All exceptions are logged
+with full details for debugging purposes.</p></li>
+</ul>
+</dd>
+<dt>Side Effects:</dt><dd><ul class="simple">
+<li><p>Creates downloaded files in the specified output directory</p></li>
+<li><p>May create temporary files during the download process</p></li>
+<li><p>Updates file system with video/audio content and metadata</p></li>
+<li><p>Generates log entries for monitoring and debugging</p></li>
+<li><p>May modify network settings (proxy, user agent) during download</p></li>
+</ul>
+</dd>
+<dt>Performance Considerations:</dt><dd><ul class="simple">
+<li><p>Network intensive: Download speed depends on connection bandwidth</p></li>
+<li><p>Disk intensive: File writing performance affects overall speed</p></li>
+<li><p>Memory efficient: Streaming downloads minimize memory usage</p></li>
+<li><p>CPU usage: Varies with post-processing operations (transcoding, etc.)</p></li>
+<li><p>Resumable: Supports partial download resumption where possible</p></li>
+</ul>
+</dd>
+<dt>Example:</dt><dd><p>Basic download with minimal options:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">executor</span> <span class="o">=</span> <span class="n">DownloadExecutor</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;best&quot;</span><span class="p">,</span> <span class="s2">&quot;outtmpl&quot;</span><span class="p">:</span> <span class="s2">&quot;/downloads/</span><span class="si">%(title)s</span><span class="s2">.</span><span class="si">%(ext)s</span><span class="s2">&quot;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">success</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">execute_download</span><span class="p">(</span><span class="s2">&quot;https://youtube.com/watch?v=example&quot;</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>High-quality video download with metadata:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;best[height&lt;=1080]&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;outtmpl&quot;</span><span class="p">:</span> <span class="s2">&quot;/downloads/</span><span class="si">%(uploader)s</span><span class="s2"> - </span><span class="si">%(title)s</span><span class="s2">.</span><span class="si">%(ext)s</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;writeinfojson&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;writesubtitles&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;writeautomaticsub&quot;</span><span class="p">:</span> <span class="kc">True</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">success</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">execute_download</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Audio-only download with format conversion:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;bestaudio/best&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;outtmpl&quot;</span><span class="p">:</span> <span class="s2">&quot;/music/</span><span class="si">%(title)s</span><span class="s2">.</span><span class="si">%(ext)s</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;extractaudio&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;audioformat&quot;</span><span class="p">:</span> <span class="s2">&quot;mp3&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;audioquality&quot;</span><span class="p">:</span> <span class="s2">&quot;192K&quot;</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">success</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">execute_download</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Error handling in batch operations:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;https://youtube.com/watch?v=video1&quot;</span><span class="p">,</span> <span class="s2">&quot;https://youtube.com/watch?v=video2&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">failed_urls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">executor</span><span class="o">.</span><span class="n">execute_download</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">opts</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">failed_urls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed downloads: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">failed_urls</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>Note:</dt><dd><p>This method is designed to be called multiple times with different
+URLs and options. Each call creates a fresh yt-dlp instance to
+ensure isolation and prevent state contamination between downloads.</p>
+<p>All exceptions are caught and logged, ensuring that one failed
+download doesn’t crash the entire application. This makes the method
+safe for use in concurrent environments and batch processing scenarios.</p>
+</dd>
+<dt>See Also:</dt><dd><p>yt_dlp.YoutubeDL: Primary download engine documentation
+yt_dlp.DownloadError: Download-related error handling
+Messages.Executor: Localized error and status message definitions
+Config: Configuration options that affect download behavior</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.core.core.DownloaderCore">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.core.core.</span></span><span class="sig-name descname"><span class="pre">DownloaderCore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.config.config.Config" title="yt_dl_cli.config.config.Config"><span class="pre">Config</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.interfaces.strategies.IFormatStrategy" title="yt_dl_cli.interfaces.strategies.IFormatStrategy"><span class="pre">IFormatStrategy</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.interfaces.interfaces.IStatsCollector" title="yt_dl_cli.interfaces.interfaces.IStatsCollector"><span class="pre">IStatsCollector</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.interfaces.interfaces.ILogger" title="yt_dl_cli.interfaces.interfaces.ILogger"><span class="pre">ILogger</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_checker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.interfaces.interfaces.IFileChecker" title="yt_dl_cli.interfaces.interfaces.IFileChecker"><span class="pre">IFileChecker</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">info_extractor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.core.core.VideoInfoExtractor" title="yt_dl_cli.core.core.VideoInfoExtractor"><span class="pre">VideoInfoExtractor</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_executor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.core.core.DownloadExecutor" title="yt_dl_cli.core.core.DownloadExecutor"><span class="pre">DownloadExecutor</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.core.core.DownloaderCore" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Core download logic coordinator that orchestrates the download process.</p>
+<p>This class brings together all the components needed for downloading:
+configuration, format strategies, statistics, file checking, and the
+actual download execution. It handles the complete workflow for a
+single download operation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.core.core.DownloaderCore.download_single">
+<span class="sig-name descname"><span class="pre">download_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#yt_dl_cli.core.core.DownloaderCore.download_single" title="Link to this definition">¶</a></dt>
+<dd><p>Download a single video from the provided URL.</p>
+<p>This method orchestrates the complete download process for a single URL:
+1. Extract video information to get title and check availability
+2. Create sanitized filename and check if file already exists
+3. Skip download if file exists, otherwise proceed with download
+4. Update statistics based on the outcome</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>url (str): Video URL to download</p>
+</dd>
+<dt>Note:</dt><dd><p>This method handles all error conditions gracefully and updates
+statistics appropriately. It’s designed to be called concurrently
+for multiple URLs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.core.core.DownloaderCore.register_resource">
+<span class="sig-name descname"><span class="pre">register_resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.core.core.DownloaderCore.register_resource" title="Link to this definition">¶</a></dt>
+<dd><p>Register a resource for automatic cleanup.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>resource: Any object with a close() method that needs cleanup</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.core.core.VideoInfoExtractor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.core.core.</span></span><span class="sig-name descname"><span class="pre">VideoInfoExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.interfaces.interfaces.ILogger" title="yt_dl_cli.interfaces.interfaces.ILogger"><span class="pre">ILogger</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.core.core.VideoInfoExtractor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handles extraction of video metadata without downloading content.</p>
+<p>This class provides a clean interface to yt-dlp’s information extraction
+capabilities, focusing specifically on retrieving video metadata without
+performing actual downloads. It serves as the first step in the download
+workflow, validating video availability and extracting necessary information
+for processing decisions.</p>
+<p>The class implements robust error handling to ensure that metadata extraction
+failures don’t crash the application. It provides detailed logging for
+troubleshooting and monitoring purposes.</p>
+<dl>
+<dt>Key Responsibilities:</dt><dd><ul class="simple">
+<li><p>Extract video metadata from URLs using yt-dlp</p></li>
+<li><p>Validate video availability and accessibility</p></li>
+<li><p>Handle platform-specific errors and limitations</p></li>
+<li><p>Provide structured error reporting and logging</p></li>
+<li><p>Support multiple video platforms through yt-dlp</p></li>
+</ul>
+</dd>
+<dt>Design Principles:</dt><dd><ul class="simple">
+<li><p>Single Responsibility: Only handles information extraction</p></li>
+<li><p>Defensive Programming: Extensive error handling and validation</p></li>
+<li><p>Logging Integration: Comprehensive error reporting</p></li>
+<li><p>Platform Agnostic: Works with any yt-dlp supported platform</p></li>
+</ul>
+</dd>
+<dt>Error Handling:</dt><dd><p>The class handles several categories of errors:
+- Network errors: Connection timeouts, DNS failures
+- Platform errors: Video unavailable, private videos, geo-blocking
+- Parsing errors: Invalid URLs, malformed responses
+- Authentication errors: Age-restricted content, login required</p>
+</dd>
+<dt>Thread Safety:</dt><dd><p>This class is thread-safe as it creates isolated yt-dlp instances
+for each operation and doesn’t maintain mutable state between calls.
+Multiple threads can safely use the same VideoInfoExtractor instance.</p>
+</dd>
+<dt>Performance Characteristics:</dt><dd><ul class="simple">
+<li><p>Lightweight operations: Only extracts metadata, no downloads</p></li>
+<li><p>Network dependent: Performance varies with connection speed</p></li>
+<li><p>Caching friendly: Results can be cached by calling code</p></li>
+<li><p>Memory efficient: Minimal memory footprint per operation</p></li>
+</ul>
+</dd>
+<dt>Attributes:</dt><dd><dl class="simple">
+<dt>logger (ILogger): Logger instance for error reporting and debugging.</dt><dd><p>Used to record extraction attempts, failures, and
+detailed error information for troubleshooting.</p>
+</dd>
+</dl>
+</dd>
+<dt>Example:</dt><dd><p>Basic usage for video information extraction:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">yt_dl_cli.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggerFactory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="s2">&quot;/tmp&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">extractor</span> <span class="o">=</span> <span class="n">VideoInfoExtractor</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Extract video information</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;quiet&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;no_warnings&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_info</span><span class="p">(</span><span class="s2">&quot;https://youtube.com/watch?v=example&quot;</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">info</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Title: </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Duration: </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;duration&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uploader: </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;uploader&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to extract video information&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Error handling example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_info</span><span class="p">(</span><span class="s2">&quot;https://invalid-url&quot;</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extraction failed - check logs for details&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>See Also:</dt><dd><p>yt_dlp.YoutubeDL: Primary extraction engine
+ILogger: Logging interface for error reporting
+Messages.Extractor: Localized error messages</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.core.core.VideoInfoExtractor.extract_info">
+<span class="sig-name descname"><span class="pre">extract_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#yt_dl_cli.core.core.VideoInfoExtractor.extract_info" title="Link to this definition">¶</a></dt>
+<dd><p>Extract video information from a URL without downloading.</p>
+<p>This method uses yt-dlp to retrieve comprehensive metadata about a video
+including title, duration, available formats, uploader information, and
+other platform-specific details. The extraction is performed without
+downloading any actual video content, making it efficient for validation
+and preprocessing tasks.</p>
+<p>The method implements robust error handling to ensure that extraction
+failures are properly logged and don’t crash the application. It handles
+various error conditions including network failures, video unavailability,
+and platform-specific restrictions.</p>
+<dl>
+<dt>Process Flow:</dt><dd><ol class="arabic simple">
+<li><p>Create yt-dlp instance with provided options</p></li>
+<li><p>Attempt to extract video information from URL</p></li>
+<li><p>Validate that information was successfully retrieved</p></li>
+<li><p>Handle any errors that occur during extraction</p></li>
+<li><p>Log appropriate messages for monitoring and debugging</p></li>
+<li><p>Return structured information or None on failure</p></li>
+</ol>
+</dd>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>url (str): Video URL to extract information from. Should be a valid</dt><dd><p>URL pointing to a video on a platform supported by yt-dlp.
+Examples include YouTube, Vimeo, Dailymotion, and hundreds
+of other video platforms.</p>
+</dd>
+<dt>opts (Dict[str, Any]): yt-dlp configuration options for the extraction.</dt><dd><p>Common options include:
+- “quiet”: Suppress output messages
+- “no_warnings”: Disable warning messages
+- “extractaudio”: Audio extraction settings
+- “format”: Preferred format selection
+- “ignoreerrors”: Continue on errors</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>Any: Video information dictionary from yt-dlp containing comprehensive</dt><dd><p>metadata about the video, or None if extraction failed. The
+dictionary typically includes:
+- “title”: Video title
+- “duration”: Video length in seconds
+- “uploader”: Channel or user name
+- “upload_date”: Publication date
+- “view_count”: Number of views
+- “formats”: Available quality/format options
+- “thumbnail”: Thumbnail image URL
+- “description”: Video description text
+- Platform-specific additional metadata</p>
+</dd>
+</dl>
+</dd>
+<dt>Error Handling:</dt><dd><p>The method catches and handles several types of exceptions:</p>
+<ul class="simple">
+<li><p>yt_dlp.DownloadError: Raised when yt-dlp encounters download-related
+errors such as network issues, authentication problems, or video
+unavailability. These are logged as extraction errors.</p></li>
+<li><p>yt_dlp.utils.ExtractorError: Raised when yt-dlp’s extractor
+encounters platform-specific issues such as parsing errors,
+unsupported URLs, or API changes. These are logged with detailed
+error information.</p></li>
+<li><p>Exception: Catches all other unexpected errors to prevent
+application crashes. These are logged as general extraction errors
+with full exception details for debugging.</p></li>
+</ul>
+</dd>
+<dt>Performance Considerations:</dt><dd><ul class="simple">
+<li><p>Network dependent: Extraction time varies with connection speed</p></li>
+<li><p>Lightweight operation: Only retrieves metadata, no file downloads</p></li>
+<li><p>Caching opportunity: Results can be cached by calling code</p></li>
+<li><p>Rate limiting: Respects platform rate limits automatically</p></li>
+</ul>
+</dd>
+<dt>Example:</dt><dd><p>Basic information extraction:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">extractor</span> <span class="o">=</span> <span class="n">VideoInfoExtractor</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;quiet&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;no_warnings&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_info</span><span class="p">(</span><span class="s2">&quot;https://youtube.com/watch?v=dQw4w9WgXcQ&quot;</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">info</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Title: </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Duration: </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uploader: </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;uploader&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to extract information&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Handling extraction failures:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;https://youtube.com/watch?v=valid&quot;</span><span class="p">,</span> <span class="s2">&quot;https://invalid-url&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">info</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_info</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">info</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully extracted: </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to extract from: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Custom options for specific needs:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;quiet&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;no_warnings&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;extract_flat&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># For playlists</span>
+<span class="gp">... </span>    <span class="s2">&quot;ignoreerrors&quot;</span><span class="p">:</span> <span class="kc">True</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_info</span><span class="p">(</span><span class="n">playlist_url</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>Note:</dt><dd><p>This method is designed to be called multiple times with different
+URLs and options. Each call creates a fresh yt-dlp instance to
+ensure isolation and prevent state contamination between extractions.</p>
+<p>Errors are logged but not raised, allowing the calling code to
+handle None return values gracefully and continue processing other
+URLs in batch operations.</p>
+</dd>
+<dt>See Also:</dt><dd><p>yt_dlp.YoutubeDL: Primary extraction engine documentation
+yt_dlp.DownloadError: Download-related error handling
+yt_dlp.utils.ExtractorError: Extractor-specific error handling
+Messages.Extractor: Localized error message definitions</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="orchestration">
-<h1>Orchestration<a class="headerlink" href="#orchestration" title="Link to this heading">¶</a></h1>
+<section id="module-yt_dl_cli.core.orchestration">
+<span id="orchestration"></span><h1>Orchestration<a class="headerlink" href="#module-yt_dl_cli.core.orchestration" title="Link to this heading">¶</a></h1>
+<p>Asynchronous Download Orchestration Module</p>
+<p>This module provides the main orchestration layer for managing concurrent video downloads.
+It contains the AsyncOrchestrator class for coordinating multiple downloads and the
+DIContainer class for dependency injection and component creation.</p>
+<p>The module implements asynchronous processing using asyncio and ThreadPoolExecutor
+to efficiently handle multiple downloads while respecting concurrency limits and
+providing comprehensive statistics reporting.</p>
+<dl class="simple">
+<dt>Classes:</dt><dd><p>AsyncOrchestrator: Main orchestrator for managing concurrent downloads
+DIContainer: Dependency injection container for component creation</p>
+</dd>
+<dt>Key Features:</dt><dd><ul class="simple">
+<li><p>Asynchronous download coordination with configurable concurrency</p></li>
+<li><p>Thread-based execution to avoid blocking the event loop</p></li>
+<li><p>Comprehensive timing and statistics reporting</p></li>
+<li><p>Dependency injection pattern for clean component composition</p></li>
+<li><p>Proper resource management with context managers</p></li>
+</ul>
+</dd>
+<dt>Dependencies:</dt><dd><ul class="simple">
+<li><p>asyncio: For asynchronous execution and event loop management</p></li>
+<li><p>concurrent.futures: For thread pool execution</p></li>
+<li><p>logging: For logger type hints and configuration</p></li>
+<li><p>time: For performance timing measurements</p></li>
+<li><p>typing: For type hints and annotations</p></li>
+<li><p>Various yt_dl_cli modules: For core functionality and configuration</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.core.orchestration.AsyncOrchestrator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.core.orchestration.</span></span><span class="sig-name descname"><span class="pre">AsyncOrchestrator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.core.core.DownloaderCore" title="yt_dl_cli.core.core.DownloaderCore"><span class="pre">DownloaderCore</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.config.config.Config" title="yt_dl_cli.config.config.Config"><span class="pre">Config</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.core.orchestration.AsyncOrchestrator" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages asynchronous execution of multiple downloads with concurrency control.</p>
+<p>This class handles the coordination of multiple concurrent downloads using
+asyncio and ThreadPoolExecutor, providing efficient parallel processing
+while respecting the configured worker limits. It serves as the main
+orchestration layer for the download application.</p>
+<p>The orchestrator manages the entire download lifecycle from initialization
+through completion, including timing measurements and final reporting.</p>
+<dl>
+<dt>Attributes:</dt><dd><p>core (DownloaderCore): The core downloader instance used for each download
+config (Config): Configuration containing URLs and concurrency settings</p>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">yt_dl_cli.config.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">save_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/downloads&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">quality</span><span class="o">=</span><span class="s2">&quot;720&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">audio_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">urls</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;https://example.com/video1&quot;</span><span class="p">,</span> <span class="s2">&quot;https://example.com/video2&quot;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">core</span> <span class="o">=</span> <span class="n">DIContainer</span><span class="o">.</span><span class="n">create_downloader_core</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchestrator</span> <span class="o">=</span> <span class="n">AsyncOrchestrator</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">orchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">())</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.core.orchestration.AsyncOrchestrator.run">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#yt_dl_cli.core.orchestration.AsyncOrchestrator.run" title="Link to this definition">¶</a></dt>
+<dd><p>Execute all configured downloads asynchronously with timing and reporting.</p>
+<p>This method orchestrates the complete download process:
+1. Validates that there are URLs to download
+2. Logs the start of operations with worker and URL counts
+3. Creates a thread pool with the configured number of workers
+4. Submits all download tasks to the thread pool using run_in_executor
+5. Waits for all downloads to complete using asyncio.gather
+6. Measures total elapsed time and generates final statistics report</p>
+<p>The method uses asyncio.gather() to wait for all downloads to complete,
+ensuring that statistics are only reported after all work is done.
+Downloads run in threads to avoid blocking the asyncio event loop,
+since yt-dlp operations are CPU and I/O intensive.</p>
+<dl>
+<dt>Raises:</dt><dd><dl class="simple">
+<dt>Exception: Any exception from individual downloads will be propagated</dt><dd><p>after other downloads complete (due to asyncio.gather behavior).</p>
+</dd>
+</dl>
+</dd>
+<dt>Note:</dt><dd><p>If no URLs are configured, the method logs a warning and returns early
+without performing any downloads.</p>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">orchestrator</span> <span class="o">=</span> <span class="n">AsyncOrchestrator</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">await</span> <span class="n">orchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="go"># Logs: &quot;Starting download of 5 URLs with 4 workers&quot;</span>
+<span class="go"># ... downloads execute concurrently ...</span>
+<span class="go"># Logs: Final statistics report with timing information</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.core.orchestration.DIContainer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.core.orchestration.</span></span><span class="sig-name descname"><span class="pre">DIContainer</span></span><a class="headerlink" href="#yt_dl_cli.core.orchestration.DIContainer" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Dependency injection container for creating fully configured downloader instances.</p>
+<p>This class acts as a factory and dependency injection container, implementing
+the composition root pattern. It creates all the required components and wires
+them together to produce a ready-to-use downloader core with all dependencies
+properly injected.</p>
+<p>The container centralizes dependency creation and management, making the system
+more testable and maintainable by removing direct dependencies between components.</p>
+<dl class="simple">
+<dt>Static Methods:</dt><dd><p>create_downloader_core: Factory method for creating configured DownloaderCore instances</p>
+</dd>
+<dt>Design Pattern:</dt><dd><p>This class implements the Dependency Injection Container pattern and
+Composition Root pattern, providing a single place where all object
+composition happens.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.core.orchestration.DIContainer.create_downloader_core">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_downloader_core</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.config.config.Config" title="yt_dl_cli.config.config.Config"><span class="pre">Config</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.interfaces.interfaces.ILogger" title="yt_dl_cli.interfaces.interfaces.ILogger"><span class="pre">ILogger</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#yt_dl_cli.core.core.DownloaderCore" title="yt_dl_cli.core.core.DownloaderCore"><span class="pre">DownloaderCore</span></a></span></span><a class="headerlink" href="#yt_dl_cli.core.orchestration.DIContainer.create_downloader_core" title="Link to this definition">¶</a></dt>
+<dd><p>Create a fully configured DownloaderCore with all dependencies injected.</p>
+<p>This factory method creates and wires together all the components needed
+for a functioning downloader system. It handles the complete object graph
+construction, ensuring all components are properly configured and connected.</p>
+<p>Components created and wired:
+- Logger: Configured for the specified save directory
+- Format strategy: Selected based on audio_only configuration
+- Statistics manager: For tracking download results
+- File system checker: For file existence validation
+- Video info extractor: For metadata retrieval
+- Download executor: For actual download operations
+- DownloaderCore: Main coordinator with all dependencies injected</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>config (Config): Application configuration to use for component setup.</dt><dd><p>Must contain valid save_dir, quality, audio_only settings.</p>
+</dd>
+<dt>logger (Optional[logging.Logger], optional): Custom logger instance.</dt><dd><p>If None, creates a new logger
+using LoggerFactory. Defaults to None.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>DownloaderCore: Fully configured and ready-to-use downloader instance</dt><dd><p>with all dependencies properly injected and initialized.</p>
+</dd>
+</dl>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">save_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/downloads&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">quality</span><span class="o">=</span><span class="s2">&quot;720&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">audio_only</span><span class="o">=</span><span class="kc">False</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">core</span> <span class="o">=</span> <span class="n">DIContainer</span><span class="o">.</span><span class="n">create_downloader_core</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># core is now ready to use with all dependencies configured</span>
+</pre></div>
+</div>
+</dd>
+<dt>Note:</dt><dd><p>This method implements the composition root pattern, centralizing
+all dependency creation and injection in one place. This makes the
+system more testable and maintainable by providing a single point
+of object graph construction.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-yt_dl_cli.i18n.init">
 <span id="internationalization"></span><h1>Internationalization<a class="headerlink" href="#module-yt_dl_cli.i18n.init" title="Link to this heading">¶</a></h1>
@@ -133,6 +1433,309 @@ language code (e.g., “en_US” becomes “en”) for compatibility with most
 translation file naming conventions.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<p id="module-yt_dl_cli.i18n.messages">Internationalization and message handling for user-facing text.</p>
+<p>This module provides a comprehensive system for managing all user-facing messages
+in the application with support for internationalization (i18n). It implements
+lazy translation loading to ensure messages are translated at display time rather
+than at module import time, which is crucial for proper localization support.</p>
+<p>The module is organized into logical message groups corresponding to different
+application components, making it easy to maintain and extend. Each message
+uses the LazyTranslation pattern to defer translation until the message is
+actually needed, ensuring the correct locale is used.</p>
+<dl>
+<dt>Key Features:</dt><dd><ul class="simple">
+<li><p>Lazy translation loading for proper i18n support</p></li>
+<li><p>Organized message groups by application component</p></li>
+<li><p>Colorized console output with cross-platform support</p></li>
+<li><p>Template-based messages with parameter substitution</p></li>
+<li><p>Clean separation between message definitions and display logic</p></li>
+</ul>
+</dd>
+<dt>Example:</dt><dd><p>Basic usage of messages and console output:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">Messages</span><span class="p">,</span> <span class="n">console_printer</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Display a configuration error</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error_msg</span> <span class="o">=</span> <span class="n">Messages</span><span class="o">.</span><span class="n">Config</span><span class="o">.</span><span class="n">INVALID_WORKERS</span><span class="p">(</span><span class="n">workers</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">console_printer</span><span class="o">.</span><span class="n">printout</span><span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">error_msg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Display download progress</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_msg</span> <span class="o">=</span> <span class="n">Messages</span><span class="o">.</span><span class="n">Core</span><span class="o">.</span><span class="n">START_DOWNLOAD</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Example Video&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">console_printer</span><span class="o">.</span><span class="n">printout</span><span class="p">(</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">start_msg</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.LazyTranslation">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.i18n.messages.</span></span><span class="sig-name descname"><span class="pre">LazyTranslation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.i18n.messages.LazyTranslation" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Deferred translation wrapper for internationalization support.</p>
+<p>This class implements lazy evaluation of translatable strings, ensuring
+that translation occurs at display time rather than at module load time.
+This is essential for proper internationalization because:</p>
+<ol class="arabic simple">
+<li><p>The user’s locale may not be determined at import time</p></li>
+<li><p>The translation system may not be initialized when modules are loaded</p></li>
+<li><p>The same message may need to be displayed in different locales during runtime</p></li>
+</ol>
+<p>The class stores the message template and defers both translation and
+string formatting until the message is actually needed for display.</p>
+<dl>
+<dt>Attributes:</dt><dd><p>template (str): The original message template with optional format placeholders.</p>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="n">LazyTranslation</span><span class="p">(</span><span class="s2">&quot;Hello </span><span class="si">{name}</span><span class="s2">!&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Translation and formatting happen when called:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">translated_msg</span> <span class="o">=</span> <span class="n">msg</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;World&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">translated_msg</span><span class="p">)</span>  <span class="c1"># &quot;Hello World!&quot; (or translated equivalent)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.i18n.messages.</span></span><span class="sig-name descname"><span class="pre">Messages</span></span><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container for all user-facing messages in the application.</p>
+<p>This class serves as a centralized registry for all translatable strings
+used throughout the application. Messages are organized into nested classes
+that correspond to different application components, making it easy to
+locate and maintain related messages.</p>
+<p>Each message is wrapped in a LazyTranslation object to support proper
+internationalization. The hierarchical organization allows for:</p>
+<ul class="simple">
+<li><p>Easy maintenance and updates of message text</p></li>
+<li><p>Clear association between messages and application components</p></li>
+<li><p>Efficient organization for translation tools and translators</p></li>
+<li><p>Type-safe access to messages through the class hierarchy</p></li>
+</ul>
+<p>The message groups are designed to match the application’s architecture,
+with separate groups for configuration, core functionality, CLI interface,
+statistics, and various processing components.</p>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Access configuration-related messages</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error</span> <span class="o">=</span> <span class="n">Messages</span><span class="o">.</span><span class="n">Config</span><span class="o">.</span><span class="n">INVALID_WORKERS</span><span class="p">(</span><span class="n">workers</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Access download progress messages</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start</span> <span class="o">=</span> <span class="n">Messages</span><span class="o">.</span><span class="n">Core</span><span class="o">.</span><span class="n">START_DOWNLOAD</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Video&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">done</span> <span class="o">=</span> <span class="n">Messages</span><span class="o">.</span><span class="n">Core</span><span class="o">.</span><span class="n">DONE_DOWNLOAD</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Video&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.CLI">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CLI</span></span><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.CLI" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Messages used in the command-line interface.</p>
+<p>This group contains messages specific to the command-line interface,
+including file handling errors, user interaction messages, and
+CLI-specific error conditions.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.CLI.CRITICAL_ERROR">
+<span class="sig-name descname"><span class="pre">CRITICAL_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.CLI.CRITICAL_ERROR" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed for critical errors that cause application termination.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.CLI.FILE_NOT_FOUND">
+<span class="sig-name descname"><span class="pre">FILE_NOT_FOUND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.CLI.FILE_NOT_FOUND" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when a specified input file cannot be found.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.CLI.FILE_READ_ERROR">
+<span class="sig-name descname"><span class="pre">FILE_READ_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.CLI.FILE_READ_ERROR" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when there’s an error reading an input file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.CLI.USER_INTERRUPT">
+<span class="sig-name descname"><span class="pre">USER_INTERRUPT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.CLI.USER_INTERRUPT" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when the user interrupts the download process (Ctrl+C).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Config">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Config</span></span><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Config" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Messages for configuration validation and errors.</p>
+<p>This group contains all messages related to application configuration,
+including validation errors, invalid parameter notifications, and
+configuration-related warnings. These messages are typically displayed
+during application startup or when processing command-line arguments.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Config.INVALID_QUALITY">
+<span class="sig-name descname"><span class="pre">INVALID_QUALITY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Config.INVALID_QUALITY" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when an unsupported quality setting is specified.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Config.INVALID_WORKERS">
+<span class="sig-name descname"><span class="pre">INVALID_WORKERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Config.INVALID_WORKERS" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when an invalid worker count is specified.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Core">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Core</span></span><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Core" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Messages used by the core downloader component.</p>
+<p>This group contains messages related to the primary download functionality,
+including progress updates, completion notifications, and core operational
+messages. These are the most frequently displayed messages during normal
+application operation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Core.DONE_DOWNLOAD">
+<span class="sig-name descname"><span class="pre">DONE_DOWNLOAD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Core.DONE_DOWNLOAD" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when a download completes successfully.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Core.ERROR_RESOURCE_CLOSE">
+<span class="sig-name descname"><span class="pre">ERROR_RESOURCE_CLOSE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Core.ERROR_RESOURCE_CLOSE" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when there’s an error during resource cleanup.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Core.SKIP_EXISTS">
+<span class="sig-name descname"><span class="pre">SKIP_EXISTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Core.SKIP_EXISTS" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when a download is skipped because the file already exists.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Core.START_DOWNLOAD">
+<span class="sig-name descname"><span class="pre">START_DOWNLOAD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Core.START_DOWNLOAD" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when beginning a download operation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Executor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Executor</span></span><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Executor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Messages used by the download executor component.</p>
+<p>This group contains messages related to the actual download execution
+process, including error messages for failed downloads and executor-specific
+operational messages.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Executor.ERROR_DOWNLOAD">
+<span class="sig-name descname"><span class="pre">ERROR_DOWNLOAD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Executor.ERROR_DOWNLOAD" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when a download operation fails.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Extractor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Extractor</span></span><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Extractor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Messages used by the video extractor component.</p>
+<p>This group contains messages related to video information extraction,
+which occurs before the actual download process. These messages help
+users understand issues with URL processing and metadata extraction.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Extractor.ERROR_EXTRACT">
+<span class="sig-name descname"><span class="pre">ERROR_EXTRACT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Extractor.ERROR_EXTRACT" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when video information extraction fails for a specific URL.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Extractor.ERROR_NO_INFO">
+<span class="sig-name descname"><span class="pre">ERROR_NO_INFO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Extractor.ERROR_NO_INFO" title="Link to this definition">¶</a></dt>
+<dd><p>Generic message displayed when video information cannot be extracted.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Orchestrator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Orchestrator</span></span><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Orchestrator" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Messages used by the async orchestrator.</p>
+<p>This group contains messages related to the high-level coordination
+of download operations, including startup messages and orchestration
+status updates.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Orchestrator.NO_URLS">
+<span class="sig-name descname"><span class="pre">NO_URLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Orchestrator.NO_URLS" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when no URLs are provided for download.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Orchestrator.STARTING">
+<span class="sig-name descname"><span class="pre">STARTING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Orchestrator.STARTING" title="Link to this definition">¶</a></dt>
+<dd><p>Message displayed when beginning a batch download operation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Stats">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Stats</span></span><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Stats" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Messages and formatting used for statistics reporting.</p>
+<p>This group contains both translatable messages and formatting constants
+used to display download statistics and summary reports. The constants
+(HEADER, FOOTER) are not translatable as they are decorative elements.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Stats.ELAPSED">
+<span class="sig-name descname"><span class="pre">ELAPSED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Stats.ELAPSED" title="Link to this definition">¶</a></dt>
+<dd><p>Message showing total elapsed time for the operation.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Stats.FAILED">
+<span class="sig-name descname"><span class="pre">FAILED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Stats.FAILED" title="Link to this definition">¶</a></dt>
+<dd><p>Message showing number of failed downloads.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Stats.FOOTER">
+<span class="sig-name descname"><span class="pre">FOOTER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'========================================'</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Stats.FOOTER" title="Link to this definition">¶</a></dt>
+<dd><p>Decorative footer line for statistics reports.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Stats.HEADER">
+<span class="sig-name descname"><span class="pre">HEADER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'========================================'</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Stats.HEADER" title="Link to this definition">¶</a></dt>
+<dd><p>Decorative header line for statistics reports.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Stats.PROCESSED">
+<span class="sig-name descname"><span class="pre">PROCESSED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Stats.PROCESSED" title="Link to this definition">¶</a></dt>
+<dd><p>Message showing total number of items processed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Stats.SKIPPED">
+<span class="sig-name descname"><span class="pre">SKIPPED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Stats.SKIPPED" title="Link to this definition">¶</a></dt>
+<dd><p>Message showing number of skipped downloads.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Stats.SUCCESSFUL">
+<span class="sig-name descname"><span class="pre">SUCCESSFUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Stats.SUCCESSFUL" title="Link to this definition">¶</a></dt>
+<dd><p>Message showing number of successful downloads.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.i18n.messages.Messages.Stats.TITLE">
+<span class="sig-name descname"><span class="pre">TITLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;yt_dl_cli.i18n.messages.LazyTranslation</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#yt_dl_cli.i18n.messages.Messages.Stats.TITLE" title="Link to this definition">¶</a></dt>
+<dd><p>Title heading for the statistics summary.</p>
+</dd></dl>
+
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -627,8 +2230,70 @@ VideoFormatStrategy based on the configuration.</p>
 </dd></dl>
 
 </section>
-<section id="scripts">
-<h1>Scripts<a class="headerlink" href="#scripts" title="Link to this heading">¶</a></h1>
+<section id="module-yt_dl_cli.scripts.cli">
+<span id="scripts"></span><h1>Scripts<a class="headerlink" href="#module-yt_dl_cli.scripts.cli" title="Link to this heading">¶</a></h1>
+<p>Command Line Interface Entry Point Module for YT-DL-CLI Tool.</p>
+<p>This module serves as the primary entry point for the video downloader command-line
+interface application. It provides a simple interface to initialize and execute
+the video downloading functionality through the main VideoDownloader class.</p>
+<p>The module implements a clean separation of concerns by delegating the actual
+downloading logic to the main application module while providing a lightweight
+CLI wrapper for user interaction.</p>
+<dl>
+<dt>Example:</dt><dd><p>This module is typically executed as a script or called from a package
+entry point:</p>
+<p>$ python scripts/cli.py</p>
+<p>Or when installed as a package:</p>
+<p>$ yt-dl-cli</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="yt_dl_cli.scripts.cli.main">
+<span class="sig-prename descclassname"><span class="pre">yt_dl_cli.scripts.cli.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.scripts.cli.main" title="Link to this definition">¶</a></dt>
+<dd><p>Main entry point function for the YT-DL-CLI application.</p>
+<p>This function serves as the primary interface between the command-line
+environment and the core downloading functionality. It instantiates the
+VideoDownloader class and initiates the download process.</p>
+<p>The function follows the single responsibility principle by focusing solely
+on application initialization and delegation to the core downloader logic.
+It handles the high-level orchestration while leaving specific download
+operations to the VideoDownloader class.</p>
+<dl class="simple">
+<dt>Workflow:</dt><dd><ol class="arabic simple">
+<li><p>Creates a new VideoDownloader instance</p></li>
+<li><p>Calls the download method to start the download process</p></li>
+<li><p>The VideoDownloader handles all user interaction, configuration,
+and actual downloading operations</p></li>
+</ol>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>NoReturn: This function typically runs indefinitely or exits the</dt><dd><p>program upon completion, so it doesn’t return a value.</p>
+</dd>
+</dl>
+</dd>
+<dt>Raises:</dt><dd><dl class="simple">
+<dt>SystemExit: May be raised by the VideoDownloader if a critical error</dt><dd><p>occurs or when the user requests to exit the application.</p>
+</dd>
+<dt>KeyboardInterrupt: May be raised if the user interrupts the process</dt><dd><p>with Ctrl+C, though this should be handled by the
+VideoDownloader class.</p>
+</dd>
+<dt>ImportError: May be raised if the main module or VideoDownloader</dt><dd><p>class cannot be imported due to missing dependencies
+or incorrect module structure.</p>
+</dd>
+</dl>
+</dd>
+<dt>Note:</dt><dd><p>This function expects the VideoDownloader class to handle all user
+interaction, error handling, and graceful shutdown procedures.
+Any configuration or initialization parameters should be handled
+within the VideoDownloader class itself.</p>
+</dd>
+<dt>See Also:</dt><dd><p>main.VideoDownloader: The core class that handles all download operations
+config.config: Configuration management for the application
+core.orchestration: Main orchestration logic for download workflows</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="module-yt_dl_cli.utils.logger">
 <span id="utils"></span><h1>Utils<a class="headerlink" href="#module-yt_dl_cli.utils.logger" title="Link to this heading">¶</a></h1>
@@ -841,6 +2506,269 @@ applied to help distinguish between different log levels.</p>
 </dd>
 </dl>
 </dd></dl>
+
+</dd></dl>
+
+<p id="module-yt_dl_cli.utils.parser">Command line interface argument parsing module for the YouTube downloader CLI.</p>
+<p>This module provides comprehensive command line argument parsing functionality
+for the async video downloader application. It handles URL input from both
+files and direct command line arguments, validates user input, and creates
+properly configured application settings.</p>
+<p>Key Features:
+- Multiple URL input methods (file-based or direct CLI arguments)
+- Configurable download directory and quality settings
+- Concurrent download worker configuration
+- Audio-only download option
+- Robust error handling for file operations
+- Comment and empty line filtering in URL files</p>
+<p>The module integrates with the application’s configuration system and
+internationalization framework to provide a seamless user experience.</p>
+<dl>
+<dt>Example:</dt><dd><p>Basic usage from command line:</p>
+<p>$ python -m yt_dl_cli -f urls.txt -d ./downloads -w 4 -q 720
+$ python -m yt_dl_cli –urls “<a class="reference external" href="https://youtube.com/watch?v=xyz">https://youtube.com/watch?v=xyz</a>” -a
+$ python -m yt_dl_cli –file links.txt –workers 3 –quality best</p>
+</dd>
+<dt>Dependencies:</dt><dd><ul class="simple">
+<li><p>argparse: Standard library argument parsing</p></li>
+<li><p>pathlib: Cross-platform path handling</p></li>
+<li><p>sys: System-specific parameters and functions</p></li>
+<li><p>typing: Type hints for better code documentation</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="yt_dl_cli.utils.parser.parse_arguments">
+<span class="sig-prename descclassname"><span class="pre">yt_dl_cli.utils.parser.</span></span><span class="sig-name descname"><span class="pre">parse_arguments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#yt_dl_cli.config.config.Config" title="yt_dl_cli.config.config.Config"><span class="pre">Config</span></a></span></span><a class="headerlink" href="#yt_dl_cli.utils.parser.parse_arguments" title="Link to this definition">¶</a></dt>
+<dd><p>Parse command line arguments and create application configuration.</p>
+<p>This function handles all command line argument parsing and validation,
+including reading URLs from files or command line arguments. It provides
+comprehensive error handling for file operations and processes URL lists
+by filtering out comments and empty lines.</p>
+<p>The function creates an ArgumentParser instance, defines all supported
+command line options, parses the provided arguments, and then processes
+the URL input according to the specified method (file or direct URLs).
+Finally, it constructs and returns a fully populated Config object.</p>
+<dl>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>Config: Fully populated configuration object containing all parsed</dt><dd><p>settings ready for use by the download application. The Config
+object includes validated paths, worker counts, quality settings,
+and a cleaned list of URLs.</p>
+</dd>
+</dl>
+</dd>
+<dt>Raises:</dt><dd><dl class="simple">
+<dt>SystemExit: Raised by argparse when invalid arguments are provided</dt><dd><p>or when –help is requested. This is standard argparse
+behavior and should not be caught.</p>
+</dd>
+</dl>
+</dd>
+<dt>Command Line Arguments:</dt><dd><dl class="simple">
+<dt>-f, –file (str): Path to file containing URLs, one per line.</dt><dd><p>Comments (lines starting with #) and empty lines
+are automatically ignored. Default: “links.txt”</p>
+</dd>
+<dt>-d, –dir (str): Target directory for downloaded files. Directory</dt><dd><p>will be created if it doesn’t exist. Can be relative
+or absolute path. Default: “downloads”</p>
+</dd>
+<dt>-w, –workers (int): Maximum number of concurrent download workers.</dt><dd><p>Higher values may improve download speed but
+consume more system resources. Default: 2</p>
+</dd>
+<dt>-q, –quality (str): Preferred video quality for downloads.</dt><dd><p>Options: “best”, “worst”, “720”, “480”, “360”
+Default: “best”</p>
+</dd>
+<dt>-a, –audio-only (flag): When present, downloads only the audio</dt><dd><p>track instead of video. Useful for music
+or podcast content.</p>
+</dd>
+<dt>–urls (List[str]): Direct list of URLs to download. When provided,</dt><dd><p>this option overrides the –file option completely.
+Multiple URLs can be specified separated by spaces.</p>
+</dd>
+</dl>
+</dd>
+<dt>File Format:</dt><dd><p>URL files should contain one URL per line. The following format
+is supported:</p>
+<blockquote>
+<div><p># This is a comment line (ignored)
+<a class="reference external" href="https://youtube.com/watch?v=video1">https://youtube.com/watch?v=video1</a>
+<a class="reference external" href="https://youtube.com/watch?v=video2">https://youtube.com/watch?v=video2</a></p>
+<p># Empty lines above are also ignored
+<a class="reference external" href="https://youtube.com/watch?v=video3">https://youtube.com/watch?v=video3</a></p>
+</div></blockquote>
+</dd>
+<dt>Error Handling:</dt><dd><ul class="simple">
+<li><p>FileNotFoundError: When the specified URL file doesn’t exist,
+an error message is printed to stderr but execution continues
+with an empty URL list</p></li>
+<li><p>Other file reading errors: Generic file reading errors are
+caught and reported with the specific error details</p></li>
+<li><p>Invalid arguments: Handled by argparse with automatic help
+message display and program termination</p></li>
+</ul>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Parse arguments from command line</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">parse_arguments</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Will download </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">urls</span><span class="p">)</span><span class="si">}</span><span class="s2"> videos&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Save directory: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">save_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Quality: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">quality</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Workers: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">max_workers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>Note:</dt><dd><ul class="simple">
+<li><p>URLs starting with ‘#’ in files are treated as comments and ignored</p></li>
+<li><p>Empty lines in URL files are automatically filtered out</p></li>
+<li><p>Whitespace around URLs is automatically stripped</p></li>
+<li><p>File reading errors are reported to stderr but don’t crash the program</p></li>
+<li><p>The –urls option completely overrides file-based URL input</p></li>
+<li><p>Path objects are used for cross-platform compatibility</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-yt_dl_cli.utils.stats_manager">Statistics Management Module</p>
+<p>This module provides functionality for tracking and reporting download operation statistics.
+It includes the StatsManager class which maintains counters for various download outcomes
+and generates comprehensive reports with elapsed time information.</p>
+<dl class="simple">
+<dt>Classes:</dt><dd><p>StatsManager: Main statistics tracking and reporting class</p>
+</dd>
+<dt>Dependencies:</dt><dd><ul class="simple">
+<li><p>dataclasses: For creating the dataclass structure</p></li>
+<li><p>typing: For type hints</p></li>
+<li><p>yt_dl_cli.interfaces.interfaces: For logger interface</p></li>
+<li><p>yt_dl_cli.i18n.messages: For internationalized messages</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="yt_dl_cli.utils.stats_manager.StatsManager">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yt_dl_cli.utils.stats_manager.</span></span><span class="sig-name descname"><span class="pre">StatsManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">success</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipped</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yt_dl_cli.utils.stats_manager.StatsManager" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Statistics manager for tracking download operations and generating reports.</p>
+<p>This class maintains counters for different types of download outcomes
+and provides methods for recording events and generating summary reports.
+It serves as a centralized point for collecting and reporting download
+session statistics including success rates, failures, and performance metrics.</p>
+<dl>
+<dt>Attributes:</dt><dd><p>success (int): Count of successful downloads. Defaults to 0.
+failed (int): Count of failed downloads. Defaults to 0.
+skipped (int): Count of skipped downloads (files already exist). Defaults to 0.</p>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span> <span class="o">=</span> <span class="n">StatsManager</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">record_success</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">record_failure</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">summary</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">get_summary</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">])</span>  <span class="c1"># Output: 2</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.utils.stats_manager.StatsManager.failed">
+<span class="sig-name descname"><span class="pre">failed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#yt_dl_cli.utils.stats_manager.StatsManager.failed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.utils.stats_manager.StatsManager.get_summary">
+<span class="sig-name descname"><span class="pre">get_summary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#yt_dl_cli.utils.stats_manager.StatsManager.get_summary" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate and return a summary of all statistics.</p>
+<p>Computes the total count by summing all individual counters
+and returns a comprehensive dictionary with all statistics.</p>
+<dl>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>Dict[str, int]: Dictionary containing the following keys:</dt><dd><ul class="simple">
+<li><p>‘success’: Number of successful downloads</p></li>
+<li><p>‘failed’: Number of failed downloads</p></li>
+<li><p>‘skipped’: Number of skipped downloads</p></li>
+<li><p>‘total’: Total number of processed items</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span> <span class="o">=</span> <span class="n">StatsManager</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">success</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">failed</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">skipped</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">summary</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">get_summary</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">summary</span>
+<span class="go">{&#39;success&#39;: 5, &#39;failed&#39;: 2, &#39;skipped&#39;: 1, &#39;total&#39;: 8}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.utils.stats_manager.StatsManager.record_failure">
+<span class="sig-name descname"><span class="pre">record_failure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#yt_dl_cli.utils.stats_manager.StatsManager.record_failure" title="Link to this definition">¶</a></dt>
+<dd><p>Increment the failure counter by one.</p>
+<p>This method should be called whenever a download operation
+fails due to any error condition.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.utils.stats_manager.StatsManager.record_skip">
+<span class="sig-name descname"><span class="pre">record_skip</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#yt_dl_cli.utils.stats_manager.StatsManager.record_skip" title="Link to this definition">¶</a></dt>
+<dd><p>Increment the skip counter by one.</p>
+<p>This method should be called whenever a download operation
+is skipped, typically because the target file already exists.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.utils.stats_manager.StatsManager.record_success">
+<span class="sig-name descname"><span class="pre">record_success</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#yt_dl_cli.utils.stats_manager.StatsManager.record_success" title="Link to this definition">¶</a></dt>
+<dd><p>Increment the success counter by one.</p>
+<p>This method should be called whenever a download operation
+completes successfully.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yt_dl_cli.utils.stats_manager.StatsManager.report">
+<span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#yt_dl_cli.interfaces.interfaces.ILogger" title="yt_dl_cli.interfaces.interfaces.ILogger"><span class="pre">ILogger</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">elapsed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#yt_dl_cli.utils.stats_manager.StatsManager.report" title="Link to this definition">¶</a></dt>
+<dd><p>Generate and log a formatted summary report of download statistics.</p>
+<p>Creates a detailed report showing the breakdown of download results
+and total elapsed time, formatted with visual separators for easy reading.
+The report includes header/footer formatting and uses internationalized
+messages for consistent presentation.</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>logger (ILogger): Logger instance to output the report. Must implement</dt><dd><p>the ILogger interface with an info() method.</p>
+</dd>
+<dt>elapsed (float): Total elapsed time in seconds for the download session.</dt><dd><p>Should be a positive number representing the duration.</p>
+</dd>
+</dl>
+</dd>
+<dt>Raises:</dt><dd><p>AttributeError: If the logger doesn’t implement the required interface.</p>
+</dd>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mock</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span> <span class="o">=</span> <span class="n">StatsManager</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">success</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">failed</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># ... perform downloads ...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">elapsed_time</span><span class="p">)</span>
+<span class="go">This will log a formatted report with all statistics</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.utils.stats_manager.StatsManager.skipped">
+<span class="sig-name descname"><span class="pre">skipped</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#yt_dl_cli.utils.stats_manager.StatsManager.skipped" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yt_dl_cli.utils.stats_manager.StatsManager.success">
+<span class="sig-name descname"><span class="pre">success</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#yt_dl_cli.utils.stats_manager.StatsManager.success" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1154,13 +3082,103 @@ result in a string of underscores</p></li>
     <h3><a href="#">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">YT-DL-CLI Video downloader documentation</a></li>
-<li><a class="reference internal" href="#main-module">Main Module</a></li>
-<li><a class="reference internal" href="#configuration">Configuration</a></li>
-<li><a class="reference internal" href="#core">Core</a></li>
-<li><a class="reference internal" href="#orchestration">Orchestration</a></li>
+<li><a class="reference internal" href="#module-yt_dl_cli.main">Main Module</a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.main.VideoDownloader"><code class="docutils literal notranslate"><span class="pre">VideoDownloader</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.main.VideoDownloader.download"><code class="docutils literal notranslate"><span class="pre">VideoDownloader.download()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yt_dl_cli.main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-yt_dl_cli.config.config">Configuration</a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.config.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.config.config.Config.audio_only"><code class="docutils literal notranslate"><span class="pre">Config.audio_only</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.config.config.Config.max_workers"><code class="docutils literal notranslate"><span class="pre">Config.max_workers</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.config.config.Config.quality"><code class="docutils literal notranslate"><span class="pre">Config.quality</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.config.config.Config.save_dir"><code class="docutils literal notranslate"><span class="pre">Config.save_dir</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.config.config.Config.urls"><code class="docutils literal notranslate"><span class="pre">Config.urls</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-yt_dl_cli.core.core">Core</a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.core.core.DownloadExecutor"><code class="docutils literal notranslate"><span class="pre">DownloadExecutor</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.core.core.DownloadExecutor.execute_download"><code class="docutils literal notranslate"><span class="pre">DownloadExecutor.execute_download()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yt_dl_cli.core.core.DownloaderCore"><code class="docutils literal notranslate"><span class="pre">DownloaderCore</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.core.core.DownloaderCore.download_single"><code class="docutils literal notranslate"><span class="pre">DownloaderCore.download_single()</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.core.core.DownloaderCore.register_resource"><code class="docutils literal notranslate"><span class="pre">DownloaderCore.register_resource()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yt_dl_cli.core.core.VideoInfoExtractor"><code class="docutils literal notranslate"><span class="pre">VideoInfoExtractor</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.core.core.VideoInfoExtractor.extract_info"><code class="docutils literal notranslate"><span class="pre">VideoInfoExtractor.extract_info()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-yt_dl_cli.core.orchestration">Orchestration</a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.core.orchestration.AsyncOrchestrator"><code class="docutils literal notranslate"><span class="pre">AsyncOrchestrator</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.core.orchestration.AsyncOrchestrator.run"><code class="docutils literal notranslate"><span class="pre">AsyncOrchestrator.run()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yt_dl_cli.core.orchestration.DIContainer"><code class="docutils literal notranslate"><span class="pre">DIContainer</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.core.orchestration.DIContainer.create_downloader_core"><code class="docutils literal notranslate"><span class="pre">DIContainer.create_downloader_core()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-yt_dl_cli.i18n.init">Internationalization</a><ul>
 <li><a class="reference internal" href="#yt_dl_cli.i18n.init.get_system_lang"><code class="docutils literal notranslate"><span class="pre">get_system_lang()</span></code></a></li>
 <li><a class="reference internal" href="#yt_dl_cli.i18n.init.setup_i18n"><code class="docutils literal notranslate"><span class="pre">setup_i18n()</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.LazyTranslation"><code class="docutils literal notranslate"><span class="pre">LazyTranslation</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages"><code class="docutils literal notranslate"><span class="pre">Messages</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.CLI"><code class="docutils literal notranslate"><span class="pre">Messages.CLI</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.CLI.CRITICAL_ERROR"><code class="docutils literal notranslate"><span class="pre">Messages.CLI.CRITICAL_ERROR</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.CLI.FILE_NOT_FOUND"><code class="docutils literal notranslate"><span class="pre">Messages.CLI.FILE_NOT_FOUND</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.CLI.FILE_READ_ERROR"><code class="docutils literal notranslate"><span class="pre">Messages.CLI.FILE_READ_ERROR</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.CLI.USER_INTERRUPT"><code class="docutils literal notranslate"><span class="pre">Messages.CLI.USER_INTERRUPT</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Config"><code class="docutils literal notranslate"><span class="pre">Messages.Config</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Config.INVALID_QUALITY"><code class="docutils literal notranslate"><span class="pre">Messages.Config.INVALID_QUALITY</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Config.INVALID_WORKERS"><code class="docutils literal notranslate"><span class="pre">Messages.Config.INVALID_WORKERS</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Core"><code class="docutils literal notranslate"><span class="pre">Messages.Core</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Core.DONE_DOWNLOAD"><code class="docutils literal notranslate"><span class="pre">Messages.Core.DONE_DOWNLOAD</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Core.ERROR_RESOURCE_CLOSE"><code class="docutils literal notranslate"><span class="pre">Messages.Core.ERROR_RESOURCE_CLOSE</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Core.SKIP_EXISTS"><code class="docutils literal notranslate"><span class="pre">Messages.Core.SKIP_EXISTS</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Core.START_DOWNLOAD"><code class="docutils literal notranslate"><span class="pre">Messages.Core.START_DOWNLOAD</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Executor"><code class="docutils literal notranslate"><span class="pre">Messages.Executor</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Executor.ERROR_DOWNLOAD"><code class="docutils literal notranslate"><span class="pre">Messages.Executor.ERROR_DOWNLOAD</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Extractor"><code class="docutils literal notranslate"><span class="pre">Messages.Extractor</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Extractor.ERROR_EXTRACT"><code class="docutils literal notranslate"><span class="pre">Messages.Extractor.ERROR_EXTRACT</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Extractor.ERROR_NO_INFO"><code class="docutils literal notranslate"><span class="pre">Messages.Extractor.ERROR_NO_INFO</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Orchestrator"><code class="docutils literal notranslate"><span class="pre">Messages.Orchestrator</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Orchestrator.NO_URLS"><code class="docutils literal notranslate"><span class="pre">Messages.Orchestrator.NO_URLS</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Orchestrator.STARTING"><code class="docutils literal notranslate"><span class="pre">Messages.Orchestrator.STARTING</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Stats"><code class="docutils literal notranslate"><span class="pre">Messages.Stats</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Stats.ELAPSED"><code class="docutils literal notranslate"><span class="pre">Messages.Stats.ELAPSED</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Stats.FAILED"><code class="docutils literal notranslate"><span class="pre">Messages.Stats.FAILED</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Stats.FOOTER"><code class="docutils literal notranslate"><span class="pre">Messages.Stats.FOOTER</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Stats.HEADER"><code class="docutils literal notranslate"><span class="pre">Messages.Stats.HEADER</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Stats.PROCESSED"><code class="docutils literal notranslate"><span class="pre">Messages.Stats.PROCESSED</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Stats.SKIPPED"><code class="docutils literal notranslate"><span class="pre">Messages.Stats.SKIPPED</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Stats.SUCCESSFUL"><code class="docutils literal notranslate"><span class="pre">Messages.Stats.SUCCESSFUL</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.i18n.messages.Messages.Stats.TITLE"><code class="docutils literal notranslate"><span class="pre">Messages.Stats.TITLE</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-yt_dl_cli.interfaces.interfaces">Interfaces</a><ul>
@@ -1201,7 +3219,10 @@ result in a string of underscores</p></li>
 <li><a class="reference internal" href="#yt_dl_cli.interfaces.strategies.get_strategy"><code class="docutils literal notranslate"><span class="pre">get_strategy()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#scripts">Scripts</a></li>
+<li><a class="reference internal" href="#module-yt_dl_cli.scripts.cli">Scripts</a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.scripts.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-yt_dl_cli.utils.logger">Utils</a><ul>
 <li><a class="reference internal" href="#yt_dl_cli.utils.logger.ColorFormatter"><code class="docutils literal notranslate"><span class="pre">ColorFormatter</span></code></a><ul>
 <li><a class="reference internal" href="#yt_dl_cli.utils.logger.ColorFormatter.format"><code class="docutils literal notranslate"><span class="pre">ColorFormatter.format()</span></code></a></li>
@@ -1209,6 +3230,18 @@ result in a string of underscores</p></li>
 </li>
 <li><a class="reference internal" href="#yt_dl_cli.utils.logger.LoggerFactory"><code class="docutils literal notranslate"><span class="pre">LoggerFactory</span></code></a><ul>
 <li><a class="reference internal" href="#yt_dl_cli.utils.logger.LoggerFactory.get_logger"><code class="docutils literal notranslate"><span class="pre">LoggerFactory.get_logger()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yt_dl_cli.utils.parser.parse_arguments"><code class="docutils literal notranslate"><span class="pre">parse_arguments()</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.utils.stats_manager.StatsManager"><code class="docutils literal notranslate"><span class="pre">StatsManager</span></code></a><ul>
+<li><a class="reference internal" href="#yt_dl_cli.utils.stats_manager.StatsManager.failed"><code class="docutils literal notranslate"><span class="pre">StatsManager.failed</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.utils.stats_manager.StatsManager.get_summary"><code class="docutils literal notranslate"><span class="pre">StatsManager.get_summary()</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.utils.stats_manager.StatsManager.record_failure"><code class="docutils literal notranslate"><span class="pre">StatsManager.record_failure()</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.utils.stats_manager.StatsManager.record_skip"><code class="docutils literal notranslate"><span class="pre">StatsManager.record_skip()</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.utils.stats_manager.StatsManager.record_success"><code class="docutils literal notranslate"><span class="pre">StatsManager.record_success()</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.utils.stats_manager.StatsManager.report"><code class="docutils literal notranslate"><span class="pre">StatsManager.report()</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.utils.stats_manager.StatsManager.skipped"><code class="docutils literal notranslate"><span class="pre">StatsManager.skipped</span></code></a></li>
+<li><a class="reference internal" href="#yt_dl_cli.utils.stats_manager.StatsManager.success"><code class="docutils literal notranslate"><span class="pre">StatsManager.success</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#yt_dl_cli.utils.utils.FileSystemChecker"><code class="docutils literal notranslate"><span class="pre">FileSystemChecker</span></code></a><ul>
