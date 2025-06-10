@@ -30,6 +30,12 @@ jobs:
       - name: Extract version
         id: get_version
         run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+        
+      - name: Create source zip
+              run: |
+                cd src
+                zip -r yt_dl_cli.zip yt_dl_cli
+                mv yt_dl_cli.zip ../
 
       - name: Create GitHub Release & Upload Artifacts
         uses: softprops/action-gh-release@v2
@@ -46,12 +52,6 @@ jobs:
             src/yt_dl_cli.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create source zip
-        run: |
-          cd src
-          zip -r yt_dl_cli.zip yt_dl_cli
-          mv yt_dl_cli.zip ../
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
