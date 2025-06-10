@@ -275,18 +275,6 @@ class VideoInfoExtractor:
                              will receive messages at various levels (INFO, WARNING,
                              ERROR) depending on the extraction outcomes.
 
-        Example:
-            Creating an extractor with a custom logger:
-
-            >>> import logging
-            >>> from yt_dl_cli.utils.logger import LoggerFactory
-            >>>
-            >>> # Create logger with specific configuration
-            >>> logger = LoggerFactory.get_logger("/downloads", level=logging.DEBUG)
-            >>>
-            >>> # Initialize extractor
-            >>> extractor = VideoInfoExtractor(logger)
-
         Note:
             The constructor is lightweight and doesn't perform any I/O operations
             or network requests. All heavy operations are deferred to the
@@ -348,16 +336,16 @@ class VideoInfoExtractor:
         Error Handling:
             The method catches and handles several types of exceptions:
 
-            - **yt_dlp.DownloadError**: Raised when yt-dlp encounters download-related
+            - yt_dlp.DownloadError: Raised when yt-dlp encounters download-related
               errors such as network issues, authentication problems, or video
               unavailability. These are logged as extraction errors.
 
-            - **yt_dlp.utils.ExtractorError**: Raised when yt-dlp's extractor
+            - yt_dlp.utils.ExtractorError: Raised when yt-dlp's extractor
               encounters platform-specific issues such as parsing errors,
               unsupported URLs, or API changes. These are logged with detailed
               error information.
 
-            - **Exception**: Catches all other unexpected errors to prevent
+            - Exception: Catches all other unexpected errors to prevent
               application crashes. These are logged as general extraction errors
               with full exception details for debugging.
 
@@ -603,12 +591,12 @@ class DownloadExecutor:
         Error Handling:
             The method catches and handles several types of exceptions:
 
-            - **yt_dlp.DownloadError**: Raised when yt-dlp encounters download-specific
+            - yt_dlp.DownloadError: Raised when yt-dlp encounters download-specific
               errors such as network issues, format unavailability, or storage
               problems. These are logged with detailed error information including
               the URL and specific error details.
 
-            - **Exception**: Catches all other unexpected errors to prevent
+            - Exception: Catches all other unexpected errors to prevent
               application crashes. This includes system-level errors, memory
               issues, and other unforeseen problems. All exceptions are logged
               with full details for debugging purposes.

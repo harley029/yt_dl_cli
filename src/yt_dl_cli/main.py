@@ -511,13 +511,6 @@ class VideoDownloader:
             For multi-threaded applications, create separate VideoDownloader
             instances for each thread.
 
-        Resource Requirements:
-            - **Minimum RAM**: 256MB for basic operations
-            - **Recommended RAM**: 1GB for optimal performance with concurrent downloads
-            - **Disk Space**: Varies by video quality and duration
-            - **Network**: Stable internet connection with sufficient bandwidth
-            - **CPU**: Multi-core recommended for concurrent processing
-
         Note:
             This method is designed to be called once per VideoDownloader instance
             and represents the complete lifecycle of a download session. Multiple

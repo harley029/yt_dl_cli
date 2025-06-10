@@ -145,7 +145,6 @@ pip install yt_dl_cli
 ## Dependencies
 
 * **yt-dlp** – Core library for downloading videos.
-* **colorama** – Terminal text styling and coloring.
 
 ## Usage
 

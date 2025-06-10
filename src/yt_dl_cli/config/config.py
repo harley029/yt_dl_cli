@@ -9,7 +9,7 @@ The module ensures configuration integrity through automatic validation and type
 providing a centralized way to manage application settings with proper error handling.
 
 Classes:
-    Config: Main configuration dataclass with validation
+    **Config**: Main configuration dataclass with validation
 """
 
 from dataclasses import dataclass, field

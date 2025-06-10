@@ -7,7 +7,7 @@ import pytest
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
 from yt_dl_cli.i18n.init import get_system_lang, setup_i18n
-from yt_dl_cli.i18n.messages import MessagePrinter, Messages
+from yt_dl_cli.i18n.messages import Messages
 
 
 def test_messages_config():
@@ -22,70 +22,6 @@ def test_lazy_translation_str_raises():
     lazy = Messages.Config.INVALID_WORKERS
     with pytest.raises(RuntimeError):
         str(lazy)
-
-
-def test_message_printer_printout(monkeypatch):
-    """ Testing of MessagePrinter.printout  """
-    printer = MessagePrinter()
-
-    printed = {}
-
-    def fake_print(*args, **kwargs):
-        # Сохраняем, что напечатано (можно проверить через assert)
-        printed["value"] = args[0]
-        printed["end"] = kwargs.get("end", None)
-
-    monkeypatch.setattr("builtins.print", fake_print)
-
-    msg = "Hello"
-    printer.printout("green", msg)
-
-    # Проверяем, что в начале есть escape-последовательность для зелёного цвета (обычно "\x1b[32m" или через colorama.Fore.GREEN)
-    assert msg in printed["value"]
-    # Проверяем, что используется reset после сообщения
-    assert (
-        printed["value"].endswith("\x1b[0m")
-        or printed["value"].endswith("\033[0m")
-        or "RESET" in printed["value"]
-    )
-    # Проверяем, что end="" (по умолчанию)
-    assert printed["end"] == ""
-    assert printed["value"].startswith(Fore.GREEN)
-
-
-@pytest.mark.parametrize(
-    "color_name, color_code",
-    [
-        ("red", Fore.RED),
-        ("green", Fore.GREEN),
-        ("yellow", Fore.YELLOW),
-        ("blue", Fore.BLUE),
-        ("magenta", Fore.MAGENTA),
-        ("cyan", Fore.CYAN),
-        ("white", Fore.WHITE),
-        ("reset", Fore.RESET),
-        ("unknown", Fore.RESET),  # Проверка fallback-а на неизвестный цвет
-    ],
-)
-def test_message_printer_printout_colors(monkeypatch, color_name, color_code):
-    """ Testing of MessagePrinter.printout with colors  """
-    printer = MessagePrinter()
-    captured = {}
-
-    def fake_print(text, end=None):
-        captured["text"] = text
-        captured["end"] = end
-
-    monkeypatch.setattr("builtins.print", fake_print)
-    msg = "Test message"
-
-    printer.printout(color_name, msg)
-
-    assert captured["text"].startswith(color_code)
-    assert msg in captured["text"]
-    # В конце сброс цвета (Style.RESET_ALL, обычно '\x1b[0m')
-    assert captured["text"].endswith(Style.RESET_ALL)
-    assert captured["end"] == ""
 
 
 @pytest.mark.parametrize(

@@ -17,7 +17,7 @@ Example:
 
     Or when installed as a package:
 
-    $ yt-dl
+    $ yt-dl-cli
 """
 
 from yt_dl_cli.main import VideoDownloader  # type: ignore[import-untyped]
