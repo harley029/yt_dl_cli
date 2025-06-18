@@ -30,6 +30,8 @@ autodoc_default_options = {
 # Тема HTML
 html_theme = "nature"  # pylint: disable=invalid-name
 html_static_path = ["_static"]
+
+
 def setup(app):
     """Customize Sphinx HTML theme"""
     app.add_css_file("custom.css")

@@ -148,6 +148,15 @@ pip install yt_dl_cli
 
 ## Usage
 
+### Quick Start
+
+Install and download a video in one go:
+
+```bash
+pip install yt-dl-cli
+yt-dl-cli --urls https://www.youtube.com/watch?v=dQw4w9WgXcQ
+```
+
 ### Command-line interface
 
 ```bash
@@ -170,6 +179,69 @@ Example:
 ```bash
 yt-dl-cli -f links.txt -d my_videos -w 4 -q best
 ```
+
+### Argument Validation
+
+The command-line interface of `yt-dl-cli` uses strict argument validation to ensure safe and predictable behavior. All arguments are checked and sanitized before any download or file operation begins, preventing partial operations if validation fails.
+
+#### What is Validated?
+
+| Argument      | Validation Details                                                                                     |
+|---------------|--------------------------------------------------------------------------------------------------------|
+| `--file`      | Must be a readable file, not empty, with one URL per line (comments and blank lines are ignored).      |
+| `--dir`       | Must be a valid directory. The directory will be created if it does not exist, provided the parent directory is writable. Otherwise, a permission error is raised. |
+| `--workers`   | Must be an integer between 1 and 10 (inclusive).                                                      |
+| `--quality`   | Must be one of: `best`, `worst`, `1080`, `720`, `480`, `360`.                                         |
+| `--urls`      | Each URL must start with `http://` or `https://` and point to a platform supported by `yt-dlp` (e.g., YouTube, Vimeo). |
+
+If any validation fails, the program will print a clear error message and exit. Edge cases, such as empty URL files or excessively long URLs, are handled with appropriate error messages.
+
+#### Examples
+
+* Invalid workers value
+
+```bash
+yt-dl-cli --workers 20
+# Error: Workers must be between 1 and 10.
+```
+
+* Invalid quality value
+
+```bash
+yt-dl-cli --quality 999
+# Error: Quality must be one of ['best', 'worst', '1080', '720', '480', '360'], got '999'.
+```
+
+* Invalid URL in file (e.g., ftp://example.com in links.txt):
+
+If your links file contains something like ftp://example.com:
+
+```bash
+yt-dl-cli --file links.txt
+# Error: Invalid URL 'ftp://example.com'. URLs must start with 'http://' or 'https://'.
+```
+
+* File does not exist
+
+```bash
+yt-dl-cli --file missing.txt
+# Error: URL file 'missing.txt' does not exist or is not a file.
+```
+
+* Directory is not writable
+
+```bash
+yt-dl-cli --dir /root
+# Error: Invalid directory '/root': [Permission denied...]
+```
+
+#### Implementation Notes
+
+* All argument validation is performed before starting any download or file operation.
+* Custom error messages provide context for each failure.
+* The validation logic is modular and can be extended if new options are added.
+
+You can see the full validation logic in **yt_dl_cli/utils/validators.py**.
 
 ## Testing & Code Coverage
 
@@ -203,7 +275,7 @@ python -m webbrowser htmlcov/index.html
 ### Continuous Integration
 
 * All tests are automatically run on each push and pull request to the main branch.
-* Coverage results are uploaded to [odecov](https://app.codecov.io/gh/harley029/yt_dl_cli) for tracking and reporting.
+* Coverage results are uploaded to [Codecov](https://app.codecov.io/gh/harley029/yt_dl_cli) for tracking and reporting.
 * You can check the current coverage status using the badge at the top of this [README](https://github.com/harley029/yt_dl_cli/blob/main/README.md).
 
 ## Usage as a Python module/API usuge

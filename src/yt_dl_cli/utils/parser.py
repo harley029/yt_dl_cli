@@ -38,6 +38,7 @@ from typing import List
 
 from yt_dl_cli.config.config import Config
 from yt_dl_cli.i18n.messages import Messages
+from yt_dl_cli.utils.validators import ArgValidator
 
 
 def parse_arguments() -> Config:
@@ -138,19 +139,24 @@ def parse_arguments() -> Config:
         "-f",
         "--file",
         default="links.txt",
+        type=ArgValidator.validate_url_file,
         help="File with URLs (one per line, # for comments)",
     )
 
     # Define output directory option
     parser.add_argument(
-        "-d", "--dir", default="downloads", help="Save directory for downloaded files"
+        "-d",
+        "--dir",
+        default="downloads",
+        type=ArgValidator.validate_directory,
+        help="Save directory for downloaded files",
     )
 
     # Define worker thread configuration
     parser.add_argument(
         "-w",
         "--workers",
-        type=int,
+        type=ArgValidator.validate_workers,
         default=2,
         help="Maximum number of parallel downloads (default: 2)",
     )
@@ -159,7 +165,8 @@ def parse_arguments() -> Config:
     parser.add_argument(
         "-q",
         "--quality",
-        choices=["best", "worst", "720", "480", "360"],
+        choices=["best", "worst", "1080", "720", "480", "360"],
+        type=ArgValidator.validate_quality,
         default="best",
         help="Video quality preference (default: best)",
     )
@@ -174,7 +181,7 @@ def parse_arguments() -> Config:
 
     # Define direct URL input option
     parser.add_argument(
-        "--urls", nargs="+", help="Direct URL list (overrides --file option)"
+        "--urls", nargs="+", type=str, help="Direct URL list (overrides --file option)"
     )
 
     # Parse the command line arguments
