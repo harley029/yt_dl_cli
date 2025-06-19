@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "yt_dl_cli"
-version = "1.0.3"
+version = "1.0.4"
 description = "Video downloader from a number of video streaming services."
 readme = "README.md"
 requires-python = ">=3.8"
