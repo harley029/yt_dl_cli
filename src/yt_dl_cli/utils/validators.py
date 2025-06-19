@@ -53,8 +53,8 @@ class ArgValidator:
         for url in urls:
             if not (url.startswith("http://") or url.startswith("https://")):
                 raise argparse.ArgumentTypeError(
-                    f"Invalid URL '{url}'. URLs must start with 'http://' or 'https://'."  # NOSONAR
-                )
+                    f"Invalid URL '{url}'. URLs must start with 'http://' or 'https://'."
+                )  # NOSONAR
         return urls
 
     @staticmethod
