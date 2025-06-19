@@ -51,7 +51,7 @@ class ArgValidator:
         if not urls:
             raise argparse.ArgumentTypeError("URL list cannot be empty.")
         for url in urls:
-            if not (url.startswith("http://") or url.startswith("https://")):
+            if not (url.startswith("http://") or url.startswith("https://")):  # NOSONAR
                 raise argparse.ArgumentTypeError(
                     f"Invalid URL '{url}'. URLs must start with 'http://' or 'https://'."
                 )  # NOSONAR
