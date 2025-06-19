@@ -11,13 +11,14 @@ import argparse
 
 
 class ArgValidator:
+    """ Class for validating CLI arguments. """
     @staticmethod
     def validate_workers(value: str) -> int:
         """Validate the number of worker threads."""
         try:
             workers = int(value)
-        except ValueError:
-            raise argparse.ArgumentTypeError(f"'{value}' is not a valid integer.")
+        except ValueError as exc:
+            raise argparse.ArgumentTypeError(f"'{value}' is not a valid integer.") from exc
 
         if workers < 1 or workers > 10:
             raise argparse.ArgumentTypeError("Workers must be between 1 and 10.")

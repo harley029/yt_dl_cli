@@ -12,7 +12,8 @@ yt_dl_cli.egg-info/
 readme.txt
 .mypy_cache/
 .pytest_cache/
-video_downloader.py
+test_videos/
+videos/
 test.py
 links.txt
 Pipfile
