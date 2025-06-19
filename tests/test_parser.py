@@ -158,7 +158,7 @@ def test_validate_url_file_invalid():
 
 def test_validate_url_list_valid():
     """Test valid URL list."""
-    urls = ["https://youtube.com/watch?v=video1", "http://example.com"]
+    urls = ["https://youtube.com/watch?v=video1", "http://example.com"]  # NOSONAR
     assert ArgValidator.validate_url_list(urls) == urls
 
 
@@ -171,7 +171,7 @@ def test_validate_url_list_invalid():
         ArgValidator.validate_url_list(["invalid_url"])
 
     with pytest.raises(argparse.ArgumentTypeError):
-        ArgValidator.validate_url_list(["ftp://invalid.com"])
+        ArgValidator.validate_url_list(["ftp://invalid.com"])  # NOSONAR
 
 
 def run_with_file_error(monkeypatch, error, url_file):
